@@ -11,14 +11,14 @@
 </head>
 <body>
     <div class="mainbox">
-        <div class="btn-wrap"><button class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
+        <div class="btn-wrap"><button onclick="NextPage()" class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
     </div>
     <div id="Tem" style="display:none;">
         <section class="block">
             <div class="box">
                 <div class="box-title">
                     <h3 class="font-m box-title-left">零售信贷1</h3>
-                    <div class="font-s box-title-right">2017/02/16</div>
+                    <div onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02/16</div>
                 </div>
                 <div class="h-tab" id="tab">
                     <div class="h-navbar border-left-1 border-top-1">
@@ -26,7 +26,7 @@
                         <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
                     </div>
                     <div class="h-tab__panel">
-                        <div class="h-tab__content">
+                        <div utype="PriceCurve" class="h-tab__content">
                             <div class="chart-box">
                                 <div class="chart-legend">
                                     <span class="chart-legend__item font-xxs"><i style="background-color:#FFB71C"></i><span>挂牌利率</span></span>
@@ -53,7 +53,7 @@
                             <div class="line-dot"></div>
                             <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
                         </div>
-                        <div class="h-tab__content">
+                        <div utype="PriceTrend" class="h-tab__content">
                             <div class="padding-bottom">
                                 <div class="select-group">
                                     <label class="h-checkbox">
@@ -94,7 +94,7 @@
                                     </label>
                                     <label class="h-radio">
                                         <input type="radio" hidden name="radio1">
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一年</span></span>
                                     </label>
                                 </div>
                                 <div class="chart-box">
@@ -113,30 +113,52 @@
     <script src="./scripts/jquery.base64.js"></script>
     <script src="./scripts/main.js"></script>
     <script type="text/javascript">
+        var PageIndex = 1;
+        var PageSize = 5;
+        //获取当前页的默认参数
+        var CurveParameter = {
+            "ORG_ID": "0042",//用户所属机构
+            "PAGE_NO": PageIndex + "",//当前页面
+            "PAGE_SIZE": PageSize + "",//页面条数
+            "PRD_BJRQ": "2017-07-01",//报价日期
+            "PRD_CPBZ": "CNY",//币种代码
+            "PRD_CPDM": "",//产品代码
+            "PRD_CPLB": "2",//产品类别
+            "PRD_CPLB_2": "01001"//产品小类2产品代码
+        };
         $(function () {
             //开始请求
-            GetCurve();
+            GetAllCurve();
         });
-        //获取价格曲线
-        function GetCurve() {
-            var parameter = {
-                "ORG_ID": "0042",//用户所属机构
-                "PAGE_NO": "1",//当前页面
-                "PAGE_SIZE": "2",//页面条数
-                "PRD_BJRQ": "2017-07-01",//报价日期
-                "PRD_CPBZ": "CNY",//币种代码
-                "PRD_CPDM": "",//产品代码
-                "PRD_CPLB": "2",//产品类别
-                "PRD_CPLB_2": "01001"//产品小类2产品代码
-            };
+        //下一页
+        function NextPage() {
+            PageIndex = PageIndex + 1;
+            GetAllCurve();
+        }
+        //获取价格曲线(列表)
+        function GetAllCurve(reset) {
+            var parameter = CurveParameter;
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
                 if (ret.ec == 1) {
+                    //如果没有数据
+                    if (ret.PAGE_LIST.length == 0) {
+                        //隐藏更多
+                        $(".btn-wrap").hide();
+                    } else {
+                        $(".btn-wrap").show();
+                    }
                     //请求成功
                     var chartData = [];
+                    //是否重置
+                    if (reset) {
+                        $(".mainbox section").remove();
+                    }
                     //开始构建数据
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         //数据列表
                         var LIST = ret.PAGE_LIST[i].LIST;
+                        //产品代码
+                        var PRD_CPDM = ret.PAGE_LIST[i].PRD_CPDM;
                         //名称
                         var PRD_CPMC = ret.PAGE_LIST[i].PRD_CPMC;
                         //归属
@@ -151,31 +173,83 @@
                         for (var k = 0; k < LIST.length; k++) {
                             $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><th>" + LIST[k].TERM_QXMC + "</th><th>" + LIST[k].NET_RATE + "</th><th>" + LIST[k].RATE_LLJG + "</th><th>" + LIST[k].FSI_LLZ + "</th></tr>");
                         }
+                        //设置关键值
+                        TemObj.find(".h-tab__panel").attr("PRD_CPDM", PRD_CPDM);
                         //填充到容器
                         $($(".mainbox").find(".btn-wrap")[0]).before(TemObj.html());
                         //获取需要画图的元素
-                        var chartObj= $(".mainbox").find("div[utype=\"chart\"]")[$(".mainbox").find("div[utype=\"chart\"]").length - 1];
+                        var chartObj = $(".mainbox").find("div[utype=\"chart\"]")[$(".mainbox").find("div[utype=\"chart\"]").length - 1];
                         //画图
                         PriceCurve(LIST, chartObj);
                     }
                     //初始化
-                    init();
+                    init(function (index, obj) {
+                        //tab切换的事件
+                        if (index == 1) {
+                            var PriceTrendObj = $(obj).parent().parent().find("div[utype=\"PriceTrend\"]");
+                            //判断是否需要读取
+                            GetTendency(PriceTrendObj, parameter.ORG_ID, 1, parameter.PRD_BJRQ, parameter.PRD_CPBZ);
+                        }
+                    });
+                } else {
+                    //请求失败
+                }
+            });
+        }
+        //获取价格曲线（单个）
+        function GetCurve(Element, PRD_BJRQ) {
+            PRD_CPDM = $(Element).parent().attr("PRD_CPDM");
+            var parameter = CurveParameter;
+            parameter.PRD_BJRQ = PRD_BJRQ;//变更时间
+            parameter.PRD_CPDM = PRD_CPDM;
+            //获取数据
+            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
+                if (ret.ec == 1) {
+                    //请求成功
+                    var chartData = [];
+                    //开始构建数据
+                    //数据列表
+                    var LIST = ret.PAGE_LIST[0].LIST;
+                    //产品代码
+                    var PRD_CPDM = ret.PAGE_LIST[0].PRD_CPDM;
+                    //名称
+                    var PRD_CPMC = ret.PAGE_LIST[0].PRD_CPMC;
+                    //归属
+                    var PRD_DEP = ret.PAGE_LIST[0].PRD_DEP;
+                    //日期
+                    var PRD_BJRQ = parameter.PRD_BJRQ;
+                    //构建显示数据标签
+                    var TemObj = $($(Element).parents("section")[0]);
+                    $(TemObj.find(".box-title h3")[0]).html(PRD_CPMC);
+                    $(TemObj.find(".box-title div")[0]).html(PRD_BJRQ);
+                    $(TemObj.find(".chart-tip span")[0]).html(PRD_DEP);
+                    //清除
+                    $(TemObj.find(".chart-detail table tbody")[0]).find("tr").remove();
+                    for (var k = 0; k < LIST.length; k++) {
+                        $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><th>" + LIST[k].TERM_QXMC + "</th><th>" + LIST[k].NET_RATE + "</th><th>" + LIST[k].RATE_LLJG + "</th><th>" + LIST[k].FSI_LLZ + "</th></tr>");
+                    }
+                    //设置关键值
+                    TemObj.find(".h-tab__panel").attr("PRD_CPDM", PRD_CPDM);
+                    var chartObj = $(Element);
+                    //画图
+                    PriceCurve(LIST, chartObj);
                 } else {
                     //请求失败
                 }
             });
         }
         //获取价格趋势
-        function GetTendency() {
+        function GetTendency(Element, ORG_ID, PRD_BJLB, PRD_BJRQ, PRD_CPBZ) {
+            PRD_CPDM = $(Element).parent().attr("PRD_CPDM");
             var parameter = {
-                "ORG_ID": "0042",//用户所属机构
-                "PRD_BJLB": "1",//日期区间类别
-                "PRD_BJRQ": "2017-07-01",//报价日期
-                "PRD_CPBZ": "CNY",//币种代码
-                "PRD_CPDM": "10102010101"//产品代码
+                "ORG_ID": ORG_ID,//用户所属机构
+                "PRD_BJLB": PRD_BJLB,//日期区间类别"1：近一月2：近三月3：近六月4：近一年"
+                "PRD_BJRQ": PRD_BJRQ,//报价日期
+                "PRD_CPBZ": PRD_CPBZ,//币种代码
+                "PRD_CPDM": PRD_CPDM//产品代码
             };
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
-                console.log(ret);
+                //数据
             });
         }
     </script>
@@ -276,12 +350,51 @@
                     }
                 ]
             });
-            // myChart.dispatchAction({
-            //     type: "showTip",
-            //     seriesIndex: 0,
-            //     dataIndex: chartData.length - 1
-            // });
         }
+    </script>
+    <script type="text/javascript">
+        //和app交互
+        //被动API----------------------------------------
+        //设置登录的用户信息
+        function APPSetLoginUser(ROLE_ID, USER_ID) {
+            LOGINUSERSESSION.ROLE_ID = ROLE_ID;
+            LOGINUSERSESSION.USER_ID = USER_ID;
+        }
+        //获取首页列表数据   用户所属机构  报价日期  币种代码  产品类别  产品小类2产品代码
+        function APPPriceCurveList(ORG_ID, PRD_BJRQ, PRD_CPBZ, PRD_CPLB, PRD_CPLB_2) {
+            CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.PRD_BJRQ = PRD_BJRQ;
+            CurveParameter.PRD_CPBZ = PRD_CPBZ;
+            CurveParameter.PRD_CPLB = PRD_CPLB;
+            CurveParameter.PRD_CPLB_2 = PRD_CPLB_2;
+            PageIndex = 1;//重置分页
+            //获取数据
+            GetAllCurve(true);
+        }
+        //-----------------------------------------------
+        //主动API----------------------------------------
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            PRD_CPDM = $($(timeobj).parents("section")[0]).find(".h-tab__panel").attr("PRD_CPDM");
+            console.log(PRD_CPDM);
+            var parameter={"PRD_CPDM":PRD_CPDM,"TimeValue":$(timeobj).text()};
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                APPIOS.SponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                APPAndroid.SponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
+            };
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+           var PRD_CPDM = jsonObj.PRD_CPDM;
+           var TimeValue = jsonObj.TimeValue;
+           alert("接收到返回值：" + JSON.stringify(jsonObj));
+        }
+        //-----------------------------------------------
     </script>
 </body>
 </html>

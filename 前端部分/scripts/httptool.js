@@ -1,9 +1,9 @@
-﻿//导出表格数据文件
+﻿var LOGINUSERSESSION = { "ROLE_ID": "123123", "USER_ID": "heyi001" };//测试用
 (function ($) {
     $.extend({
         HttpPost: function (url, reqJson, type, success) {
             //默认用户
-            var userSession = { "ROLE_ID": "123123", "USER_ID": "heyi001" };
+            var userSession = LOGINUSERSESSION;
             var HttpObject = $.extend({}, reqJson, userSession);
             $.ajax({
                 url: url,
@@ -11,7 +11,14 @@
                 type: type,
                 success: function (ret) {
                     if (success) {
-                        success(eval("(" + $.base64.decode(ret, true) + ")"));
+                        if (ret) {
+                            success({ ec: 0, em: "数据返回错误" });
+                        }
+                        try {
+                            success(eval("(" + $.base64.decode(ret, true) + ")"));
+                        } catch (e) {
+                            success({ec:0,em:"数据返回错误"});
+                        }
                     }
                 }
             });

@@ -1,6 +1,6 @@
 //$(init);
-function init(){
-	initTab();
+function init(TabEvent) {
+    initTab(TabEvent);
 	initMore();
 }
 function tab(ele,params){
@@ -18,15 +18,17 @@ function tab(ele,params){
 		var $target = $(event.target).closest(".h-navbar__item");
 		var index = $navitems.index($target);
 		show(index);
-		params.onChange && params.onChange(index);
+		params.onChange(index, this) && params.onChange(index);
 	});
 }
-function initTab(){
+function initTab(TabEvent) {
 	$("[id=tab]").each(function(idx,item){
 		tab($(item),{
 			defaultIndex: 0,
-		    onChange: function(index){
-		        console.log(index);
+			onChange: function (index, obj) {
+			    if (TabEvent) {
+			        TabEvent(index, obj);
+			    }
 		    }
 		})
 	});
