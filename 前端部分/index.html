@@ -202,19 +202,19 @@
                         }
                     }
                 },
-                //dataZoom: [
-                //    {
-                //        type: 'inside',
-                //        start: 95,
-                //        end: 100
-                //    }, {
-                //        type: 'slider',
-                //        show: false,
-                //        backgroundColor: "red",
-                //        start: 95,
-                //        end: 100
-                //    }
-                //],
+                dataZoom: [
+                   {
+                       type: 'inside',
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }
+                ],
                 grid: {
                     show: false,
                     left: "5%",
@@ -276,11 +276,11 @@
                     }
                 ]
             });
-            myChart.dispatchAction({
-                type: "showTip",
-                seriesIndex: 0,
-                dataIndex: chartData.length - 1
-            });
+            // myChart.dispatchAction({
+            //     type: "showTip",
+            //     seriesIndex: 0,
+            //     dataIndex: chartData.length - 1
+            // });
         }
     </script>
 </body>
