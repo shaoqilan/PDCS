@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+	<div class="mainbox">
+		<form class="count_form count-guest_form">
+            <legend class="count_legend font-s">执行利率 <span>4.234</span></legend>
+            <section class="control-group">
+                <label class="control-label control-label-noarrow font-s">
+                    <span>初始存入金额</span>
+                    <input class="input font-s" type="number" placeholder="1000元起">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>月存入金额</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s ">
+                    <span>支取频率</span>
+                    <input class="input font-s" type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s ">
+                    <span>提取日期</span>
+                    <input class="input font-s" type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>转存期数</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>每次支取本金</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>每次支取利息</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                </label>
+            </section>
+            <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-empty h-btn-empty-disabled font-m" type="button">客户计算</button></div>
+            <div style="display: none">
+                <div class="table-bg">
+                    <table class="table-panel">
+                        <tbody>
+                            <tr>
+                                <td>所得利息金额</td>
+                                <td>5.345</td>
+                            </tr>
+                            <tr>
+                                <td>利息税金额</td>
+                                <td>5.345</td>
+                            </tr>
+                            <tr>
+                                <td>本息合计</td>
+                                <td>5.345</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">生成PDF</button></div>
+            </div>
+        </form>
+	</div>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+</body>
+</html>

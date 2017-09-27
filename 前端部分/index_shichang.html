@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+	<div class="mainbox">
+		<section class="block">
+            <div class="box">
+                <div class="box-title">
+                    <h3 class="font-m box-title-left">整存整取存款利率</h3>
+                    <div class="font-s box-title-right">2017/02/16</div>
+                </div>
+                <div class="h-tab" id="tab">
+                    <div class="h-navbar border-left-1 border-top-1">
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格曲线</div>
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
+                    </div>
+                    <div class="h-tab__panel">
+                        <div class="h-tab__content">
+                            <div class="chart-box">
+                                <div class="chart-legend"></div>
+                                <div id="chart3" class="canvas-box"></div>
+                            </div>
+                            <div class="chart-tip chart-tip-empty font-xs"></div>
+                            <div class="chart-detail">
+                                <h4 class="font-xs h-table-title">利率详情</h4>
+                                <table class="h-table">
+                                    <thead>
+                                        <tr>
+                                            <th>期限</th>
+                                            <th>市场利率</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>五年以上</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3-5（含）年</td>
+                                            <td>6.344</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1-3（含）年</td>
+                                            <td>6.344</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>一年 </td>
+                                            <td>6.344</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="line-dot"></div> 
+                            <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
+                        </div>
+                        <div class="h-tab__content">
+                            <div class="padding-bottom">
+                                <div class="select-group">
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2" checked>
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                </div>
+                                <div class="radio-group">
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1" checked>
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="canvas-box2" id="chart4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="block">
+            <div class="box">
+                <div class="box-title">
+                    <h3 class="font-m box-title-left">整存整取存款利率</h3>
+                    <div class="font-s box-title-right">2017/02/16</div>
+                </div>
+                <div class="h-tab" id="tab">
+                    <div class="h-navbar border-left-1 border-top-1">
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格曲线</div>
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
+                    </div>
+                    <div class="h-tab__panel">
+                        <div class="h-tab__content">
+                            <div class="chart-box">
+                                <div class="chart-legend"></div>
+                                <div id="chart3" class="canvas-box"></div>
+                            </div>
+                            <div class="chart-tip chart-tip-empty font-xs"></div>
+                            <div class="chart-detail">
+                                <h4 class="font-xs h-table-title">利率详情</h4>
+                                <table class="h-table">
+                                    <thead>
+                                        <tr>
+                                            <th>期限</th>
+                                            <th>市场利率</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>五年以上</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3-5（含）年</td>
+                                            <td>6.344</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1-3（含）年</td>
+                                            <td>6.344</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>一年 </td>
+                                            <td>6.344</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="line-dot"></div> 
+                            <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
+                        </div>
+                        <div class="h-tab__content">
+                            <div class="padding-bottom">
+                                <div class="select-group">
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2" checked>
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                </div>
+                                <div class="radio-group">
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1" checked>
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="canvas-box2" id="chart4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="btn-wrap"><button class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
+	</div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+	<script src="./scripts/main.js"></script>
+</body>
+</html>

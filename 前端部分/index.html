@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="btn-wrap"><button class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
+    </div>
+    <div id="Tem" style="display:none;">
+        <section class="block">
+            <div class="box">
+                <div class="box-title">
+                    <h3 class="font-m box-title-left">零售信贷1</h3>
+                    <div class="font-s box-title-right">2017/02/16</div>
+                </div>
+                <div class="h-tab" id="tab">
+                    <div class="h-navbar border-left-1 border-top-1">
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格曲线</div>
+                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
+                    </div>
+                    <div class="h-tab__panel">
+                        <div class="h-tab__content">
+                            <div class="chart-box">
+                                <div class="chart-legend">
+                                    <span class="chart-legend__item font-xxs"><i style="background-color:#FFB71C"></i><span>挂牌利率</span></span>
+                                    <span class="chart-legend__item font-xxs"><i style="background-color:#FA7971"></i><span>市场利率</span></span>
+                                    <span class="chart-legend__item font-xxs"><i style="background-color:#40C69E"></i><span>FTP利率</span></span>
+                                </div>
+                                <div utype="chart" class="canvas-box"></div>
+                            </div>
+                            <div class="chart-tip font-xs">产品归属：<span>个人金融/资产业务/房屋贷款</span></div>
+                            <div class="chart-detail">
+                                <h4 class="font-xs h-table-title">利率详情</h4>
+                                <table class="h-table">
+                                    <thead>
+                                        <tr>
+                                            <th>期限</th>
+                                            <th>挂牌利率</th>
+                                            <th>市场利率</th>
+                                            <th>资金转移</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="line-dot"></div>
+                            <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
+                        </div>
+                        <div class="h-tab__content">
+                            <div class="padding-bottom">
+                                <div class="select-group">
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2" checked>
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                    <label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label><label class="h-checkbox">
+                                        <input type="checkbox" hidden name="checkbox2">
+                                        <span class="checkbox-icon border-1"></span>
+                                        <span>三个月</span>
+                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
+                                    </label>
+                                </div>
+                                <div class="radio-group">
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1" checked>
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                    <label class="h-radio">
+                                        <input type="radio" hidden name="radio1">
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                    </label>
+                                </div>
+                                <div class="chart-box">
+                                    <div class="canvas-box2" utype="chart2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script src="./scripts/jquery.base64.js"></script>
+    <script src="./scripts/main.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //开始请求
+            GetCurve();
+        });
+        //获取价格曲线
+        function GetCurve() {
+            var parameter = {
+                "ORG_ID": "0042",//用户所属机构
+                "PAGE_NO": "1",//当前页面
+                "PAGE_SIZE": "2",//页面条数
+                "PRD_BJRQ": "2017-07-01",//报价日期
+                "PRD_CPBZ": "CNY",//币种代码
+                "PRD_CPDM": "",//产品代码
+                "PRD_CPLB": "2",//产品类别
+                "PRD_CPLB_2": "01001"//产品小类2产品代码
+            };
+            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
+                if (ret.ec == 1) {
+                    //请求成功
+                    var chartData = [];
+                    //开始构建数据
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        //数据列表
+                        var LIST = ret.PAGE_LIST[i].LIST;
+                        //名称
+                        var PRD_CPMC = ret.PAGE_LIST[i].PRD_CPMC;
+                        //归属
+                        var PRD_DEP = ret.PAGE_LIST[i].PRD_DEP;
+                        //日期
+                        var PRD_BJRQ = parameter.PRD_BJRQ;
+                        //构建显示数据标签
+                        var TemObj = $("#Tem").clone();//复制对象
+                        $(TemObj.find(".box-title h3")[0]).html(PRD_CPMC);
+                        $(TemObj.find(".box-title div")[0]).html(PRD_BJRQ);
+                        $(TemObj.find(".chart-tip span")[0]).html(PRD_DEP);
+                        for (var k = 0; k < LIST.length; k++) {
+                            $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><th>" + LIST[k].TERM_QXMC + "</th><th>" + LIST[k].NET_RATE + "</th><th>" + LIST[k].RATE_LLJG + "</th><th>" + LIST[k].FSI_LLZ + "</th></tr>");
+                        }
+                        //填充到容器
+                        $($(".mainbox").find(".btn-wrap")[0]).before(TemObj.html());
+                        //获取需要画图的元素
+                        var chartObj= $(".mainbox").find("div[utype=\"chart\"]")[$(".mainbox").find("div[utype=\"chart\"]").length - 1];
+                        //画图
+                        PriceCurve(LIST, chartObj);
+                    }
+                    //初始化
+                    init();
+                } else {
+                    //请求失败
+                }
+            });
+        }
+        //获取价格趋势
+        function GetTendency() {
+            var parameter = {
+                "ORG_ID": "0042",//用户所属机构
+                "PRD_BJLB": "1",//日期区间类别
+                "PRD_BJRQ": "2017-07-01",//报价日期
+                "PRD_CPBZ": "CNY",//币种代码
+                "PRD_CPDM": "10102010101"//产品代码
+            };
+            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
+                console.log(ret);
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //画价格曲线
+        function PriceCurve(chartData, ele) {
+            var options = getChartOptions();
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var myChart = echarts.init(ele);
+            myChart.setOption({
+                textStyle: {
+                    fontSize: textSize,
+                    color: "#666",
+                },
+                backgroundColor: '#EDF5FA',
+                color: ["#FFB71C", "#FA7971", "#40C69E"],         //全局色板，动态化时需更新
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "line",
+                        lineStyle: {
+                            type: "dashed"
+                        }
+                    }
+                },
+                //dataZoom: [
+                //    {
+                //        type: 'inside',
+                //        start: 95,
+                //        end: 100
+                //    }, {
+                //        type: 'slider',
+                //        show: false,
+                //        backgroundColor: "red",
+                //        start: 95,
+                //        end: 100
+                //    }
+                //],
+                grid: {
+                    show: false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "5%",
+                    top: "14%",
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: chartData.map(function (item) { return item.TERM_QXMC; }),//标题
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    }
+
+                },
+                series: [
+                    {
+                        name: '挂牌利率',
+                        type: 'line',
+                        data: chartData.map(function (item) { return item.NET_RATE; }),//数据1
+                    },
+                    {
+                        name: '市场利率',
+                        type: 'line',
+                        data: chartData.map(function (item) { return item.RATE_LLJG; }),//数据2
+                    },
+                    {
+                        name: 'FTP利率',
+                        type: 'line',
+                        data: chartData.map(function (item) { return item.FSI_LLZ; }),//数据3
+                    }
+                ]
+            });
+            myChart.dispatchAction({
+                type: "showTip",
+                seriesIndex: 0,
+                dataIndex: chartData.length - 1
+            });
+        }
+    </script>
+</body>
+</html>

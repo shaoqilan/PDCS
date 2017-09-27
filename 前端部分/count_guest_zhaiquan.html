@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+	<div class="mainbox">
+		<form class="count_form count-guest_form">
+            <legend class="count_legend font-s">执行利率 <span>4.234</span></legend>
+            <section class="control-group">
+                <label class="control-label control-label-noarrow font-s">
+                    <span>债券面值<i class="comment font-xs">单张</i></span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>发行价格<i class="comment font-xs">单张</i></span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>票面利率</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s">
+                    <span>债券起息日</span>
+                    <input class="input font-s" type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s">
+                    <span>债券到期日</span>
+                    <input class="input font-s" type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>买入价格<i class="comment font-xs">单张</i></span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label><label class="control-label font-s control-label-noarrow">
+                    <span>卖出价格<i class="comment font-xs">单张</i></span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label><label class="control-label font-s control-label-noarrow">
+                    <span>购买数量</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                </label>
+            </section>
+            <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-empty h-btn-empty-disabled font-m" type="button">客户计算</button></div>
+            <div>
+                <div class="table-bg">
+                    <table class="table-panel">
+                        <tbody>
+                            <tr>
+                                <td>债券购买收益率</td>
+                                <td>5.345</td>
+                            </tr>
+                            <tr>
+                                <td>债券出售收益率</td>
+                                <td>5.345</td>
+                            </tr>
+                            <tr>
+                                <td>持有期间收益率</td>
+                                <td>5.345</td>
+                            </tr>
+                            <tr>
+                                <td>持有期间收益</td>
+                                <td>5.345</td>
+                            </tr><tr>
+                                <td>持有期间票面利息</td>
+                                <td>5.345</td>
+                            </tr><tr>
+                                <td>买入返售债券持有期间收益</td>
+                                <td>5.345</td>
+                            </tr><tr>
+                                <td>卖出回购债券持有期间支付利息</td>
+                                <td>5.345</td>
+                            </tr><tr>
+                                <td>本息合计</td>
+                                <td>5.345</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">生成PDF</button></div>
+            </div>
+        </form>
+	</div>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+</body>
+</html>
