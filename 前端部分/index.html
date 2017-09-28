@@ -188,7 +188,7 @@
                         if (index == 1) {
                             var PriceTrendObj = $(obj).parent().parent().find("div[utype=\"PriceTrend\"]");
                             //判断是否需要读取
-                            GetTendency(PriceTrendObj, parameter.ORG_ID, 1, parameter.PRD_BJRQ, parameter.PRD_CPBZ);
+                            GetTendency(PriceTrendObj, parameter.ORG_ID, "1", parameter.PRD_BJRQ, parameter.PRD_CPBZ);
                         }
                     });
                 } else {
@@ -250,6 +250,8 @@
             };
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
+                console.log(JSON.stringify(ret));
+                PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
             });
         }
     </script>
@@ -351,6 +353,103 @@
                 ]
             });
         }
+        //画价格趋势
+        function PriceTendency(chartData, ele) {
+            var options = getChartOptions();
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var myChart = echarts.init(ele);
+            myChart.setOption({
+                textStyle: {
+                    fontSize: textSize,
+                    color: "#666",
+                },
+                backgroundColor: '#EDF5FA',
+                color: ["#FFB71C", "#FA7971", "#40C69E"],         //全局色板，动态化时需更新
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "line",
+                        lineStyle: {
+                            type: "dashed"
+                        }
+                    }
+                },
+                dataZoom: [
+                   {
+                       type: 'inside',
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }
+                ],
+                grid: {
+                    show: false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "5%",
+                    top: "14%",
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data.map(function (item) { return item[0] }),
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    }
+
+                },
+                series: [
+                    {
+                        name: '挂牌利率',
+                        type: 'line',
+                        data: data.map(function (item) { return item[1] }),
+                    },
+                    {
+                        name: '市场利率',
+                        type: 'line',
+                        data: data.map(function (item) { return item[1] }).reverse(),
+                    },
+                    {
+                        name: 'FTP利率',
+                        type: 'line',
+                        data: data.map(function (item) { return item[1] }),
+                    }
+                ]
+            });
+        }
     </script>
     <script type="text/javascript">
         //和app交互
@@ -377,7 +476,7 @@
         function ToAPPSponsorSelectTime(timeobj) {
             PRD_CPDM = $($(timeobj).parents("section")[0]).find(".h-tab__panel").attr("PRD_CPDM");
             console.log(PRD_CPDM);
-            var parameter={"PRD_CPDM":PRD_CPDM,"TimeValue":$(timeobj).text()};
+            var parameter = { "PRD_CPDM": PRD_CPDM, "TimeValue": $(timeobj).text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 alert("正在调用ios函数");
                 APPIOS.SponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
@@ -390,9 +489,9 @@
         }
         //选择日期之后的回掉
         function APPOutSponsorSelectTime(jsonObj) {
-           var PRD_CPDM = jsonObj.PRD_CPDM;
-           var TimeValue = jsonObj.TimeValue;
-           alert("接收到返回值：" + JSON.stringify(jsonObj));
+            var PRD_CPDM = jsonObj.PRD_CPDM;
+            var TimeValue = jsonObj.TimeValue;
+            alert("接收到返回值：" + JSON.stringify(jsonObj));
         }
         //-----------------------------------------------
     </script>
