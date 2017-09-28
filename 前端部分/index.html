@@ -250,8 +250,22 @@
             };
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
+                if (ret.ec == 1) {
+                    Element.find(".select-group").html("");
+                    var colorList = ["FFB71C", "FA7971", "40C69E", "ff1cf8", "3f1cff", "1cffd5", "ffee1c", "2196F3", "9E9E9E", "3F51B5"];
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
+                        var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
+                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" hidden=\"\" name=\"checkbox2\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:#" + colorList[i] + "\"></span></label>";
+                        Element.find(".select-group").append(itemhtml);
+                    }
+                    //划线
+                    //PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
+                } else {
+                    //数据获取失败
+                }
                 console.log(JSON.stringify(ret));
-                PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
+                //PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
             });
         }
     </script>
@@ -355,6 +369,7 @@
         }
         //画价格趋势
         function PriceTendency(chartData, ele) {
+            //折线图显示挂牌数据NET_RATE
             var options = getChartOptions();
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
