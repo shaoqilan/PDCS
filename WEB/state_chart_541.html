@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="page-state page-canvas">
+            <div class="box-title">
+                <h3 class="font-s box-title-left"></h3>
+                <div class="font-s box-title-right">2017/02</div>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">资产占比情况</h3>
+                <div class="canvas-wrap"></div>
+                <ul class="canvas-legend"></ul>
+            </div>
+            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
+        </div>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var colors = ["#46DFF4","#FF6C6C","#F25959",
+                "#FFE466","#FFA147","#9B97F6","#FF7CB7","#26A9E7",
+                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484"];
+            var datas = [
+                            {value:335, name:'活期存款'},
+                            {value:310, name:'定期存款'},
+                            {value:234, name:'其他新增存款'},
+                            {value:135, name:'活期存款理财'},
+                            {value:499, name:'新增个人消费理财'},
+                            {value:309, name:'其他新增存款'},
+                            {value:209, name:'保本理财'}
+                        ];
+            var option = {
+                color:colors,
+                backgroundColor:"#fff",
+                series: [
+                    {
+                        name:'资产占比情况',
+                        type:'pie',
+                        center:["50%","50%"],
+                        radius: ['48%', '75%'],
+                        avoidLabelOverlap: false,
+                        label:{
+                            normal: {
+                                show: false,
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:datas
+                    }
+                ]
+            };
+            var allData = datas.reduce(function(t,a){return t+a.value},0);
+            var legendHtml = datas.map(function(item,index){
+                return "<li class='legend-label font-xs'><i style='background:"+colors[index] +"'></i>" + item.name + "\t" +(item.value/allData*100).toFixed(2) + "%</li>"
+                        
+            }).join("");
+            $(".canvas-wrap").each(function(e,ele){
+                var mychart = echarts.init(ele);
+                mychart.setOption(option)
+            });
+            $(".canvas-legend").html(legendHtml);
+        })
+    </script>
+</body>
+</html>
