@@ -81,19 +81,19 @@
                                 </div>
                                 <div class="radio-group">
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1" checked>
+                                        <input type="radio" value="1" hidden checked>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
+                                        <input type="radio" value="2" hidden>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
+                                        <input type="radio" value="3" hidden>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
+                                        <input type="radio" value="4" hidden>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一年</span></span>
                                     </label>
                                 </div>
@@ -170,6 +170,12 @@
                         $(TemObj.find(".box-title h3")[0]).html(PRD_CPMC);
                         $(TemObj.find(".box-title div")[0]).html(PRD_BJRQ);
                         $(TemObj.find(".chart-tip span")[0]).html(PRD_DEP);
+                        TemObj.find(".radio-group").each(function(index,ele){
+                            var tag = Math.random();
+                            $(ele).find("input[type=radio]").each(function(idx,subele){
+                                $(subele).attr("name","radio" + tag )
+                            });
+                        });
                         for (var k = 0; k < LIST.length; k++) {
                             $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><th>" + LIST[k].TERM_QXMC + "</th><th>" + LIST[k].NET_RATE + "</th><th>" + LIST[k].RATE_LLJG + "</th><th>" + LIST[k].FSI_LLZ + "</th></tr>");
                         }
@@ -191,9 +197,15 @@
                             GetTendency(PriceTrendObj, parameter.ORG_ID, "1", parameter.PRD_BJRQ, parameter.PRD_CPBZ);
                         }
                     });
+
                 } else {
                     //请求失败
                 }
+            });
+        }
+        function bindEvent(ele){
+            ele.find(".radio-group input[type=radio]").on("click",function(e){
+                alert("选中的值是"+$(this).val())
             });
         }
         //获取价格曲线（单个）
@@ -252,7 +264,7 @@
                 //数据
                 if (ret.ec == 1) {
                     Element.find(".select-group").html("");
-                    var colorList = ["FFB71C", "FA7971", "40C69E", "ff1cf8", "3f1cff", "1cffd5", "ffee1c", "2196F3", "9E9E9E", "3F51B5"];
+                    window.colorList = ["FFB71C", "FA7971", "40C69E", "ff1cf8", "3f1cff", "1cffd5", "ffee1c", "2196F3", "9E9E9E", "3F51B5"];
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
@@ -260,19 +272,18 @@
                         Element.find(".select-group").append(itemhtml);
                     }
                     //划线
-                    //PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
+                    PriceTendency(ret.PAGE_LIST,Element.find("div[utype=\"chart2\"]")[0]);
                 } else {
                     //数据获取失败
                 }
-                console.log(JSON.stringify(ret));
                 //PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
             });
+            bindEvent(Element);
         }
     </script>
     <script type="text/javascript">
         //画价格曲线
         function PriceCurve(chartData, ele) {
-            var options = getChartOptions();
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
             var myChart = echarts.init(ele);
@@ -370,7 +381,6 @@
         //画价格趋势
         function PriceTendency(chartData, ele) {
             //折线图显示挂牌数据NET_RATE
-            var options = getChartOptions();
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
             var myChart = echarts.init(ele);
@@ -380,27 +390,56 @@
                     color: "#666",
                 },
                 backgroundColor: '#EDF5FA',
-                color: ["#FFB71C", "#FA7971", "#40C69E"],         //全局色板，动态化时需更新
-                tooltip: {
-                    trigger: "axis",
-                    axisPointer: {
-                        type: "line",
-                        lineStyle: {
-                            type: "dashed"
-                        }
-                    }
-                },
+                color: window.colorList.map(function(it){ return "#" + it}),
+                tooltip:{
+                     trigger:"axis",
+                     axisPointer:{
+                         type:"line",
+                         lineStyle:{
+                             type:"dashed"
+                         }
+                     },
+                     alwaysShowContent:true,
+                     backgroundColor:"#fff",
+                     position: function (point, params, dom, rect, size) {
+                       // 固定在顶部
+                       $(dom).css({
+                         'height':"0.906667rem",
+                         'line-height':"0.906667rem",
+                         "overflow-x":"auto",
+                         'padding':"0px",
+                         'fontSize':textSize + "px"
+                       });
+                       $(dom).find("span").css({
+                         'width':"0.32rem",
+                         'height':"0.106667rem",
+                         'vertical-align':'middle',
+                         'border-radius':'0',
+                         'margin-left':'0.48rem',
+                         'margin-right':' 0.106667rem',
+                         'margin-top':'-1px'
+                       });
+                       $(dom).find("br").remove();
+                       return ['left', 'top'];
+                     },
+                     textStyle:{
+                         color:"#000",
+                         width:200
+                     },
+                     extraCssText:"width:100%",
+                     confine:true,
+                 },
                 dataZoom: [
                    {
                        type: 'inside',
-                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
-                       endValue: chartData.length - 1
+                       startValue: chartData[0].LIST.length > 6 ? chartData[0].LIST.length - 6 : 0,
+                       endValue: chartData[0].LIST.length - 1
                    }, {
                        type: 'slider',
                        show: false,
                        backgroundColor: "red",
-                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
-                       endValue: chartData.length - 1
+                       startValue: chartData[0].LIST.length > 6 ? chartData[0].LIST.length - 6 : 0,
+                       endValue: chartData[0].LIST.length - 1
                    }
                 ],
                 grid: {
@@ -414,7 +453,7 @@
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: data.map(function (item) { return item[0] }),
+                    data: chartData[0].LIST.map(function (item) { return item.PRD_BJRQ }),
                     axisLine: {
                         show: false
                     },
@@ -446,24 +485,20 @@
                     }
 
                 },
-                series: [
-                    {
-                        name: '挂牌利率',
-                        type: 'line',
-                        data: data.map(function (item) { return item[1] }),
-                    },
-                    {
-                        name: '市场利率',
-                        type: 'line',
-                        data: data.map(function (item) { return item[1] }).reverse(),
-                    },
-                    {
-                        name: 'FTP利率',
-                        type: 'line',
-                        data: data.map(function (item) { return item[1] }),
+                series: chartData.map(function(item){
+                    return {
+                        type:"line",
+                        data:item.LIST.map(function(subitem){
+                            return subitem.NET_RATE
+                        })
                     }
-                ]
+                })
             });
+            myChart.dispatchAction({
+                 type:"showTip",
+                 dataIndex:chartData[0].LIST.length -1,
+                 seriesIndex:0
+             });
         }
     </script>
     <script type="text/javascript">
