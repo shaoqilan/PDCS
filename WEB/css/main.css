@@ -312,7 +312,7 @@ html,body{
 }
 .select-group .h-checkbox{
 	margin-bottom: 0.4rem;
-	margin-right: 0.533333rem;
+	width: 30%;
 }
 .h-checkbox{
 	display: inline-block;
@@ -434,8 +434,8 @@ html,body{
 	top: 0px;
 }
 .h-radio>input[type="radio"]:checked~.word-wrap>.word{
-	border-color: #68C1F3 ;
-	color: #68C1F3 ;
+	border-color: #68C1F3;
+    color: #68C1F3;
 }
 .chart-legend{
 	display: -webkit-box;

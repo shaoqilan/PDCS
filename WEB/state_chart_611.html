@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="page-state page-canvas page-611">
+            <div class="box-title">
+                <h3 class="font-s box-title-left">单位/万元</h3>
+                <div class="font-s box-title-right">2017/02</div>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">资产结构</h3>
+                <div class="canvas-top">
+                    <legend class="font-xs legend">本日余额 899999</legend>
+                    <div class="more font-xxs">右滑查看更多<i></i></div>
+                </div>
+                <div class="canvas-wrap" id="canvasBar"></div>
+                <div class="canvas-wrap" id="canvasLine"></div>
+            </div>
+        </div>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var colors = ["#FF675E ","#A6CAC4","#F25959",
+                "#FFE466","#FFA147","#9B97F6","#FF7CB7","#26A9E7",
+                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484"];
+            var datas = [
+                {name:"现金及超额准备金",value:899882,rate:298.5 },
+                {name:"存放同业款项",value:232434,rate:188.5 },
+                {name:"买入返售债券",value:564564,rate:355.5 },
+                {name:"交易性金融资产",value:3242343,rate:544.5 },
+                {name:"可供出售金融资产",value:765754,rate:233.5 },
+                {name:"持有至到期投资",value:342344,rate:122.5 },
+                {name:"应收款项类金融资产总额",value:45345,rate:564.5 }
+                ];
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var option = {
+                textStyle:{
+                    fontSize:textSize,
+                    color:"#666",
+                },
+                backgroundColor:'#fff',
+                color:["#DEBA70"], 
+                grid: {
+                    show:false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "20%",
+                    top:"5%",
+                    containLabel: false
+                },
+                dataZoom:[
+                    {
+                       type: 'inside',
+                       startValue: 0,
+                       endValue: 5
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: 0,
+                       endValue: 5
+                   }
+                ],
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: datas.map(function(item){ return item.name}),
+                    axisLine:{
+                        show:true,
+                        lineStyle:{
+                            type:"dashed",
+                            color:"#A6C1CF"
+                        }
+                    },
+                    axisTick:{
+                        show:false
+                    },
+                    splitLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        interval:0,
+                        fontSize:textSize,
+                        color:"#4A4A4A",
+                        padding:[textSize/2,0,0,0],
+                        formatter:function(value){
+                             
+                        }
+                    },
+                },
+                yAxis: {
+                    show:false
+                },
+                series: [{
+                    type:"bar",
+                    barWidth:textSize,
+                    label:{
+                        normal:{
+                            position:"top",
+                            color:"#DEBA70",
+                            show:true 
+                        }
+                    },
+                    data:datas.map(function(item){ return item.value})
+                }]
+            };
+            var optionLine = {
+                textStyle:{
+                    fontSize:textSize,
+                    color:"#666",
+                },
+                backgroundColor:'#fff',
+                color:["#FF675E"], 
+                grid: {
+                    show:false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "20%",
+                    top:"5%",
+                    containLabel: false
+                },
+                dataZoom:[
+                    {
+                       type: 'inside',
+                       startValue: 0,
+                       endValue: 5
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: 0,
+                       endValue: 5
+                   }
+                ],
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: datas.map(function(item){ return item.name}),
+                    axisLine:{
+                        show:true,
+                        lineStyle:{
+                            type:"dashed",
+                            color:"#A6C1CF"
+                        }
+                    },
+                    axisTick:{
+                        show:false
+                    },
+                    splitLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        fontSize:textSize,
+                        color:"#4A4A4A",
+                        padding:[textSize/2,0,0,0],
+                    },
+                },
+                yAxis: {
+                    show:false
+                },
+                series: [{
+                    type:"line",
+                    name:"较年初增幅",
+                    label:{
+                        normal:{
+                           show:true,
+                           color:"#FF675E"
+                        }
+                    },
+                    data:datas.map(function(item){ return item.value})
+                }]
+            };
+            $("[id=canvasBar]").each(function(e,ele){
+                var mychart = echarts.init(ele);
+                mychart.setOption(option);
+            });
+            $("[id=canvasLine]").each(function(e,ele){
+                var mychart = echarts.init(ele);
+                mychart.setOption(optionLine);
+            });
+
+        })
+    </script>
+</body>
+</html>

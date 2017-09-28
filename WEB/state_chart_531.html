@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <meta content="telephone=no,email=no" name="format-detection">
+        <link rel="stylesheet" href="./css/reset.css">
+        <link rel="stylesheet" href="./css/main.css">
+        <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="page-state page-canvas">
+            <div class="padding-b">
+                <div class="state-block">
+                    <h3 class="state-title font-m">负债业务平均利率</h3>
+                    <div class="canvas-top">
+                        <div class="select-group"></div>
+                        <div class="more font-xxs">右滑查看更多<i></i></div>
+                    </div>
+                    <div class="canvas-wrap"></div>
+                </div>
+                <div class="state-block">
+                    <h3 class="state-title font-m">资产业务平均利率</h3>
+                    <div class="canvas-top">
+                        <div class="select-group"></div>
+                        <div class="more font-xxs">右滑查看更多<i></i></div>
+                    </div>
+                    <div class="canvas-wrap"></div>
+                </div>
+                <div class="state-block">
+                    <h3 class="state-title font-m">净利差</h3>
+                    <div class="canvas-top">
+                        <div class="select-group"></div>
+                        <div class="more font-xxs">右滑查看更多<i></i></div>
+                    </div>
+                    <div class="canvas-wrap"></div>
+                </div>
+                <div class="state-block">
+                    <h3 class="state-title font-m">净息差</h3>
+                    <div class="canvas-top">
+                        <div class="select-group"></div>
+                        <div class="more font-xxs">右滑查看更多<i></i></div>
+                    </div>
+                    <div class="canvas-wrap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var colors = ["#FF675E ","#A6CAC4","#F25959",
+                "#FFE466","#FFA147","#9B97F6","#FF7CB7","#26A9E7",
+                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484"];
+            var datas = [{
+                            name:"某某分行",data:[{name:"一月",value:382.5},{name:"二月",value:199.5},{name:"三月",value:199.5},{name:"四月",value:199.5},{name:"五月",value:199.5},{name:"六月",value:199.5},{name:"七月",value:399.5}]
+                        },{
+                            name:"某某某总行",data:[{name:"一月",value:166.5},{name:"二月",value:462.5},{name:"三月",value:199.5},{name:"四月",value:243.5},{name:"五月",value:653.5},{name:"六月",value:199.5}]
+                        }];
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var option = {
+                textStyle:{
+                    fontSize:textSize,
+                    color:"#666",
+                },
+                legend:{
+                    show:false,
+                    data:datas.map(function(item){ return item.name})
+                },
+                backgroundColor:'#fff',
+                color:colors, 
+                grid: {
+                    show:false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "20%",
+                    top:"5%",
+                    containLabel: false
+                },
+                dataZoom:[
+                    {
+                       type: 'inside',
+                       startValue: 0,
+                       endValue: 5
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: 0,
+                       endValue: 5
+                   }
+                ],
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: datas[0].data.map(function(item){ return item.name}),
+                    axisLine:{
+                        show:true,
+                        lineStyle:{
+                            type:"dashed",
+                            color:"#A6C1CF"
+                        }
+                    },
+                    axisTick:{
+                        show:false
+                    },
+                    splitLine:{
+                        show:false
+                    },
+                    axisLabel:{
+                        fontSize:textSize,
+                        color:"#4A4A4A",
+                        padding:[textSize/2,0,0,0],
+                    },
+                },
+                yAxis: {
+                    show:false
+                },
+                series: datas.map(function(item,idx){
+                    return {
+                        type:"line",
+                        label:{
+                            normal:{
+                                show:true,
+                                position:idx % 2 === 0 ? "top" :"bottom",
+                                color:colors[idx]
+                            }
+                        },
+                        name:item.name,
+                        data:item.data.map(function(sub){ return sub.value})
+                    }
+                })
+            };
+            
+            var legendHtml = datas.map(function(item,index){
+                return  "<label class='h-checkbox'>" +
+                            "<input type='checkbox' hidden data-index="+ index +" name='checkbox" + index + "' checked>" +
+                            "<span class='checkbox-icon border-1'></span>" +
+                            "<span class='font-xs'>" +item.name+ "</span>" +
+                            "<span class='checkbox-flag' style='background-color:" +colors[index]+ "'></span>" +
+                        "</label>" 
+            }).join("");
+            $(".canvas-wrap").each(function(e,ele){
+                var mychart = echarts.init(ele);
+                var selectGroup = $(ele).prev().find(".select-group");
+                mychart.setOption(option);
+                selectGroup.html(legendHtml);
+                selectGroup.find("input[hidden]").on("click",function(e,ele){
+                    mychart.dispatchAction({
+                        type:"legendToggleSelect",
+                        name: datas[Number($(this).attr("data-index"))].name
+                    })
+                });
+            });
+
+        })
+    </script>
+</body>
+</html>
