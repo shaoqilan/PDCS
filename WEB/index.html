@@ -391,6 +391,14 @@
                              type:"dashed"
                          }
                      },
+                     formatter:function(params){
+                        var str = params.reduce(function(str,param){
+                            return str + "<span style=\"display: inline-block; margin-right: 0.106667rem; border-radius: 0px; width: 0.32rem; height: 0.106667rem; background-color: " + param.color + "; vertical-align: middle; margin-left: 0.48rem; margin-top: -1px;\"></span>"+
+                                    param.value
+                            
+                        },params[0].name);
+                        return str;
+                     },
                      alwaysShowContent:true,
                      backgroundColor:"#fff",
                      position: function (point, params, dom, rect, size) {
@@ -400,18 +408,9 @@
                          'line-height':textSize * 3 + "px",
                          "overflow-x":"auto",
                          'padding':"0px",
-                         'fontSize':textSize + "px"
+                         'fontSize':textSize + "px",
+                         'border-radius':"0"
                        });
-                       $(dom).find("span").css({
-                         'width':"0.32rem",
-                         'height':"0.106667rem",
-                         'vertical-align':'middle',
-                         'border-radius':'0',
-                         'margin-left':'0.48rem',
-                         'margin-right':' 0.106667rem',
-                         'margin-top':'-1px'
-                       });
-                       $(dom).find("br").remove();
                        return ['left', 'top'];
                      },
                      textStyle:{
