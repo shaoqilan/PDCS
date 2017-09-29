@@ -11,13 +11,22 @@
 </head>
 <body>
     <div class="mainbox">
-        <div class="page-state page-canvas page-611">
+        <div class="page-state page-canvas page-611 padding-b">
             <div class="box-title">
                 <h3 class="font-s box-title-left">单位/万元</h3>
                 <div class="font-s box-title-right">2017/02</div>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">资产结构</h3>
+                <div class="canvas-top">
+                    <legend class="font-xs legend">本日余额 899999</legend>
+                    <div class="more font-xxs">右滑查看更多<i></i></div>
+                </div>
+                <div class="canvas-wrap" id="canvasBar"></div>
+                <div class="canvas-wrap" id="canvasLine"></div>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">负债结构</h3>
                 <div class="canvas-top">
                     <legend class="font-xs legend">本日余额 899999</legend>
                     <div class="more font-xxs">右滑查看更多<i></i></div>
@@ -53,23 +62,23 @@
                 color:["#DEBA70"], 
                 grid: {
                     show:false,
-                    left: "5%",
-                    right: "5%",
-                    bottom: "20%",
-                    top:"5%",
+                    left: "8%",
+                    right: "8%",
+                    bottom: "35%",
+                    top:"20%",
                     containLabel: false
                 },
                 dataZoom:[
                     {
                        type: 'inside',
                        startValue: 0,
-                       endValue: 5
+                       endValue: 6
                    }, {
                        type: 'slider',
                        show: false,
                        backgroundColor: "red",
                        startValue: 0,
-                       endValue: 5
+                       endValue: 6
                    }
                 ],
                 xAxis: {
@@ -95,7 +104,17 @@
                         color:"#4A4A4A",
                         padding:[textSize/2,0,0,0],
                         formatter:function(value){
-                             
+                             return value
+                             .split("")
+                             .reduce(function(obj,val,idx){
+                                if(idx % 3 === 0){
+                                    obj[Math.floor(idx/3)] = val;
+                                }else{
+                                    obj[Math.floor(idx/3)] += val;
+                                }
+                                return obj;
+                             },[])
+                             .join("\n");
                         }
                     },
                 },
@@ -116,6 +135,17 @@
                 }]
             };
             var optionLine = {
+                title:{
+                    text:"较年初增幅",
+                    textStyle:{
+                        color:"#4A4A4A",
+                        fontSize:textSize * 1.2,
+                        fontWeight:"normal"
+                    },
+                    left:textSize,
+                    top:"5%",
+
+                },
                 textStyle:{
                     fontSize:textSize,
                     color:"#666",
@@ -124,23 +154,23 @@
                 color:["#FF675E"], 
                 grid: {
                     show:false,
-                    left: "5%",
-                    right: "5%",
-                    bottom: "20%",
-                    top:"5%",
+                    left: "8%",
+                    right: "8%",
+                    bottom: "28%",
+                    top:"30%",
                     containLabel: false
                 },
                 dataZoom:[
                     {
                        type: 'inside',
                        startValue: 0,
-                       endValue: 5
+                       endValue: 6
                    }, {
                        type: 'slider',
                        show: false,
                        backgroundColor: "red",
                        startValue: 0,
-                       endValue: 5
+                       endValue: 6
                    }
                 ],
                 xAxis: {
@@ -164,6 +194,19 @@
                         fontSize:textSize,
                         color:"#4A4A4A",
                         padding:[textSize/2,0,0,0],
+                        formatter:function(value){
+                             return value
+                             .split("")
+                             .reduce(function(obj,val,idx){
+                                if(idx % 3 === 0){
+                                    obj[Math.floor(idx/3)] = val;
+                                }else{
+                                    obj[Math.floor(idx/3)] += val;
+                                }
+                                return obj;
+                             },[])
+                             .join("\n");
+                        }
                     },
                 },
                 yAxis: {
@@ -171,7 +214,6 @@
                 },
                 series: [{
                     type:"line",
-                    name:"较年初增幅",
                     label:{
                         normal:{
                            show:true,
