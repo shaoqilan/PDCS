@@ -1,4 +1,7 @@
 //$(init);
+window.COLOR_LIST = ["#46DFF4","#FF6C6C","#F25959",
+                "#FFE466","#FFA147","#9B97F6","#FF7CB7","#26A9E7",
+                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484"];
 function init(TabEvent) {
     initTab(TabEvent);
 	initMore();
@@ -14,7 +17,7 @@ function tab(ele,params){
 		$panels.eq(idx).css("display","block");
 	};
 	show(params.defaultIndex || 0);
-	$navbar.on("click",function(event){
+	$navbar.unbind("click").on("click",function(event){
 		var $target = $(event.target).closest(".h-navbar__item");
 		var index = $navitems.index($target);
 		show(index);

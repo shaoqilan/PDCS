@@ -203,11 +203,6 @@
                 }
             });
         }
-        function bindEvent(ele){
-            ele.find(".radio-group input[type=radio]").on("click",function(e){
-                alert("选中的值是"+$(this).val())
-            });
-        }
         //获取价格曲线（单个）
         function GetCurve(Element, PRD_BJRQ) {
             PRD_CPDM = $(Element).parent().attr("PRD_CPDM");
@@ -264,11 +259,10 @@
                 //数据
                 if (ret.ec == 1) {
                     Element.find(".select-group").html("");
-                    window.colorList = ["FFB71C", "FA7971", "40C69E", "ff1cf8", "3f1cff", "1cffd5", "ffee1c", "2196F3", "9E9E9E", "3F51B5"];
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
-                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" hidden=\"\" name=\"checkbox2\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:#" + colorList[i] + "\"></span></label>";
+                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value="+ TERM_QXMC +" hidden=\"\" name=\"checkbox" +i+ "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
                         Element.find(".select-group").append(itemhtml);
                     }
                     //划线
@@ -276,9 +270,7 @@
                 } else {
                     //数据获取失败
                 }
-                //PriceTendency(Element.find("div[utype=\"chart2\"]")[0], ret);
             });
-            bindEvent(Element);
         }
     </script>
     <script type="text/javascript">
@@ -390,7 +382,7 @@
                     color: "#666",
                 },
                 backgroundColor: '#EDF5FA',
-                color: window.colorList.map(function(it){ return "#" + it}),
+                color: window.COLOR_LIST,
                 tooltip:{
                      trigger:"axis",
                      axisPointer:{
@@ -404,8 +396,8 @@
                      position: function (point, params, dom, rect, size) {
                        // 固定在顶部
                        $(dom).css({
-                         'height':"0.906667rem",
-                         'line-height':"0.906667rem",
+                         'height':textSize * 3 + "px",
+                         'line-height':textSize * 3 + "px",
                          "overflow-x":"auto",
                          'padding':"0px",
                          'fontSize':textSize + "px"
@@ -447,7 +439,7 @@
                     left: "5%",
                     right: "5%",
                     bottom: "5%",
-                    top: "14%",
+                    top: textSize * 4,
                     containLabel: true
                 },
                 xAxis: {
@@ -485,9 +477,14 @@
                     }
 
                 },
+                legend:{
+                    show:false,
+                    data:chartData.map(function(item){ return item.TERM_QXMC})
+                },
                 series: chartData.map(function(item){
                     return {
                         type:"line",
+                        name:item.TERM_QXMC,
                         data:item.LIST.map(function(subitem){
                             return subitem.NET_RATE
                         })
@@ -498,7 +495,26 @@
                  type:"showTip",
                  dataIndex:chartData[0].LIST.length -1,
                  seriesIndex:0
-             });
+            });
+            BindPriceTendencyEvent(ele,myChart);
+
+        }
+        function BindPriceTendencyEvent(canvasEle,instance){
+            var $selectGroup = $(canvasEle).parent(".chart-box").prevAll(".select-group");
+            var $radioGroup = $(canvasEle).parent(".chart-box").prevAll(".radio-group");
+            $selectGroup.find("input[type=checkbox]").unbind("click").on("click",function(e){
+                var val = $(this).val();
+                console.log(val)
+                instance.dispatchAction({
+                    type:"legendToggleSelect",
+                    name: val
+                })
+            });
+            $radioGroup.find("input[type=radio]").unbind("click").on("click", function(e){
+                var ele = $(this);
+                alert("选中的值是"+$(this).val());
+                console.log(2,e)
+            })
         }
     </script>
     <script type="text/javascript">
