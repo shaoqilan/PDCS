@@ -56,28 +56,6 @@
                         <div utype="PriceTrend" class="h-tab__content">
                             <div class="padding-bottom">
                                 <div class="select-group">
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2" checked>
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
                                 </div>
                                 <div class="radio-group">
                                     <label class="h-radio">
@@ -138,6 +116,7 @@
         //获取价格曲线(列表)
         function GetAllCurve(reset) {
             var parameter = CurveParameter;
+            console.log("价格曲线列表：" + JSON.stringify(parameter));
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
                 if (ret.ec == 1) {
                     //如果没有数据
@@ -170,10 +149,10 @@
                         $(TemObj.find(".box-title h3")[0]).html(PRD_CPMC);
                         $(TemObj.find(".box-title div")[0]).html(PRD_BJRQ);
                         $(TemObj.find(".chart-tip span")[0]).html(PRD_DEP);
-                        TemObj.find(".radio-group").each(function(index,ele){
+                        TemObj.find(".radio-group").each(function (index, ele) {
                             var tag = Math.random();
-                            $(ele).find("input[type=radio]").each(function(idx,subele){
-                                $(subele).attr("name","radio" + tag )
+                            $(ele).find("input[type=radio]").each(function (idx, subele) {
+                                $(subele).attr("name", "radio" + tag)
                             });
                         });
                         for (var k = 0; k < LIST.length; k++) {
@@ -181,6 +160,9 @@
                         }
                         //设置关键值
                         TemObj.find(".h-tab__panel").attr("PRD_CPDM", PRD_CPDM);
+                        TemObj.find(".h-tab__panel").attr("ORG_ID", parameter.ORG_ID);
+                        TemObj.find(".h-tab__panel").attr("PRD_BJRQ", parameter.PRD_BJRQ);
+                        TemObj.find(".h-tab__panel").attr("PRD_CPBZ", parameter.PRD_CPBZ);
                         //填充到容器
                         $($(".mainbox").find(".btn-wrap")[0]).before(TemObj.html());
                         //获取需要画图的元素
@@ -194,7 +176,8 @@
                         if (index == 1) {
                             var PriceTrendObj = $(obj).parent().parent().find("div[utype=\"PriceTrend\"]");
                             //判断是否需要读取
-                            GetTendency(PriceTrendObj, parameter.ORG_ID, "1", parameter.PRD_BJRQ, parameter.PRD_CPBZ);
+                            var PRD_BJLB = PriceTrendObj.find("input[type='radio']:checked").val();
+                            GetTendency(PriceTrendObj, parameter.ORG_ID, PRD_BJLB, parameter.PRD_BJRQ, parameter.PRD_CPBZ);
                         }
                     });
 
@@ -210,6 +193,7 @@
             parameter.PRD_BJRQ = PRD_BJRQ;//变更时间
             parameter.PRD_CPDM = PRD_CPDM;
             //获取数据
+            console.log("价格曲线单个：" + JSON.stringify(parameter));
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
                 if (ret.ec == 1) {
                     //请求成功
@@ -237,6 +221,9 @@
                     }
                     //设置关键值
                     TemObj.find(".h-tab__panel").attr("PRD_CPDM", PRD_CPDM);
+                    TemObj.find(".h-tab__panel").attr("ORG_ID", parameter.ORG_ID);
+                    TemObj.find(".h-tab__panel").attr("PRD_BJRQ", parameter.PRD_BJRQ);
+                    TemObj.find(".h-tab__panel").attr("PRD_CPBZ", parameter.PRD_CPBZ);
                     var chartObj = $(Element);
                     //画图
                     PriceCurve(LIST, chartObj);
@@ -255,6 +242,7 @@
                 "PRD_CPBZ": PRD_CPBZ,//币种代码
                 "PRD_CPDM": PRD_CPDM//产品代码
             };
+            console.log("价格趋势："+JSON.stringify(parameter));
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
                 if (ret.ec == 1) {
@@ -262,11 +250,14 @@
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
-                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value="+ TERM_QXMC +" hidden=\"\" name=\"checkbox" +i+ "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
                         Element.find(".select-group").append(itemhtml);
                     }
+                    //默认选中第一个
+                    //Element.find("input[type='radio']").removeAttr("checked");
+                    //$(Element.find("input[type='radio']")[0]).attr("checked", "checked");
                     //划线
-                    PriceTendency(ret.PAGE_LIST,Element.find("div[utype=\"chart2\"]")[0]);
+                    PriceTendency(ret.PAGE_LIST, Element.find("div[utype=\"chart2\"]")[0]);
                 } else {
                     //数据获取失败
                 }
@@ -383,44 +374,44 @@
                 },
                 backgroundColor: '#EDF5FA',
                 color: window.COLOR_LIST,
-                tooltip:{
-                     trigger:"axis",
-                     axisPointer:{
-                         type:"line",
-                         lineStyle:{
-                             type:"dashed"
-                         }
-                     },
-                     alwaysShowContent:true,
-                     backgroundColor:"#fff",
-                     position: function (point, params, dom, rect, size) {
-                       // 固定在顶部
-                       $(dom).css({
-                         'height':textSize * 3 + "px",
-                         'line-height':textSize * 3 + "px",
-                         "overflow-x":"auto",
-                         'padding':"0px",
-                         'fontSize':textSize + "px"
-                       });
-                       $(dom).find("span").css({
-                         'width':"0.32rem",
-                         'height':"0.106667rem",
-                         'vertical-align':'middle',
-                         'border-radius':'0',
-                         'margin-left':'0.48rem',
-                         'margin-right':' 0.106667rem',
-                         'margin-top':'-1px'
-                       });
-                       $(dom).find("br").remove();
-                       return ['left', 'top'];
-                     },
-                     textStyle:{
-                         color:"#000",
-                         width:200
-                     },
-                     extraCssText:"width:100%",
-                     confine:true,
-                 },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "line",
+                        lineStyle: {
+                            type: "dashed"
+                        }
+                    },
+                    alwaysShowContent: true,
+                    backgroundColor: "#fff",
+                    position: function (point, params, dom, rect, size) {
+                        // 固定在顶部
+                        $(dom).css({
+                            'height': textSize * 3 + "px",
+                            'line-height': textSize * 3 + "px",
+                            "overflow-x": "auto",
+                            'padding': "0px",
+                            'fontSize': textSize + "px"
+                        });
+                        $(dom).find("span").css({
+                            'width': "0.32rem",
+                            'height': "0.106667rem",
+                            'vertical-align': 'middle',
+                            'border-radius': '0',
+                            'margin-left': '0.48rem',
+                            'margin-right': ' 0.106667rem',
+                            'margin-top': '-1px'
+                        });
+                        $(dom).find("br").remove();
+                        return ['left', 'top'];
+                    },
+                    textStyle: {
+                        color: "#000",
+                        width: 200
+                    },
+                    extraCssText: "width:100%",
+                    confine: true,
+                },
                 dataZoom: [
                    {
                        type: 'inside',
@@ -477,43 +468,50 @@
                     }
 
                 },
-                legend:{
-                    show:false,
-                    data:chartData.map(function(item){ return item.TERM_QXMC})
+                legend: {
+                    show: false,
+                    data: chartData.map(function (item) { return item.TERM_QXMC })
                 },
-                series: chartData.map(function(item){
+                series: chartData.map(function (item) {
                     return {
-                        type:"line",
-                        name:item.TERM_QXMC,
-                        data:item.LIST.map(function(subitem){
+                        type: "line",
+                        name: item.TERM_QXMC,
+                        data: item.LIST.map(function (subitem) {
                             return subitem.NET_RATE
                         })
                     }
                 })
             });
             myChart.dispatchAction({
-                 type:"showTip",
-                 dataIndex:chartData[0].LIST.length -1,
-                 seriesIndex:0
+                type: "showTip",
+                dataIndex: chartData[0].LIST.length - 1,
+                seriesIndex: 0
             });
-            BindPriceTendencyEvent(ele,myChart);
+            BindPriceTendencyEvent(ele, myChart);
 
         }
-        function BindPriceTendencyEvent(canvasEle,instance){
+        function BindPriceTendencyEvent(canvasEle, instance) {
             var $selectGroup = $(canvasEle).parent(".chart-box").prevAll(".select-group");
             var $radioGroup = $(canvasEle).parent(".chart-box").prevAll(".radio-group");
-            $selectGroup.find("input[type=checkbox]").unbind("click").on("click",function(e){
+            $selectGroup.find("input[type=checkbox]").unbind("click").on("click", function (e) {
                 var val = $(this).val();
                 console.log(val)
                 instance.dispatchAction({
-                    type:"legendToggleSelect",
+                    type: "legendToggleSelect",
                     name: val
                 })
             });
-            $radioGroup.find("input[type=radio]").unbind("click").on("click", function(e){
-                var ele = $(this);
-                alert("选中的值是"+$(this).val());
-                console.log(2,e)
+            $radioGroup.find("input[type=radio]").unbind("click").on("click", function (e) {
+                var PriceTrendObj = $($(this).parents("div[utype=\"PriceTrend\"]")[0]);
+                var ORG_ID = CurveParameter.ORG_ID;;//所属机构
+                var PRD_BJLB = $(this).val();//时间类型
+                var PRD_BJRQ = $($($(this).parents("section")[0]).find(".box-title div")[0]).text();//时间
+                var PRD_CPBZ = CurveParameter.PRD_CPBZ;//币种代码
+                //var ele = $(this);
+                //alert("选中的值是"+$(this).val());
+                //console.log(2, e)
+                console.log(ORG_ID, PRD_BJLB, PRD_BJRQ, PRD_CPBZ);
+                //GetTendency();
             })
         }
     </script>
