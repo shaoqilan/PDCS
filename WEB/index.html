@@ -524,6 +524,7 @@
         function APPSetLoginUser(ROLE_ID, USER_ID) {
             LOGINUSERSESSION.ROLE_ID = ROLE_ID;
             LOGINUSERSESSION.USER_ID = USER_ID;
+            alert("用户登录信息设置成功" + USER_ID);
         }
         //获取首页列表数据   用户所属机构  报价日期  币种代码  产品类别  产品小类2产品代码
         function APPPriceCurveList(ORG_ID, PRD_BJRQ, PRD_CPBZ, PRD_CPLB, PRD_CPLB_2) {
@@ -545,10 +546,10 @@
             var parameter = { "PRD_CPDM": PRD_CPDM, "TimeValue": $(timeobj).text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 alert("正在调用ios函数");
-                APPIOS.SponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
                 alert("正在调用安卓函数");
-                APPAndroid.SponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else {
                 alert("无法识别当前系统");
             };
