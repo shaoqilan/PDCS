@@ -1,125 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title></title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
 </head>
 <body>
-	<div class="mainbox">
-		<section class="block">
-            <div class="box">
-                <div class="box-title">
-                    <h3 class="font-m box-title-left">整存整取存款利率</h3>
-                    <div class="font-s box-title-right">2017/02/16</div>
-                </div>
-                <div class="h-tab" id="tab">
-                    <div class="h-navbar border-left-1 border-top-1">
-                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格曲线</div>
-                        <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
-                    </div>
-                    <div class="h-tab__panel">
-                        <div class="h-tab__content">
-                            <div class="chart-box">
-                                <div class="chart-legend"></div>
-                                <div id="chart3" class="canvas-box"></div>
-                            </div>
-                            <div class="chart-tip chart-tip-empty font-xs"></div>
-                            <div class="chart-detail">
-                                <h4 class="font-xs h-table-title">利率详情</h4>
-                                <table class="h-table">
-                                    <thead>
-                                        <tr>
-                                            <th>期限</th>
-                                            <th>市场利率</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>五年以上</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3-5（含）年</td>
-                                            <td>6.344</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1-3（含）年</td>
-                                            <td>6.344</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>一年 </td>
-                                            <td>6.344</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="line-dot"></div> 
-                            <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
-                        </div>
-                        <div class="h-tab__content">
-                            <div class="padding-bottom">
-                                <div class="select-group">
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2" checked>
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
-                                </div>
-                                <div class="radio-group">
-                                    <label class="h-radio">
-                                        <input type="radio" hidden name="radio1" checked>
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
-                                    </label>
-                                    <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
-                                    </label>
-                                    <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
-                                    </label>
-                                    <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
-                                    </label>
-                                </div>
-                                <div class="chart-box">
-                                    <div class="canvas-box2" id="chart4"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="mainbox">
+        <div class="btn-wrap"><button onclick="NextPage()" class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
+    </div>
+    <div id="Tem" style="display:none;">
         <section class="block">
             <div class="box">
                 <div class="box-title">
-                    <h3 class="font-m box-title-left">整存整取存款利率</h3>
-                    <div class="font-s box-title-right">2017/02/16</div>
+                    <h3 class="font-m box-title-left">零售信贷1</h3>
+                    <div onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02/16</div>
                 </div>
                 <div class="h-tab" id="tab">
                     <div class="h-navbar border-left-1 border-top-1">
@@ -127,12 +27,10 @@
                         <div class="h-navbar__item font-s border-right-1 border-bottom-1">价格趋势</div>
                     </div>
                     <div class="h-tab__panel">
-                        <div class="h-tab__content">
+                        <div utype="PriceCurve" class="h-tab__content">
                             <div class="chart-box">
-                                <div class="chart-legend"></div>
-                                <div id="chart3" class="canvas-box"></div>
+                                <div utype="chart" class="canvas-box"></div>
                             </div>
-                            <div class="chart-tip chart-tip-empty font-xs"></div>
                             <div class="chart-detail">
                                 <h4 class="font-xs h-table-title">利率详情</h4>
                                 <table class="h-table">
@@ -142,76 +40,36 @@
                                             <th>市场利率</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>五年以上</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3-5（含）年</td>
-                                            <td>6.344</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1-3（含）年</td>
-                                            <td>6.344</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>一年 </td>
-                                            <td>6.344</td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
-                            <div class="line-dot"></div> 
+                            <div class="line-dot"></div>
                             <div class="chart-more font-xs" id="moreBtn"><i class="more-word"></i></div>
                         </div>
-                        <div class="h-tab__content">
+                        <div utype="PriceTrend" class="h-tab__content">
                             <div class="padding-bottom">
                                 <div class="select-group">
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2" checked>
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
-                                    <label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label><label class="h-checkbox">
-                                        <input type="checkbox" hidden name="checkbox2">
-                                        <span class="checkbox-icon border-1"></span>
-                                        <span>三个月</span>
-                                        <span class="checkbox-flag" style="background-color:#FFB71C"></span>
-                                    </label>
                                 </div>
                                 <div class="radio-group">
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1" checked>
+                                        <input type="radio" value="1" hidden checked>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
+                                        <input type="radio" value="2" hidden>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近三月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
+                                        <input type="radio" value="3" hidden>
                                         <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
                                     </label>
                                     <label class="h-radio">
-                                        <input type="radio" hidden name="radio1">
-                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近六月</span></span>
+                                        <input type="radio" value="4" hidden>
+                                        <span class="word-wrap"><span class="word border-right-1 border-bottom-1 border-top-1">近一年</span></span>
                                     </label>
                                 </div>
                                 <div class="chart-box">
-                                    <div class="canvas-box2" id="chart4"></div>
+                                    <div class="canvas-box2" utype="chart2"></div>
                                 </div>
                             </div>
                         </div>
@@ -219,11 +77,464 @@
                 </div>
             </div>
         </section>
-        <div class="btn-wrap"><button class="h-btn h-btn-empty font-m border-1" type="button">查看更多</button></div>
-	</div>
+    </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
-	<script src="./scripts/main.js"></script>
     <script src="scripts/httptool.js"></script>
+    <script src="./scripts/jquery.base64.js"></script>
+    <script src="./scripts/main.js"></script>
+    <script type="text/javascript">
+        var PageIndex = 1;
+        var PageSize = 5;
+        //获取当前页的默认参数
+        var CurveParameter = {
+            "RATE_LLLX": "01",//利率大类
+            "RATE_BZ": "CNY",//币种代码
+            "RATE_LLZL": "",//利率小类
+            "RATE_BJRQ": "2016-07-14",//报价日期
+            "PAGE_NO": PageIndex + "",//当前页面
+            "PAGE_SIZE": PageSize + ""//页面条数
+        };
+        $(function () {
+            //开始请求
+            GetAllCurve();
+        });
+        //下一页
+        function NextPage() {
+            PageIndex = PageIndex + 1;
+            GetAllCurve();
+        }
+        //获取价格曲线(列表)
+        function GetAllCurve(reset) {
+            //显示动画
+            $.ShowLoad("正在加载");
+            var parameter = CurveParameter;
+            console.log("价格曲线列表：" + JSON.stringify(parameter));
+            $.HttpPost("mssia/lilv/queryMarketLilvPrice", parameter, "post", function (ret) {
+                $.HideLoad();
+                if (ret.ec == 1) {
+                    //如果没有数据
+                    if (ret.PAGE_LIST.length == 0) {
+                        //隐藏更多
+                        $(".btn-wrap").hide();
+                    } else {
+                        $(".btn-wrap").show();
+                    }
+                    //请求成功
+                    var chartData = [];
+                    //是否重置
+                    if (reset) {
+                        $(".mainbox section").remove();
+                    }
+                    //开始构建数据
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        //数据列表
+                        var LIST = ret.PAGE_LIST[i].LIST;
+                        //产品代码
+                        var RATE_LLZL = ret.PAGE_LIST[i].RATE_LLZL;
+                        //名称
+                        var RATE_ZLMC = ret.PAGE_LIST[i].RATE_ZLMC;
+                        //日期
+                        var RATE_BJRQ = parameter.RATE_BJRQ;
+                        //构建显示数据标签
+                        var TemObj = $("#Tem").clone();//复制对象
+                        $(TemObj.find(".box-title h3")[0]).html(RATE_ZLMC);
+                        $(TemObj.find(".box-title div")[0]).html(RATE_BJRQ);
+                        TemObj.find(".radio-group").each(function (index, ele) {
+                            var tag = Math.random();
+                            $(ele).find("input[type=radio]").each(function (idx, subele) {
+                                $(subele).attr("name", "radio" + tag)
+                            });
+                        });
+                        for (var k = 0; k < LIST.length; k++) {
+                            $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><td>" + LIST[k].TERM_QXMC + "</td><td>" + LIST[k].RATE_LLJG + "</td></tr>");
+                        }
+                        //设置关键值
+                        TemObj.find(".h-tab__panel").attr("RATE_LLZL", RATE_LLZL);
+                        TemObj.find(".h-tab__panel").attr("RATE_BJRQ", parameter.RATE_BJRQ);
+                        //填充到容器
+                        $($(".mainbox").find(".btn-wrap")[0]).before(TemObj.html());
+                        //获取需要画图的元素
+                        var chartObj = $(".mainbox").find("div[utype=\"chart\"]")[$(".mainbox").find("div[utype=\"chart\"]").length - 1];
+                        //画图
+                        PriceCurve(LIST, chartObj);
+                    }
+                    //初始化
+                    init(function (index, obj) {
+                        //tab切换的事件
+                        if (index == 1) {
+                            var PriceTrendObj = $(obj).parent().parent().find("div[utype=\"PriceTrend\"]");
+                            //判断是否需要读取
+                            var PRD_BJLB = PriceTrendObj.find("input[type='radio']:checked").val();
+                            GetTendency(PriceTrendObj, parameter.RATE_LLLX, parameter.RATE_BZ, parameter.RATE_BJRQ, PRD_BJLB);
+                        }
+                    });
+
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+        //获取价格曲线（单个）
+        function GetCurve(Element, RATE_BJRQ) {
+            RATE_LLZL = $(Element).parent().attr("RATE_LLZL");
+            var parameter = CurveParameter;
+            parameter.RATE_BJRQ = RATE_BJRQ;//变更时间
+            parameter.RATE_LLZL = RATE_LLZL;
+            //获取数据
+            console.log("价格曲线单个：" + JSON.stringify(parameter));
+            $.HttpPost("mssia/lilv/queryMarketLilvPrice", parameter, "post", function (ret) {
+                console.log(JSON.stringify(ret));
+                if (ret.ec == 1) {
+                    //请求成功
+                    var chartData = [];
+                    //开始构建数据
+                    //数据列表
+                    var LIST = ret.PAGE_LIST[0].LIST;
+                    //产品代码
+                    var RATE_LLZL = ret.PAGE_LIST[0].RATE_LLZL;
+                    //名称
+                    var RATE_ZLMC = ret.PAGE_LIST[0].RATE_ZLMC;
+                    //日期
+                    var RATE_BJRQ = parameter.RATE_BJRQ;
+                    //构建显示数据标签
+                    var TemObj = $($(Element).parents("section")[0]);
+                    $(TemObj.find(".box-title h3")[0]).html(RATE_ZLMC);
+                    $(TemObj.find(".box-title div")[0]).html(RATE_BJRQ);
+                    //清除
+                    $(TemObj.find(".chart-detail table tbody")[0]).find("tr").remove();
+                    for (var k = 0; k < LIST.length; k++) {
+                        $(TemObj.find(".chart-detail table tbody")[0]).append("<tr><td>" + LIST[k].TERM_QXMC + "</td><td>" + LIST[k].RATE_LLJG + "</td></tr>");
+                    }
+                    //设置关键值
+                    TemObj.find(".h-tab__panel").attr("RATE_LLZL", RATE_LLZL);
+                    TemObj.find(".h-tab__panel").attr("RATE_BJRQ", parameter.RATE_BJRQ);
+                    var chartObj = Element;
+                    //画图
+                    console.log(JSON.stringify(LIST));
+                    PriceCurve(LIST, chartObj);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+        //获取价格趋势
+        function GetTendency(Element, RATE_LLLX, RATE_BZ, RATE_BJRQ, PRD_BJLB) {
+            RATE_LLZL = $(Element).parent().attr("RATE_LLZL");
+            var parameter = {
+                "RATE_LLLX": RATE_LLLX,//利率类型
+                "RATE_BZ": RATE_BZ,//币种代码
+                "RATE_LLZL": RATE_LLZL,//利率种类
+                "RATE_BJRQ": RATE_BJRQ,//报价日期
+                "PRD_BJLB": PRD_BJLB//日期区间类别"1：近一月2：近三月3：近六月4：近一年"
+            };
+            console.log("价格趋势：" + JSON.stringify(parameter));
+            $.HttpPost("mssia/lilv/queryMarketLilvPriceQushi", parameter, "post", function (ret) {
+                //数据
+                if (ret.ec == 1) {
+                    $(Element).find(".select-group").html("");
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
+                        var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
+                        var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        $(Element).find(".select-group").append(itemhtml);
+                    }
+                    //划线
+                    PriceTendency(ret.PAGE_LIST, $(Element).find("div[utype=\"chart2\"]")[0]);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //画价格曲线
+        function PriceCurve(chartData, ele) {
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var myChart = echarts.init(ele);
+            myChart.setOption({
+                textStyle: {
+                    fontSize: textSize,
+                    color: "#666",
+                },
+                backgroundColor: '#EDF5FA',
+                color: ["#FFB71C", "#FA7971", "#40C69E"],         //全局色板，动态化时需更新
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "line",
+                        lineStyle: {
+                            type: "dashed"
+                        }
+                    }
+                },
+                dataZoom: [
+                   {
+                       type: 'inside',
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: chartData.length > 6 ? chartData.length - 6 : 0,
+                       endValue: chartData.length - 1
+                   }
+                ],
+                grid: {
+                    show: false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "5%",
+                    top: "14%",
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: chartData.map(function (item) { return item.TERM_QXMC; }),//标题
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    }
+
+                },
+                series: {
+                    type: 'line',
+                    data: chartData.map(function (item) {
+                        return item.RATE_LLJG;
+                    }),
+                }
+            });
+        }
+        //画价格趋势
+        function PriceTendency(chartData, ele) {
+            $(ele).removeAttr('_echarts_instance_')
+            //折线图显示挂牌数据NET_RATE
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
+            var myChart = echarts.init(ele);
+            myChart.setOption({
+                textStyle: {
+                    fontSize: textSize,
+                    color: "#666",
+                },
+                backgroundColor: '#EDF5FA',
+                color: window.COLOR_LIST,
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "line",
+                        lineStyle: {
+                            type: "dashed"
+                        }
+                    },
+                    formatter: function (params) {
+                        var str = params.reduce(function (str, param) {
+                            return str + "<span style=\"display: inline-block; margin-right: 0.106667rem; border-radius: 0px; width: 0.32rem; height: 0.106667rem; background-color: " + param.color + "; vertical-align: middle; margin-left: 0.48rem; margin-top: -1px;\"></span>" +
+                                    param.value
+
+                        }, params[0].name);
+                        return str;
+                    },
+                    alwaysShowContent: true,
+                    backgroundColor: "#fff",
+                    position: function (point, params, dom, rect, size) {
+                        // 固定在顶部
+                        $(dom).css({
+                            'height': textSize * 3 + "px",
+                            'line-height': textSize * 3 + "px",
+                            "overflow-x": "auto",
+                            'padding': "0px",
+                            'fontSize': textSize + "px",
+                            'border-radius': "0"
+                        });
+                        return ['left', 'top'];
+                    },
+                    textStyle: {
+                        color: "#000",
+                        width: 200
+                    },
+                    extraCssText: "width:100%",
+                    confine: true,
+                },
+                dataZoom: [
+                   {
+                       type: 'inside',
+                       startValue: chartData[0].LIST.length > 6 ? chartData[0].LIST.length - 6 : 0,
+                       endValue: chartData[0].LIST.length - 1
+                   }, {
+                       type: 'slider',
+                       show: false,
+                       backgroundColor: "red",
+                       startValue: chartData[0].LIST.length > 6 ? chartData[0].LIST.length - 6 : 0,
+                       endValue: chartData[0].LIST.length - 1
+                   }
+                ],
+                grid: {
+                    show: false,
+                    left: "5%",
+                    right: "5%",
+                    bottom: "5%",
+                    top: textSize * 4,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: chartData[0].LIST.map(function (item) { return item.RATE_BJRQ }),
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#333"
+                    }
+
+                },
+                legend: {
+                    show: false,
+                    data: chartData.map(function (item) { return item.TERM_QXMC })
+                },
+                series: chartData.map(function (item) {
+                    return {
+                        type: "line",
+                        name: item.TERM_QXMC,
+                        data: item.LIST.map(function (subitem) {
+                            return subitem.RATE_LLJG
+                        })
+                    }
+                })
+            });
+            myChart.dispatchAction({
+                type: "showTip",
+                dataIndex: chartData[0].LIST.length - 1,
+                seriesIndex: 0
+            });
+            BindPriceTendencyEvent(ele, myChart);
+
+        }
+        function BindPriceTendencyEvent(canvasEle, instance) {
+            var $selectGroup = $(canvasEle).parent(".chart-box").prevAll(".select-group");
+            var $radioGroup = $(canvasEle).parent(".chart-box").prevAll(".radio-group");
+            $selectGroup.find("input[type=checkbox]").unbind("click").on("click", function (e) {
+                var val = $(this).val();
+                instance.dispatchAction({
+                    type: "legendToggleSelect",
+                    name: val
+                })
+            });
+            $radioGroup.find("input[type=radio]").unbind("click").on("click", function (e) {
+                var PriceTrendObj = $($(this).parents("div[utype=\"PriceTrend\"]")[0]);
+                var RATE_LLLX = CurveParameter.RATE_LLLX;//利率类型
+                var RATE_BZ = CurveParameter.RATE_BZ;//币种代码
+                var PRD_BJLB = $(this).val();//时间类型
+                var RATE_BJRQ = $($($(this).parents("section")[0]).find(".box-title div")[0]).text();//时间
+                GetTendency(PriceTrendObj, RATE_LLLX, RATE_BZ, RATE_BJRQ, PRD_BJLB);
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        //和app交互
+        //被动API----------------------------------------
+        //获取首页列表数据   利率大类代码  币种代码  利率种类  报价日期  
+        function APPPriceCurveList(RATE_LLLX, RATE_BZ, RATE_LLZL, RATE_BJRQ) {
+            //判断必须存在登录信息
+            if (LOGINUSERSESSION.ROLE_ID && LOGINUSERSESSION.USER_ID) {
+                CurveParameter.RATE_LLLX = RATE_LLLX;
+                CurveParameter.RATE_BZ = RATE_BZ;
+                CurveParameter.RATE_LLZL = RATE_LLZL;
+                CurveParameter.RATE_BJRQ = RATE_BJRQ;
+                PageIndex = 1;//重置分页
+                //获取数据
+                GetAllCurve(true);
+            } else {
+                alert("当前没有登录信息");
+            }
+        }
+        //-----------------------------------------------
+        //主动API----------------------------------------
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            RATE_LLZL = $($(timeobj).parents("section")[0]).find(".h-tab__panel").attr("RATE_LLZL");
+            console.log(RATE_LLZL);
+            var parameter = { "RATE_LLZL": RATE_LLZL, "TimeValue": $(timeobj).text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var RATE_LLZL = jsonObj.RATE_LLZL;
+            var TimeValue = jsonObj.TimeValue;
+            alert("接收到返回值：" + JSON.stringify(jsonObj));
+            if ($("div[RATE_LLZL=\"" + RATE_LLZL + "\"]").length > 0) {
+                var ContentObj = $($("div[RATE_LLZL=\"" + RATE_LLZL + "\"]")[0]);
+                var ElementCurve = ContentObj.find("div[utype=\"PriceCurve\"]")[0];
+                var ElementTendency = ContentObj.find("div[utype=\"PriceTrend\"]")[0];
+                GetCurve(ElementCurve, TimeValue);
+                var PRD_BJLB = $(ElementTendency).find("input[type='radio']:checked").val();
+                GetTendency(ElementTendency, CurveParameter.RATE_LLLX, CurveParameter.RATE_BZ, TimeValue, PRD_BJLB);
+            }
+        }
+        //-----------------------------------------------
+    </script>
 </body>
 </html>

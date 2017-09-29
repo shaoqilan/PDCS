@@ -5,6 +5,7 @@
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
     <meta content="telephone=no,email=no" name="format-detection">
+    <title></title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
     <script src="./scripts/flexible.js"></script>
@@ -119,7 +120,7 @@
             $.ShowLoad("正在加载");
             var parameter = CurveParameter;
             console.log("价格曲线列表：" + JSON.stringify(parameter));
-            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
+            $.HttpPost("mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
                 $.HideLoad();
                 if (ret.ec == 1) {
                     //如果没有数据
@@ -198,7 +199,7 @@
             parameter.PRD_CPDM = PRD_CPDM;
             //获取数据
             console.log("价格曲线单个：" + JSON.stringify(parameter));
-            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
+            $.HttpPost("mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
                 if (ret.ec == 1) {
                     //请求成功
                     var chartData = [];
@@ -248,7 +249,7 @@
                 "PRD_CPDM": PRD_CPDM//产品代码
             };
             console.log("价格趋势："+JSON.stringify(parameter));
-            $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
+            $.HttpPost("mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
                 if (ret.ec == 1) {
                     $(Element).find(".select-group").html("");
