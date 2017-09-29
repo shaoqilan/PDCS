@@ -115,9 +115,12 @@
         }
         //获取价格曲线(列表)
         function GetAllCurve(reset) {
+            //显示动画
+            $.ShowLoad("正在加载");
             var parameter = CurveParameter;
             console.log("价格曲线列表：" + JSON.stringify(parameter));
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
+                $.HideLoad();
                 if (ret.ec == 1) {
                     //如果没有数据
                     if (ret.PAGE_LIST.length == 0) {
@@ -182,7 +185,8 @@
                     });
 
                 } else {
-                    //请求失败
+                    //数据获取失败
+                    console.log("数据获取失败");
                 }
             });
         }
@@ -224,11 +228,12 @@
                     TemObj.find(".h-tab__panel").attr("ORG_ID", parameter.ORG_ID);
                     TemObj.find(".h-tab__panel").attr("PRD_BJRQ", parameter.PRD_BJRQ);
                     TemObj.find(".h-tab__panel").attr("PRD_CPBZ", parameter.PRD_CPBZ);
-                    var chartObj = $(Element);
+                    var chartObj = Element;
                     //画图
                     PriceCurve(LIST, chartObj);
                 } else {
-                    //请求失败
+                    //数据获取失败
+                    console.log("数据获取失败");
                 }
             });
         }
@@ -246,17 +251,18 @@
             $.HttpPost("http://118.190.85.152:8080/mssia/lilv/queryGuaPaiLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
                 if (ret.ec == 1) {
-                    Element.find(".select-group").html("");
+                    $(Element).find(".select-group").html("");
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
                         var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
-                        Element.find(".select-group").append(itemhtml);
+                        $(Element).find(".select-group").append(itemhtml);
                     }
                     //划线
-                    PriceTendency(ret.PAGE_LIST, Element.find("div[utype=\"chart2\"]")[0]);
+                    PriceTendency(ret.PAGE_LIST, $(Element).find("div[utype=\"chart2\"]")[0]);
                 } else {
                     //数据获取失败
+                    console.log("数据获取失败");
                 }
             });
         }
@@ -510,22 +516,21 @@
     <script type="text/javascript">
         //和app交互
         //被动API----------------------------------------
-        //设置登录的用户信息
-        function APPSetLoginUser(ROLE_ID, USER_ID) {
-            LOGINUSERSESSION.ROLE_ID = ROLE_ID;
-            LOGINUSERSESSION.USER_ID = USER_ID;
-            alert("用户登录信息设置成功" + USER_ID);
-        }
         //获取首页列表数据   用户所属机构  报价日期  币种代码  产品类别  产品小类2产品代码
         function APPPriceCurveList(ORG_ID, PRD_BJRQ, PRD_CPBZ, PRD_CPLB, PRD_CPLB_2) {
-            CurveParameter.ORG_ID = ORG_ID;
-            CurveParameter.PRD_BJRQ = PRD_BJRQ;
-            CurveParameter.PRD_CPBZ = PRD_CPBZ;
-            CurveParameter.PRD_CPLB = PRD_CPLB;
-            CurveParameter.PRD_CPLB_2 = PRD_CPLB_2;
-            PageIndex = 1;//重置分页
-            //获取数据
-            GetAllCurve(true);
+            //判断必须存在登录信息
+            if (LOGINUSERSESSION.ROLE_ID && LOGINUSERSESSION.USER_ID) {
+                CurveParameter.ORG_ID = ORG_ID;
+                CurveParameter.PRD_BJRQ = PRD_BJRQ;
+                CurveParameter.PRD_CPBZ = PRD_CPBZ;
+                CurveParameter.PRD_CPLB = PRD_CPLB;
+                CurveParameter.PRD_CPLB_2 = PRD_CPLB_2;
+                PageIndex = 1;//重置分页
+                //获取数据
+                GetAllCurve(true);
+            } else {
+                alert("当前没有登录信息");
+            }
         }
         //-----------------------------------------------
         //主动API----------------------------------------
@@ -542,13 +547,21 @@
                 aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else {
                 alert("无法识别当前系统");
-            };
+            }
         }
         //选择日期之后的回掉
         function APPOutSponsorSelectTime(jsonObj) {
             var PRD_CPDM = jsonObj.PRD_CPDM;
             var TimeValue = jsonObj.TimeValue;
             alert("接收到返回值：" + JSON.stringify(jsonObj));
+            if ($("div[PRD_CPDM=\"" + PRD_CPDM + "\"]").length > 0) {
+                var ContentObj = $($("div[PRD_CPDM=\"" + PRD_CPDM + "\"]")[0]);
+                var ElementCurve = ContentObj.find("div[utype=\"PriceCurve\"]")[0];
+                var ElementTendency = ContentObj.find("div[utype=\"PriceTrend\"]")[0];
+                GetCurve(ElementCurve, TimeValue);
+                var PRD_BJLB = $(ElementTendency).find("input[type='radio']:checked").val();
+                GetTendency(ElementTendency, CurveParameter.ORG_ID, PRD_BJLB, TimeValue, CurveParameter.PRD_CPBZ);
+            }
         }
         //-----------------------------------------------
     </script>
