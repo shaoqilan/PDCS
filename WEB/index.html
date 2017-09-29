@@ -371,46 +371,6 @@
                 },
                 backgroundColor: '#EDF5FA',
                 color: window.COLOR_LIST,
-<<<<<<< HEAD
-                tooltip: {
-                    trigger: "axis",
-                    axisPointer: {
-                        type: "line",
-                        lineStyle: {
-                            type: "dashed"
-                        }
-                    },
-                    alwaysShowContent: true,
-                    backgroundColor: "#fff",
-                    position: function (point, params, dom, rect, size) {
-                        // 固定在顶部
-                        $(dom).css({
-                            'height': textSize * 3 + "px",
-                            'line-height': textSize * 3 + "px",
-                            "overflow-x": "auto",
-                            'padding': "0px",
-                            'fontSize': textSize + "px"
-                        });
-                        $(dom).find("span").css({
-                            'width': "0.32rem",
-                            'height': "0.106667rem",
-                            'vertical-align': 'middle',
-                            'border-radius': '0',
-                            'margin-left': '0.48rem',
-                            'margin-right': ' 0.106667rem',
-                            'margin-top': '-1px'
-                        });
-                        $(dom).find("br").remove();
-                        return ['left', 'top'];
-                    },
-                    textStyle: {
-                        color: "#000",
-                        width: 200
-                    },
-                    extraCssText: "width:100%",
-                    confine: true,
-                },
-=======
                 tooltip:{
                      trigger:"axis",
                      axisPointer:{
@@ -448,7 +408,6 @@
                      extraCssText:"width:100%",
                      confine:true,
                  },
->>>>>>> 114c10d77604f653d0afb98fb1f7b442d536a37d
                 dataZoom: [
                    {
                        type: 'inside',
@@ -548,7 +507,7 @@
                 //alert("选中的值是"+$(this).val());
                 //console.log(2, e)
                 console.log(ORG_ID, PRD_BJLB, PRD_BJRQ, PRD_CPBZ);
-                //GetTendency();
+                GetTendency(PriceTrendObj, ORG_ID, PRD_BJLB, PRD_BJRQ, PRD_CPBZ);
             })
         }
     </script>
