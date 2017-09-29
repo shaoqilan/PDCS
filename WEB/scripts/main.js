@@ -39,7 +39,7 @@ function initTab(TabEvent) {
 function initMore(){
 	var moreBtns = $("[id='moreBtn']");
 	$.each(moreBtns, function(idx,btn){
-		$(btn).on("click",function(){
+		$(btn).unbind("click").on("click",function(){
 			var parent = $(this).siblings(".chart-detail");
 			parent.toggleClass("chart-detail-open");
 		});

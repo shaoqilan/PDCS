@@ -172,5 +172,130 @@
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="./scripts/main.js"></script>
+    <script>
+         $(function(){
+            var colors = window.COLOR_LIST;
+            var option = {
+                color:colors,
+                backgroundColor:"#fff",
+                series: [
+                    {
+                        name:'资产',
+                        type:'pie',
+                        center:["28%","28%"],
+                        radius: ['28%', '32%'],
+                        avoidLabelOverlap: false,
+                        color:["#68c1f2","#eaeaea"],
+                        labelLine: {
+                            normal: {
+                                show: false,
+                            }
+                        },
+                        data:[{
+                            value:10,
+                            label:{
+                                normal:{
+                                    show: true,
+                                    position:"center",
+                                    formatter:"{a}\n{c}\n{d}%"
+                                }
+                            }
+                        },{value:20}]
+                    },
+                    {
+                        name:'负债',
+                        type:'pie',
+                        center:["72%","28%"],
+                        radius: ['28%', '32%'],
+                        avoidLabelOverlap: false,
+                        color:["#68c1f2","#eaeaea"],
+                        label:{
+                            normal: {
+                                show: true,
+                                position:"inside"
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:[{
+                            value:5,
+                            label:{
+                                normal:{
+                                    show: true,
+                                    position:"center",
+                                    formatter:"{a}\n{c}\n{d}%"
+                                }
+                            }
+                        },{value:20}]
+                    },
+                    {
+                        name:'中间业务',
+                        type:'pie',
+                        center:["28%","72%"],
+                        radius: ['28%', '32%'],
+                        avoidLabelOverlap: false,
+                        color:["#b7b7b7","#eaeaea"],
+                        label:{
+                            normal: {
+                                show: true,
+                                position:"inside"
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:[{
+                            value:10,
+                            label:{
+                                normal:{
+                                    show: true,
+                                    position:"center",
+                                    formatter:"{a}\n{c}\n{d}%"
+                                }
+                            }
+                        },{value:80}]
+                    },
+                    {
+                        name:'总利润',
+                        type:'pie',
+                        center:["72%","72%"],
+                        radius: ['28%', '32%'],
+                        avoidLabelOverlap: false,
+                        color:["#f7c761","#eaeaea"],
+                        label:{
+                            normal: {
+                                show: true,
+                                position:"inside"
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data:[{
+                            value:10,
+                            label:{
+                                normal:{
+                                    show: true,
+                                    position:"center",
+                                    formatter:"{a}\n{c}\n{d}%"
+                                }
+                            }
+                        },{value:200}]
+                    }
+                ]
+            };
+            $(".canvas-wrap").each(function(e,ele){
+                var mychart = echarts.init(ele);
+                mychart.setOption(option)
+            });
+        })
+    </script>
 </body>
 </html>
