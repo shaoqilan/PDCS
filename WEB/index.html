@@ -56,8 +56,7 @@
                         </div>
                         <div utype="PriceTrend" class="h-tab__content">
                             <div class="padding-bottom">
-                                <div class="select-group">
-                                </div>
+                                <div class="select-group select-group-index"></div>
                                 <div class="radio-group">
                                     <label class="h-radio">
                                         <input type="radio" value="1" hidden checked>
@@ -229,7 +228,7 @@
                     TemObj.find(".h-tab__panel").attr("ORG_ID", parameter.ORG_ID);
                     TemObj.find(".h-tab__panel").attr("PRD_BJRQ", parameter.PRD_BJRQ);
                     TemObj.find(".h-tab__panel").attr("PRD_CPBZ", parameter.PRD_CPBZ);
-                    var chartObj = Element;
+                    var chartObj = $(Element).find(".canvas-box")[0];
                     //画图
                     PriceCurve(LIST, chartObj);
                 } else {
@@ -271,6 +270,7 @@
     <script type="text/javascript">
         //画价格曲线
         function PriceCurve(chartData, ele) {
+            $(ele).removeAttr('_echarts_instance_');
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
             var myChart = echarts.init(ele);
@@ -367,7 +367,7 @@
         }
         //画价格趋势
         function PriceTendency(chartData, ele) {
-            $(ele).removeAttr('_echarts_instance_')
+            $(ele).removeAttr('_echarts_instance_');
             //折线图显示挂牌数据NET_RATE
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);

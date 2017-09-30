@@ -29,8 +29,10 @@
                     <div class="h-tab__panel">
                         <div utype="PriceCurve" class="h-tab__content">
                             <div class="chart-box">
+                                <div class="chart-legend"></div>
                                 <div utype="chart" class="canvas-box"></div>
                             </div>
+                            <div class="chart-tip chart-tip-empty font-xs"></div>
                             <div class="chart-detail">
                                 <h4 class="font-xs h-table-title">利率详情</h4>
                                 <table class="h-table">
@@ -210,7 +212,7 @@
                     //设置关键值
                     TemObj.find(".h-tab__panel").attr("RATE_LLZL", RATE_LLZL);
                     TemObj.find(".h-tab__panel").attr("RATE_BJRQ", parameter.RATE_BJRQ);
-                    var chartObj = Element;
+                    var chartObj = $(Element).find(".canvas-box")[0];
                     //画图
                     console.log(JSON.stringify(LIST));
                     PriceCurve(LIST, chartObj);
@@ -253,6 +255,7 @@
     <script type="text/javascript">
         //画价格曲线
         function PriceCurve(chartData, ele) {
+            $(ele).removeAttr('_echarts_instance_');
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
             var myChart = echarts.init(ele);
