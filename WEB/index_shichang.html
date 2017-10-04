@@ -50,8 +50,7 @@
                         </div>
                         <div utype="PriceTrend" class="h-tab__content">
                             <div class="padding-bottom">
-                                <div class="select-group">
-                                </div>
+                                <div class="select-group_wrap"><div class="select-group"></div></div>
                                 <div class="radio-group">
                                     <label class="h-radio">
                                         <input type="radio" value="1" hidden checked>
@@ -236,12 +235,20 @@
             $.HttpPost("mssia/lilv/queryMarketLilvPriceQushi", parameter, "post", function (ret) {
                 //数据
                 if (ret.ec == 1) {
-                    $(Element).find(".select-group").html("");
+                    $(Element).find(".select-group_wrap").html("<div class='select-group'></div>");
                     for (var i = 0; i < ret.PAGE_LIST.length; i++) {
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
                         var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
                         $(Element).find(".select-group").append(itemhtml);
+                    }
+                    if(ret.PAGE_LIST.length > 6){
+                        var moreHtml = $("<div class='checkbox_more'></div>");
+                        var $wrap = $(Element).find(".select-group_wrap");
+                        $wrap.append(moreHtml);
+                        moreHtml.on("click",function(){
+                            $wrap.toggleClass("open");
+                        });
                     }
                     //划线
                     PriceTendency(ret.PAGE_LIST, $(Element).find("div[utype=\"chart2\"]")[0]);

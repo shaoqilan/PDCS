@@ -1024,3 +1024,21 @@ table{
 .page-632 .table-wrap{
 	overflow-x: auto;
 }
+.select-group_wrap .select-group{
+	max-height: 2.08rem;
+	overflow: hidden;
+	margin-bottom: 0px;
+	box-sizing: border-box;
+}
+.select-group_wrap.open .select-group{
+	max-height: none;
+}
+.checkbox_more{
+	height: 0.48rem;
+	background: url(../images/icon-arrow-down.png) center top/0.34rem auto no-repeat;
+	border-bottom: 1px dashed #A6C1CF;
+	margin-bottom: 0.533333rem;
+}
+.select-group_wrap.open .checkbox_more{
+	background: url(../images/icon-arrow-up.png) center top/0.34rem auto no-repeat;
+}
