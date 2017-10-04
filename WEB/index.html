@@ -503,7 +503,7 @@
 
         }
         function BindPriceTendencyEvent(canvasEle, instance) {
-            var $selectGroup = $(canvasEle).parent(".chart-box").prevAll(".select-group");
+            var $selectGroup = $(canvasEle).parent(".chart-box").parent().find(".select-group");
             var $radioGroup = $(canvasEle).parent(".chart-box").prevAll(".radio-group");
             $selectGroup.find("input[type=checkbox]").unbind("click").on("click", function (e) {
                 var val = $(this).val();
