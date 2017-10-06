@@ -174,16 +174,21 @@
     <script src="./scripts/main.js"></script>
     <script>
          $(function(){
+            var dpr = document.documentElement.getAttribute("data-dpr");
+            var textSize = 10 * Number(dpr);
             var colors = window.COLOR_LIST;
             var option = {
                 color:colors,
                 backgroundColor:"#fff",
+                textStyle: {
+                    fontSize: textSize * 1.2
+                },
                 series: [
                     {
                         name:'资产',
                         type:'pie',
                         center:["28%","28%"],
-                        radius: ['28%', '32%'],
+                        radius: ['34%', '39%'],
                         avoidLabelOverlap: false,
                         color:["#68c1f2","#eaeaea"],
                         labelLine: {
@@ -197,7 +202,18 @@
                                 normal:{
                                     show: true,
                                     position:"center",
-                                    formatter:"{a}\n{c}\n{d}%"
+                                    formatter:"{a}\n{c}\n{d}%",
+                                    rich:{
+                                        a:{
+                                            color:'#000',
+                                        },
+                                        c:{
+                                            fontSize:textSize * 1.4,
+                                            color:'#68c1f2',
+                                            padding:10,
+                                            fontWeight:'bold'
+                                        }
+                                    }
                                 }
                             }
                         },{value:20}]
@@ -206,7 +222,7 @@
                         name:'负债',
                         type:'pie',
                         center:["72%","28%"],
-                        radius: ['28%', '32%'],
+                        radius: ['34%', '39%'],
                         avoidLabelOverlap: false,
                         color:["#68c1f2","#eaeaea"],
                         label:{
@@ -235,7 +251,7 @@
                         name:'中间业务',
                         type:'pie',
                         center:["28%","72%"],
-                        radius: ['28%', '32%'],
+                        radius: ['34%', '39%'],
                         avoidLabelOverlap: false,
                         color:["#b7b7b7","#eaeaea"],
                         label:{
@@ -264,7 +280,7 @@
                         name:'总利润',
                         type:'pie',
                         center:["72%","72%"],
-                        radius: ['28%', '32%'],
+                        radius: ['34%', '39%'],
                         avoidLabelOverlap: false,
                         color:["#f7c761","#eaeaea"],
                         label:{
