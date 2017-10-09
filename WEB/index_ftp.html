@@ -89,7 +89,6 @@
         var PageSize = 5;
         //获取当前页的默认参数
         var CurveParameter = {
-            //"RATE_LLLX": "01",//利率大类
             "FSI_BZ": "CNY",//币种代码
             "FSI_QXDM": "",//曲线代码
             "FSI_BJRQ": "2017-07-14",//报价日期
@@ -167,7 +166,7 @@
                             var PriceTrendObj = $(obj).parent().parent().find("div[utype=\"PriceTrend\"]");
                             //判断是否需要读取
                             var PRD_BJLB = PriceTrendObj.find("input[type='radio']:checked").val();
-                            GetTendency(PriceTrendObj, parameter.RATE_LLLX, parameter.FSI_BZ, parameter.FSI_BJRQ, PRD_BJLB);
+                            GetTendency(PriceTrendObj, parameter.FSI_BZ, parameter.FSI_BJRQ, PRD_BJLB);
                         }
                     });
 
@@ -221,11 +220,10 @@
                 }
             });
         }
-        //获取价格趋势                //类别
-        function GetTendency(Element, RATE_LLLX, FSI_BZ, FSI_BJRQ, PRD_BJLB) {
+        //获取价格趋势                                  //类别
+        function GetTendency(Element, FSI_BZ, FSI_BJRQ, PRD_BJLB) {
             FSI_QXDM = $(Element).parent().attr("FSI_QXDM");
             var parameter = {
-                //"RATE_LLLX": RATE_LLLX,//FTP类型
                 "FSI_BZ": FSI_BZ,//币种代码
                 "FSI_QXDM": FSI_QXDM,//曲线代码
                 "FSI_BJRQ": FSI_BJRQ,//报价日期
@@ -487,22 +485,20 @@
             });
             $radioGroup.find("input[type=radio]").unbind("click").on("click", function (e) {
                 var PriceTrendObj = $($(this).parents("div[utype=\"PriceTrend\"]")[0]);
-                var RATE_LLLX = CurveParameter.RATE_LLLX;//利率类型
                 var FSI_BZ = CurveParameter.FSI_BZ;//币种代码
                 var PRD_BJLB = $(this).val();//时间类型
                 var FSI_BJRQ = $($($(this).parents("section")[0]).find(".box-title div")[0]).text();//时间
-                GetTendency(PriceTrendObj, RATE_LLLX, FSI_BZ, FSI_BJRQ, PRD_BJLB);
+                GetTendency(PriceTrendObj, FSI_BZ, FSI_BJRQ, PRD_BJLB);
             })
         }
     </script>
     <script type="text/javascript">
         //和app交互
         //被动API----------------------------------------
-        //获取首页列表数据   利率类别代码  币种代码  曲线代码  报价日期
-        function APPPriceCurveList(RATE_LLLX, FSI_BZ, FSI_QXDM, FSI_BJRQ) {
+        //获取首页列表数据         币种代码  曲线代码  报价日期
+        function APPPriceCurveList(FSI_BZ, FSI_QXDM, FSI_BJRQ) {
             //判断必须存在登录信息
             if (LOGINUSERSESSION.ROLE_ID && LOGINUSERSESSION.USER_ID) {
-                CurveParameter.RATE_LLLX = RATE_LLLX;
                 CurveParameter.FSI_BZ = FSI_BZ;
                 CurveParameter.FSI_QXDM = FSI_QXDM;
                 CurveParameter.FSI_BJRQ = FSI_BJRQ;
@@ -541,7 +537,7 @@
                 var ElementTendency = ContentObj.find("div[utype=\"PriceTrend\"]")[0];
                 GetCurve(ElementCurve, TimeValue);
                 var PRD_BJLB = $(ElementTendency).find("input[type='radio']:checked").val();
-                GetTendency(ElementTendency, CurveParameter.RATE_LLLX, CurveParameter.FSI_BZ, TimeValue, PRD_BJLB);
+                GetTendency(ElementTendency,CurveParameter.FSI_BZ, TimeValue, PRD_BJLB);
             }
         }
         //-----------------------------------------------
