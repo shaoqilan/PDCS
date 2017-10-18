@@ -16,61 +16,128 @@
             <section class="control-group">
                 <label class="control-label font-s">
                     <span>业务板块</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>业务类型</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>业务条线</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                 </label>
             </section>
             <legend class="count_legend font-xs">产品信息</legend>
             <section class="control-group">
                 <label class="control-label font-s">
                     <span>产品名称</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>合同期限</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>币种</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>客户类别</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                 </label>
             </section>
             <legend class="count_legend font-xs">机构信息</legend>
             <section class="control-group">
                 <label class="control-label font-s">
                     <span>所属分行</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>所属支行</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s">
                     <span>所属网点</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                 </label>
             </section>
             <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">价格试算</button></div>
         </form>
 	</div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script>
+        function initSelect(){
+         $selects = $("select[role='h-select']");
+            if($selects.length){
+                $selects.each(function(idx,select){
+                    var val = $(select).val() || $(select).find("option:selected").text();
+                    $(select).after("<span class='select-tag'>"+ val +"</span>");
+                });
+                $selects.on("change",function(e){
+                    $(this).next("span").html($(this).val() || $(this).find("option:selected").text());
+                });
+            }
+        }
+        $(function(){
+           initSelect();
+        });
+    </script>
 </body>
 </html>
