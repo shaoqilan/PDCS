@@ -24,9 +24,14 @@
                     <input class="input font-s" type="number" placeholder="请输入">
                     <div class="linear"></div>
                 </label>
-                <label class="control-label font-s ">
+                <label class="control-label font-s">
                     <span>支取频率</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <select class="h-select" role="h-select">
+                        <option value="">请选择</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s ">
@@ -74,5 +79,22 @@
         </form>
 	</div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script>
+        function initSelect(){
+         $selects = $("select[role='h-select']");
+            if($selects.length){
+                $selects.each(function(idx,select){
+                    var val = $(select).val() || $(select).find("option:selected").text();
+                    $(select).after("<span class='select-tag'>"+ val +"</span>");
+                });
+                $selects.on("change",function(e){
+                    $(this).next("span").html($(this).val() || $(this).find("option:selected").text());
+                });
+            }
+        }
+        $(function(){
+           initSelect()
+        })
+    </script>
 </body>
 </html>
