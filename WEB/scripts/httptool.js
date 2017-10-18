@@ -25,7 +25,7 @@ function APPSetLoginUser(ROLE_ID, USER_ID) {
         },
         ShowLoad: function (txt) {
             //显示load加载动画
-            alert("调用APP 显示Load动画");
+            //alert("调用APP 显示Load动画");
             try {
                 if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                     aPPIOS.showLoad(txt);
@@ -38,7 +38,7 @@ function APPSetLoginUser(ROLE_ID, USER_ID) {
         },
         HideLoad: function () {
             //隐藏动画
-            alert("调用APP 隐藏Load动画");
+            //alert("调用APP 隐藏Load动画");
             try {
                 if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                     aPPIOS.hideLoad();
