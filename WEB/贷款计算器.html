@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>价格试算（垫款/贴现/信用卡）</title>
+    <title>价格试算</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
     <script src="./scripts/flexible.js"></script>
-
 </head>
 <body>
     <div class="mainbox">
@@ -30,11 +29,11 @@
                             <td>5.345</td>
                         </tr>
                         <tr>
-                            <td>最高上浮点</td>
+                            <td>最高优惠点差</td>
                             <td>5.345</td>
                         </tr>
                         <tr>
-                            <td>可上浮点差</td>
+                            <td>可优惠点差</td>
                             <td>5.345</td>
                         </tr>
                     </tbody>
@@ -44,19 +43,68 @@
                 <label class="label font-s">实际上浮点</label>
                 <span class="spider" role="spider">
                     <span class="sub-btn" role="sub"></span>
-                    <input type="text" class="font-m" value="10BP">
+                    <input type="text" id="comeup" class="font-m" value="10BP">
                     <span class="add-btn" role="add"></span>
                 </span>
             </div>
-            <div class="form-item">
-                <label class="label font-s">执行利率</label>
-                <input type="text" class="input-noborder font-s" value="5.234" disabled>
-            </div>
+            <ul class="list-with-dash">
+                <li class="dash-item">
+                    <label class="label font-s">执行利率</label>
+                    <span id="EnforcedForce" class="font-s label-val"></span>
+                </li>
+                <li class="dash-item">
+                    <label class="label font-s">RAROC值</label>
+                    <span id="RAROC" class="font-s label-val"></span>
+                </li>
+                <li class="dash-item">
+                    <label class="label font-s">RAROC限额值</label>
+                    <span id="RAROCQuota" class="font-s label-val"></span>
+                </li>
+            </ul>
             <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">客户试算</button></div>
         </form>
     </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="scripts/calculator.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            APPAttemptCalculate(5.345, {});
+        });
+        //计算贷款利率
+        function APPAttemptCalculate(baseRate, infoJson) {
+            var rate = parseInt($("#comeup").val());
+            if (isNaN(rate)) {
+                alert("实际上浮点错误");
+                return;
+            }
+            rate=rate / 100;
+            var jsonModel = CalculatorPdcs4calNetRate(baseRate, 2, rate, infoJson, function () {
+                console.log("初始化成功");
+            }, function () {
+                console.log("发生异常");
+            });
+            if (jsonModel.STATUS == "1") {
+                if (isNaN(parseFloat(jsonModel.ZX_RATE))) {
+                    $("#EnforcedForce").text("无");
+                } else {
+                    $("#EnforcedForce").text(parseFloat(jsonModel.ZX_RATE).toFixed(3));
+                }
+                if (isNaN(parseFloat(jsonModel.RAROC))) {
+                    $("#RAROC").text("无");
+                } else {
+                    $("#RAROC").text(parseFloat(jsonModel.RAROC).toFixed(3));
+                }
+                if (isNaN(parseFloat(jsonModel.EVA))) {
+                    $("#RAROCQuota").text("无");
+                } else {
+                    $("#RAROCQuota").text(parseFloat(jsonModel.EVA).toFixed(3));
+                }
+                console.log(jsonModel);
+            } else {
+                alert("计算错误");
+            }
+        }
+    </script>
     <script>
         function initSpider(){
             var $spiders = $("[role='spider']");
@@ -94,15 +142,6 @@
         }
         $(function(){
             initSpider();
-        });
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            console.log(CalculatorPdcs4calNetRate(5.345,2,0.01,{},function(){
-                console.log("初始化成功");
-            },function(){
-                console.log("发生异常");
-            }));
         });
     </script>
 </body>
