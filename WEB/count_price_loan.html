@@ -41,10 +41,10 @@
             </div>
             <div class="form-item form-item-white">
                 <label class="label font-s">实际上浮点</label>
-                <span class="spider">
-                    <span class="sub-btn"></span>
+                <span class="spider" role="spider">
+                    <span class="sub-btn" role="sub"></span>
                     <input type="text" class="font-m" value="10BP">
-                    <span class="add-btn"></span>
+                    <span class="add-btn" role="add"></span>
                 </span>
             </div>
             <ul class="list-with-dash">
@@ -65,5 +65,44 @@
         </form>
     </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script>
+        function initSpider(){
+            var $spiders = $("[role='spider']");
+            var MIN = 10;
+            var UNIT =  "BP";
+            var PER = 10;
+            $spiders.each(function(idx,spider){
+                var $spider = $(spider);
+                var $input = $spider.children("input");
+                $input.on("focus",function(){
+                    var value = /^\d*/.exec($input.val());
+                    $input.val(Number(value));
+                });
+                $input.on("blur",function(){
+                    var value = /^\d*/.exec($input.val());
+                    if(value < MIN){
+                        value = MIN;
+                    }
+                    $input.val(Number(value) + UNIT);
+                });
+                $spider.children("[role='add']").on("click",function(){
+                    var value = /^\d*/.exec($input.val());
+                    $input.val(Number(value) + PER + UNIT);
+                });
+                $spider.children("[role='sub']").on("click",function(){
+                    var value = /^\d*/.exec($input.val());
+                    var nextValue = Number(value) - PER;
+                    if(nextValue < MIN){
+                        return;
+                    }
+                    $input.val(nextValue + UNIT);
+                });
+            });
+            
+        }
+        $(function(){
+            initSpider();
+        });
+    </script>
 </body>
 </html>
