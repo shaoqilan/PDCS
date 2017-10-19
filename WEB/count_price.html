@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>2-1-2价格试算</title>
+    <title>价格试算（垫款/贴现/信用卡）</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
     <script src="./scripts/flexible.js"></script>
+
 </head>
 <body>
     <div class="mainbox">
@@ -55,5 +56,15 @@
         </form>
     </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/calculator.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            console.log(CalculatorPdcs4calNetRate(5.345,2,0.01,{},function(){
+                console.log("初始化成功");
+            },function(){
+                console.log("发生异常");
+            }));
+        });
+    </script>
 </body>
 </html>
