@@ -1,25 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
-        <style>
-            html,body{
-                background-color: #fff!important;
-            }
-        </style>
+    <title>收入来源构成(表格)</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+    <style>
+        html, body {
+            background-color: #fff !important;
+        }
+    </style>
 </head>
 <body>
-	<div class="mainbox">
+    <div class="mainbox">
         <div class="page-table">
             <div class="page-title">
-                <h3 class="font-xl">某银行收入来源情况图表</h3>
-                <div class="page-title_note font-xs"><span>2017年2月</span>单位/万元</div>
+                <h3 class="font-xl" id="BTitle">某银行收入来源情况图表</h3>
+                <div class="page-title_note font-xs"><span id="time">2017年2月</span>单位/<span id="dwname">元</span></div>
             </div>
             <div class="block">
                 <div class="table-wrap">
@@ -31,40 +32,65 @@
                                 <th>百分比</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>新增个人消费类贷款</td>
-                                <td>129,88,037</td>
-                                <td>66.89%</td>
-                            </tr>
-                            <tr>
-                                <td>个人消费类贷款2</td>
-                                <td>10,800,988</td>
-                                <td>66.89%</td>
-                            </tr>
-                            <tr>
-                                <td>新增企业消费贷款3</td>
-                                <td>10,800,988</td>
-                                <td>66.89%</td>
-                            </tr>
-                            <tr>
-                                <td>其他新增贷款</td>
-                                <td>10,800,988</td>
-                                <td>66.89%</td>
-                            </tr>
-                            <tr>
-                                <td>中间业务</td>
-                                <td>10,800,988</td>
-                                <td>66.89%</td>
-                            </tr>
+                        <tbody id="LISTMOdel">
+                            
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
+            <div class="btn-wrap"><button onclick="ToAPPDowload()" class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
         </div>
-	</div>
+    </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script type="text/javascript">
+        var CurveParameter = { "BNAME": "某某银行", "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
+        $(function () {
+            LoadData();
+        });
+        function LoadData() {
+            $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "年" + CurveParameter.MONTH_ID.substring(4) + "月");
+            $("#BTitle").text(CurveParameter.BNAME + "收入来源情况图表");
+            $.HttpPost("mssia/other/queryShouRuLaiYuanGouCheng", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //单位
+                    $("#dwname").text(ret.JE_DW_MC);
+                    var html = "";
+                    for (var i = 0; i < ret.LIST.length; i++) {
+                        html += "<tr><td>" + ret.LIST[i].PRD_CPMC + "</td><td>" + ret.LIST[i].NET_INTEREST + "</td><td>" + ret.LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
+                    }
+                    $("#LISTMOdel").html(html);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                   银行 查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
+            CurveParameter.BNAME = BNAME;
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            LoadData();
+        }
+        //主动发起下载表格
+        function ToAPPDowload() {
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+    </script>
 </body>
 </html>

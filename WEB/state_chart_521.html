@@ -1,20 +1,21 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>资产和负债占比情况</title>
     <meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
 </head>
 <body>
     <div class="mainbox">
         <div class="page-state page-canvas">
             <div class="box-title">
                 <h3 class="font-s box-title-left"></h3>
-                <div class="font-s box-title-right">2017/02</div>
+                <div id="time" onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02</div>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">资产占比情况</h3>
@@ -26,35 +27,44 @@
                 <div class="canvas-wrap"></div>
                 <ul class="canvas-legend"></ul>
             </div>
-            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
+            <div class="btn-wrap"><button onclick="ToLinkTable()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
         </div>
     </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="./scripts/main.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
     <script type="text/javascript">
-        $(function(){
+        var CurveParameter = { "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
+        $(function () {
+            LoadData();
+        })
+        function LoadData() {
+            $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "/" + CurveParameter.MONTH_ID.substring(4));
+            $.HttpPost("mssia/other/queryZiChanFuZhaiZhanBi", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    CreationChart(ret.ASSETS_LIST, ret.DEBITS_LIST);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+        function CreationChart(ASSETS_LIST, DEBITS_LIST) {
             var colors = window.COLOR_LIST;
-            var datas = [
-                            {value:335, name:'活期存款'},
-                            {value:310, name:'定期存款'},
-                            {value:234, name:'其他新增存款'},
-                            {value:135, name:'活期存款理财'},
-                            {value:499, name:'新增个人消费理财'},
-                            {value:309, name:'其他新增存款'},
-                            {value:209, name:'保本理财'}
-                        ];
             var option = {
-                color:colors,
-                backgroundColor:"#fff",
+                color: colors,
+                backgroundColor: "#fff",
                 series: [
                     {
-                        name:'资产占比情况',
-                        type:'pie',
-                        center:["50%","50%"],
+                        name: '资产占比情况',
+                        type: 'pie',
+                        center: ["50%", "50%"],
                         radius: ['48%', '75%'],
                         avoidLabelOverlap: false,
-                        label:{
+                        label: {
                             normal: {
                                 show: false,
                             }
@@ -64,21 +74,72 @@
                                 show: false
                             }
                         },
-                        data:datas
+                        data: []
                     }
                 ]
             };
-            var allData = datas.reduce(function(t,a){return t+a.value},0);
-            var legendHtml = datas.map(function(item,index){
-                return "<li class='legend-label font-xs'><i style='background:"+colors[index] +"'></i>" + item.name + "\t" +(item.value/allData*100).toFixed(2) + "%</li>"
-                        
-            }).join("");
-            $(".canvas-wrap").each(function(e,ele){
+            $(".canvas-wrap").each(function (e, ele) {
+                console.log(e);
                 var mychart = echarts.init(ele);
+                if (e == 0) {
+                    //资产占比情况
+                    option.series[0].name = "资产占比情况";
+                    option.series[0].data = ASSETS_LIST.map(function (item, index) { return { value: item.CURR_BAL, name: item.PRD_CPMC }; });
+                } else {
+                    //负债占比情况
+                    option.series[0].name = "负债占比情况";
+                    option.series[0].data = DEBITS_LIST.map(function (item, index) { return { value: item.CURR_BAL, name: item.PRD_CPMC }; });
+                }
                 mychart.setOption(option)
             });
-            $(".canvas-legend").html(legendHtml);
-        })
+            $($(".canvas-legend")[0]).html(ASSETS_LIST.map(function (item, index) { return "<li class='legend-label font-xs'><i style='background:" + colors[index] + "'></i>" + item.PRD_CPMC + "\t" + item.COM_RATE.toFixed(2) + "%</li>" }).join(""));
+            $($(".canvas-legend")[1]).html(DEBITS_LIST.map(function (item, index) { return "<li class='legend-label font-xs'><i style='background:" + colors[index] + "'></i>" + item.PRD_CPMC + "\t" + item.COM_RATE.toFixed(2) + "%</li>" }).join(""));
+        }
     </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                  查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(MONTH_ID, ORG_ID) {
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            LoadData();
+        }
+        //主动API----------------------------------------
+        //跳转到图表
+        function ToLinkTable() {
+            //将时间发送到app
+            var parameter = { "TimeValue": $("#time").text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = { "TimeValue": $(timeobj).text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var TimeValue = jsonObj.TimeValue;
+            alert("接收到返回值：" + JSON.stringify(jsonObj));
+            CurveParameter.MONTH_ID = TimeValue;
+            LoadData();
+        }
+    </script>
+
 </body>
 </html>

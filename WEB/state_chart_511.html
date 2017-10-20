@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>(经营状况)指标完成情况</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="page-state">
+            <div class="box-title">
+                <h3 class="font-s box-title-left">单位/万元</h3>
+                <div id="time" onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02</div>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">资产</h3>
+                <ul id="property" class="progress-list"></ul>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">负债</h3>
+                <ul id="liabilities" class="progress-list"></ul>
+            </div>
+            <div class="state-block">
+                <h3 class="state-title font-m">损益</h3>
+                <ul id="gains" class="progress-list"></ul>
+            </div>
+            <div class="btn-wrap"><button onclick="ToLinkTable()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
+        </div>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script type="text/javascript">
+        var CurveParameter = { "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
+        $(function () {
+            LoadData();
+        });
+        //加载数据
+        function LoadData() {
+            //处理显示的时间
+            $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "/" + CurveParameter.MONTH_ID.substring(4));
+            $.HttpPost("mssia/other/queryTarget", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //数据获取成功
+                    var property = "";
+                    var liabilities = "";
+                    var gains = "";
+                    //处理数据
+                    for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
+                        property += "<li class=\"progress-li\">";
+                        property += "<h3 class=\"progress-title font-s\">" + ret.ASSETS_LIST[i].PRD_CPMC + "</h3>";
+                        //判断是否是合计
+                        if (ret.ASSETS_LIST[i].IS_FLAG == 1) {
+                            property += "<div class=\"progress progress-total\">";
+                        } else {
+                            property += "<div class=\"progress\">";
+                        }
+                        property += "<div class=\"progress-track\">";
+                        property += "<div class=\"progress-bar\" style=\"width: " + ret.ASSETS_LIST[i].COM_RATE + "%\"></div>";
+                        property += "</div>";
+                        property += "<div class=\"progress-label font-xl\">" + ret.ASSETS_LIST[i].COM_RATE.toFixed(2) + "%</div>";
+                        property += "<div class=\"progress-note font-s\">" + ret.ASSETS_LIST[i].CURR_BAL + "/" + ret.ASSETS_LIST[i].BUDGET_BAL + "</div>";
+                        property += "</div>";
+                        property += "</li>";
+                    }
+                    for (var i = 0; i < ret.DEBITS_LIST.length; i++) {
+                        liabilities += "<li class=\"progress-li\">";
+                        liabilities += "<h3 class=\"progress-title font-s\">" + ret.DEBITS_LIST[i].PRD_CPMC + "</h3>";
+                        //判断是否是合计
+                        if (ret.DEBITS_LIST[i].IS_FLAG == 1) {
+                            liabilities += "<div class=\"progress progress-total\">";
+                        } else {
+                            liabilities += "<div class=\"progress\">";
+                        }
+                        liabilities += "<div class=\"progress-track\">";
+                        liabilities += "<div class=\"progress-bar\" style=\"width: " + ret.DEBITS_LIST[i].COM_RATE + "%\"></div>";
+                        liabilities += "</div>";
+                        liabilities += "<div class=\"progress-label font-xl\">" + ret.DEBITS_LIST[i].COM_RATE.toFixed(2) + "%</div>";
+                        liabilities += "<div class=\"progress-note font-s\">" + ret.DEBITS_LIST[i].CURR_BAL + "/" + ret.DEBITS_LIST[i].BUDGET_BAL + "</div>";
+                        liabilities += "</div>";
+                        liabilities += "</li>";
+                    }
+                    for (var i = 0; i < ret.PROFIT_LIST.length; i++) {
+                        gains += "<li class=\"progress-li\">";
+                        gains += "<h3 class=\"progress-title font-s\">" + ret.PROFIT_LIST[i].PRD_CPMC + "</h3>";
+                        //判断是否是合计
+                        if (ret.PROFIT_LIST[i].IS_FLAG == 1) {
+                            gains += "<div class=\"progress progress-total\">";
+                        } else {
+                            gains += "<div class=\"progress\">";
+                        }
+                        gains += "<div class=\"progress-track\">";
+                        gains += "<div class=\"progress-bar\" style=\"width: " + ret.PROFIT_LIST[i].COM_RATE + "%\"></div>";
+                        gains += "</div>";
+                        gains += "<div class=\"progress-label font-xl\">" + ret.PROFIT_LIST[i].COM_RATE.toFixed(2) + "%</div>";
+                        gains += "<div class=\"progress-note font-s\">" + ret.PROFIT_LIST[i].CURR_BAL + "/" + ret.PROFIT_LIST[i].BUDGET_BAL + "</div>";
+                        gains += "</div>";
+                        gains += "</li>";
+                    }
+                    //资产
+                    $("#property").html(property);
+                    //负债
+                    $("#liabilities").html(liabilities);
+                    //损益
+                    $("#gains").html(gains);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                  查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(MONTH_ID, ORG_ID) {
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            LoadData();
+        }
+        //主动API----------------------------------------
+        //跳转到图表
+        function ToLinkTable() {
+            //将时间发送到app
+            var parameter = { "TimeValue": $("#time").text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = { "TimeValue": $(timeobj).text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var TimeValue = jsonObj.TimeValue;
+            alert("接收到返回值：" + JSON.stringify(jsonObj));
+            CurveParameter.MONTH_ID = TimeValue;
+            LoadData();
+        }
+    </script>
+</body>
+</html>

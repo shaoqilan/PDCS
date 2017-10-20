@@ -67,17 +67,25 @@
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="scripts/calculator.js"></script>
     <script type="text/javascript">
+        var CalculateParameter = {
+            baseRate: null,
+            infoJson: {}
+        };
         $(function () {
             APPAttemptCalculate(5.345, {});
         });
         //计算贷款利率
         function APPAttemptCalculate(baseRate, infoJson) {
+            
+        }
+        //本地计算
+        function AttemptCalculate() {
             var rate = parseInt($("#comeup").val());
             if (isNaN(rate)) {
                 alert("实际上浮点错误");
                 return;
             }
-            rate=rate / 100;
+            rate = rate / 100;
             var jsonModel = CalculatorPdcs4calNetRate(baseRate, 2, rate, infoJson, function () {
                 console.log("初始化成功");
             }, function () {

@@ -1,317 +1,357 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
+    <title>利润构成</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
 </head>
 <body>
-	<div class="mainbox">
+    <div class="mainbox">
         <div class="page-551 page-state padding-b">
             <div class="box-title">
                 <h3 class="font-s box-title-left">单位/万元</h3>
-                <div class="font-s box-title-right">2017/02</div>
+                <div id="time" onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02</div>
             </div>
             <div class="canvas-wrap"></div>
             <div class="state-block">
                 <h3 class="state-title font-m">资产</h3>
-                <ul class="list-551 font-13">
-                    <li class="list-item">
-                        <span>利息收入</span>
-                        <span>10，800,988</span>
-                        <span>100.00%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>成本</span>
-                        <span>10，800,988</span>
-                        <span></span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>FTP成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>增值税成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>直接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>间接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>企业所得税</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis list-item_emphasis_last">
-                        <span>预期风险减值损失</span>
-                        <span>10，800,988</span>
-                        <span>5.19%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>利润（管快利润）</span>
-                        <span>10，800,988</span>
-                        <span>5.19%</span>
-                    </li>
-                    <div class="list-bottom font-xs">
-                        <span>注：</span>百分比表示具体数值占FTP收入的百分比
-                    </div>
+                <ul id="ZCHTML" class="list-551 font-13">
+                   
                 </ul>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">负债</h3>
-                <ul class="list-551 font-13">
-                    <li class="list-item">
-                        <span>FTP收入</span>
-                        <span>10，800,988</span>
-                        <span>100.00%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>成本</span>
-                        <span>10，800,988</span>
-                        <span></span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>利息支出</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>存款保险费用</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>直接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>间接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis list-item_emphasis_last">
-                        <span>企业所得税</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>利润（管快利润）</span>
-                        <span>10，800,988</span>
-                        <span>5.19%</span>
-                    </li>
-                    <div class="list-bottom font-xs">
-                        <span>注：</span>百分比表示具体数值占FTP收入的百分比
-                    </div>
+                <ul id="FZHTML" class="list-551 font-13">
+                    
                 </ul>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">中间业务</h3>
-                <ul class="list-551 font-13">
-                    <li class="list-item">
-                        <span>中间业务收入</span>
-                        <span>10，800,988</span>
-                        <span>100.00%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>成本</span>
-                        <span>10，800,988</span>
-                        <span></span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>利息支出</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>存款保险费用</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>直接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis">
-                        <span>间接运营成本</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item list-item_emphasis list-item_emphasis_last">
-                        <span>企业所得税</span>
-                        <span>10，800,988</span>
-                        <span>10.19%</span>
-                    </li>
-                    <li class="list-item">
-                        <span>利润（管快利润）</span>
-                        <span>10，800,988</span>
-                        <span>5.19%</span>
-                    </li>
-                    <div class="list-bottom font-xs">
-                        <span>注：</span>百分比表示具体数值占FTP收入的百分比
-                    </div>
+                <ul id="ZJYWHTML" class="list-551 font-13">
+                    
                 </ul>
             </div>
-            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
+            <div class="btn-wrap"><button onclick="ToLinkTable()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
         </div>
-	</div>
+    </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="./scripts/main.js"></script>
-    <script>
-         $(function(){
-            var dpr = document.documentElement.getAttribute("data-dpr");
-            var textSize = 10 * Number(dpr);
-            var colors = window.COLOR_LIST;
-            var option = {
-                color:colors,
-                backgroundColor:"#fff",
-                textStyle: {
-                    fontSize: textSize * 1.2
-                },
-                series: [
-                    {
-                        name:'资产',
-                        type:'pie',
-                        center:["28%","28%"],
-                        radius: ['34%', '39%'],
-                        avoidLabelOverlap: false,
-                        color:["#68c1f2","#eaeaea"],
-                        labelLine: {
-                            normal: {
-                                show: false,
-                            }
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script type="text/javascript">
+        var CurveParameter = {"MONTH_ID": "201606", "ORG_ID": "10000" }
+        function LoadData() {
+            $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "/" + CurveParameter.MONTH_ID.substring(4));
+            $.HttpPost("mssia/other/queryChengBenLiRunGouCheng", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //CreationChart(ret.ASSETS_LIST, ret.DEBITS_LIST);
+                    var ASSETS_INTEREST_GK = 0;
+                    var ASSETS_INTEREST_CB = 0;//成本
+                    //处理GK
+                    for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
+                        if (ret.ASSETS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            //管会净利润
+                            ASSETS_INTEREST_GK = ret.ASSETS_LIST[i].BAL;
+                        } else {
+                            ASSETS_INTEREST_CB += ret.ASSETS_LIST[i].BAL;
+                        }
+                    }
+                    var DEBITS_INTEREST_GK = 0;
+                    var DEBITS_INTEREST_CB = 0;//成本
+                    for (var i = 0; i < ret.DEBITS_LIST.length; i++) {
+                        if (ret.DEBITS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            //管会净利润
+                            DEBITS_INTEREST_GK = ret.DEBITS_LIST[i].BAL;
+                        } else {
+                            DEBITS_INTEREST_CB += ret.DEBITS_LIST[i].BAL;
+                        }
+                    }
+                    var IM_BUS_INTEREST_GK = 0;
+                    var IM_BUS_INTEREST_CB = 0;//成本
+                    for (var i = 0; i < ret.IM_BUS_LIST.length; i++) {
+                        if (ret.IM_BUS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            //管会净利润
+                            IM_BUS_INTEREST_GK = ret.IM_BUS_LIST[i].BAL;
+                        } else {
+                            IM_BUS_INTEREST_CB += ret.IM_BUS_LIST[i].BAL;
+                        }
+                    }
+                    var HJ_GK = ASSETS_INTEREST_GK + DEBITS_INTEREST_GK + IM_BUS_INTEREST_GK;
+                    //画图
+                    var dpr = document.documentElement.getAttribute("data-dpr");
+                    var textSize = 10 * Number(dpr);
+                    var colors = window.COLOR_LIST;
+                    var option = {
+                        color: colors,
+                        backgroundColor: "#fff",
+                        textStyle: {
+                            fontSize: textSize * 1.2
                         },
-                        data:[{
-                            value:10,
-                            label:{
-                                normal:{
-                                    show: true,
-                                    position:"center",
-                                    formatter:"{a}\n{c}\n{d}%",
-                                    rich:{
-                                        a:{
-                                            color:'#000',
-                                        },
-                                        c:{
-                                            fontSize:textSize * 1.4,
-                                            color:'#68c1f2',
-                                            padding:10,
-                                            fontWeight:'bold'
+                        series: [
+                            {
+                                name: '资产',
+                                type: 'pie',
+                                center: ["28%", "28%"],
+                                radius: ['34%', '39%'],
+                                avoidLabelOverlap: false,
+                                color: ["#68c1f2", "#eaeaea"],
+                                labelLine: {
+                                    normal: {
+                                        show: false,
+                                    }
+                                },
+                                data: [{
+                                    value: ASSETS_INTEREST_GK,
+                                    label: {
+                                        normal: {
+                                            show: true,
+                                            position: "center",
+                                            formatter: "{a}\n{c}\n{d}%",
+                                            rich: {
+                                                a: {
+                                                    color: '#000',
+                                                },
+                                                c: {
+                                                    fontSize: textSize * 1.4,
+                                                    color: '#68c1f2',
+                                                    padding: 10,
+                                                    fontWeight: 'bold'
+                                                }
+                                            }
                                         }
                                     }
-                                }
+                                }, { value: ret.ASSETS_INTEREST }]
+                            },
+                            {
+                                name: '负债',
+                                type: 'pie',
+                                center: ["72%", "28%"],
+                                radius: ['34%', '39%'],
+                                avoidLabelOverlap: false,
+                                color: ["#68c1f2", "#eaeaea"],
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: "inside"
+                                    }
+                                },
+                                labelLine: {
+                                    normal: {
+                                        show: false
+                                    }
+                                },
+                                data: [{
+                                    value: DEBITS_INTEREST_GK,
+                                    label: {
+                                        normal: {
+                                            show: true,
+                                            position: "center",
+                                            formatter: "{a}\n{c}\n{d}%"
+                                        }
+                                    }
+                                }, { value: ret.DEBITS_INTEREST }]
+                            },
+                            {
+                                name: '中间业务',
+                                type: 'pie',
+                                center: ["28%", "72%"],
+                                radius: ['34%', '39%'],
+                                avoidLabelOverlap: false,
+                                color: ["#b7b7b7", "#eaeaea"],
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: "inside"
+                                    }
+                                },
+                                labelLine: {
+                                    normal: {
+                                        show: false
+                                    }
+                                },
+                                data: [{
+                                    value: IM_BUS_INTEREST_GK,
+                                    label: {
+                                        normal: {
+                                            show: true,
+                                            position: "center",
+                                            formatter: "{a}\n{c}\n{d}%"
+                                        }
+                                    }
+                                }, { value: ret.IM_BUS_INTEREST }]
+                            },
+                            {
+                                name: '总利润',
+                                type: 'pie',
+                                center: ["72%", "72%"],
+                                radius: ['34%', '39%'],
+                                avoidLabelOverlap: false,
+                                color: ["#f7c761", "#eaeaea"],
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: "inside"
+                                    }
+                                },
+                                labelLine: {
+                                    normal: {
+                                        show: false
+                                    }
+                                },
+                                data: [{
+                                    value: HJ_GK,
+                                    label: {
+                                        normal: {
+                                            show: true,
+                                            position: "center",
+                                            formatter: "{a}\n{c}\n{d}%"
+                                        }
+                                    }
+                                }, { value: HJ_GK }]
                             }
-                        },{value:20}]
-                    },
-                    {
-                        name:'负债',
-                        type:'pie',
-                        center:["72%","28%"],
-                        radius: ['34%', '39%'],
-                        avoidLabelOverlap: false,
-                        color:["#68c1f2","#eaeaea"],
-                        label:{
-                            normal: {
-                                show: true,
-                                position:"inside"
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data:[{
-                            value:5,
-                            label:{
-                                normal:{
-                                    show: true,
-                                    position:"center",
-                                    formatter:"{a}\n{c}\n{d}%"
-                                }
-                            }
-                        },{value:20}]
-                    },
-                    {
-                        name:'中间业务',
-                        type:'pie',
-                        center:["28%","72%"],
-                        radius: ['34%', '39%'],
-                        avoidLabelOverlap: false,
-                        color:["#b7b7b7","#eaeaea"],
-                        label:{
-                            normal: {
-                                show: true,
-                                position:"inside"
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data:[{
-                            value:10,
-                            label:{
-                                normal:{
-                                    show: true,
-                                    position:"center",
-                                    formatter:"{a}\n{c}\n{d}%"
-                                }
-                            }
-                        },{value:80}]
-                    },
-                    {
-                        name:'总利润',
-                        type:'pie',
-                        center:["72%","72%"],
-                        radius: ['34%', '39%'],
-                        avoidLabelOverlap: false,
-                        color:["#f7c761","#eaeaea"],
-                        label:{
-                            normal: {
-                                show: true,
-                                position:"inside"
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data:[{
-                            value:10,
-                            label:{
-                                normal:{
-                                    show: true,
-                                    position:"center",
-                                    formatter:"{a}\n{c}\n{d}%"
-                                }
-                            }
-                        },{value:200}]
+                        ]
+                    };
+                    $(".canvas-wrap").each(function (e, ele) {
+                        var mychart = echarts.init(ele);
+                        mychart.setOption(option)
+                    });
+                    //处理表格的数据
+                    //资产
+                    var ZCHTML = "";
+                    ZCHTML += "<li class=\"list-item\">";
+                    ZCHTML+="<span>利息收入</span>";
+                    ZCHTML+="<span>"+ret.ASSETS_INTEREST+"</span>";
+                    ZCHTML+="<span>100.00%</span>";
+                    ZCHTML+="</li>";
+                    ZCHTML+="<li class=\"list-item\">";
+                    ZCHTML+="<span>成本</span>";
+                    ZCHTML+="<span>"+ASSETS_INTEREST_CB+"</span>";
+                    ZCHTML+="<span></span>";
+                    ZCHTML += "</li>";
+                    for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
+                        if (ret.ASSETS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            ZCHTML += "<li class=\"list-item\">";
+                        } else {
+                            ZCHTML += "<li class=\"list-item list-item_emphasis\">";
+                        }
+                        ZCHTML += "<span>" + ret.ASSETS_LIST[i].PRD_CPMC + "</span>";
+                        ZCHTML += "<span>" + ret.ASSETS_LIST[i].BAL + "</span>";
+                        ZCHTML += "<span>" + ret.ASSETS_LIST[i].RATE.toFixed(2) + "%</span>";
+                        ZCHTML += "</li>";
                     }
-                ]
-            };
-            $(".canvas-wrap").each(function(e,ele){
-                var mychart = echarts.init(ele);
-                mychart.setOption(option)
+                    ZCHTML += "<div class=\"list-bottom font-xs\"><span>注：</span>百分比表示具体数值占利息收入的百分比</div>";
+                    $("#ZCHTML").html(ZCHTML);
+                    //负债
+                    var FZHTML = "";
+                    FZHTML += "<li class=\"list-item\">";
+                    FZHTML += "<span>FTP收入</span>";
+                    FZHTML += "<span>" + ret.DEBITS_INTEREST + "</span>";
+                    FZHTML += "<span>100.00%</span>";
+                    FZHTML += "</li>";
+                    FZHTML += "<li class=\"list-item\">";
+                    FZHTML += "<span>成本</span>";
+                    FZHTML += "<span>" + DEBITS_INTEREST_CB.toFixed(4) + "</span>";
+                    FZHTML += "<span></span>";
+                    FZHTML += "</li>";
+                    for (var i = 0; i < ret.DEBITS_LIST.length; i++) {
+                        if (ret.DEBITS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            FZHTML += "<li class=\"list-item\">";
+                        } else {
+                            FZHTML += "<li class=\"list-item list-item_emphasis\">";
+                        }
+                        FZHTML += "<span>" + ret.DEBITS_LIST[i].PRD_CPMC + "</span>";
+                        FZHTML += "<span>" + ret.DEBITS_LIST[i].BAL + "</span>";
+                        FZHTML += "<span>" + ret.DEBITS_LIST[i].RATE.toFixed(2) + "%</span>";
+                        FZHTML += "</li>";
+                    }
+                    FZHTML += "<div class=\"list-bottom font-xs\"><span>注：</span>百分比表示具体数值占FTP收入的百分比</div>";
+                    $("#FZHTML").html(FZHTML);
+                    //中间业务
+                    var ZJYWHTML = "";
+                    ZJYWHTML += "<li class=\"list-item\">";
+                    ZJYWHTML += "<span>中间业务收入</span>";
+                    ZJYWHTML += "<span>" + ret.IM_BUS_INTEREST + "</span>";
+                    ZJYWHTML += "<span>100.00%</span>";
+                    ZJYWHTML += "</li>";
+                    ZJYWHTML += "<li class=\"list-item\">";
+                    ZJYWHTML += "<span>成本</span>";
+                    ZJYWHTML += "<span>" + IM_BUS_INTEREST_CB + "</span>";
+                    ZJYWHTML += "<span></span>";
+                    ZJYWHTML += "</li>";
+                    for (var i = 0; i < ret.IM_BUS_LIST.length; i++) {
+                        if (ret.IM_BUS_LIST[i].PRD_CPDM == "BUS_INCOME") {
+                            ZJYWHTML += "<li class=\"list-item\">";
+                        } else {
+                            ZJYWHTML += "<li class=\"list-item list-item_emphasis\">";
+                        }
+                        ZJYWHTML += "<span>" + ret.IM_BUS_LIST[i].PRD_CPMC + "</span>";
+                        ZJYWHTML += "<span>" + ret.IM_BUS_LIST[i].BAL + "</span>";
+                        ZJYWHTML += "<span>" + ret.IM_BUS_LIST[i].RATE.toFixed(2) + "%</span>";
+                        ZJYWHTML += "</li>";
+                    }
+                    ZJYWHTML += "<div class=\"list-bottom font-xs\"><span>注：</span>百分比表示具体数值占中间业务收入的百分比</div>";
+                    $("#ZJYWHTML").html(ZJYWHTML);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
             });
+        }
+        $(function () {
+            LoadData();
         })
     </script>
+    <script type="text/javascript">
+    //APP交互代码
+    //                  查询月份(yyyyMM)   用户所属机构代码
+    function APPLoadData(MONTH_ID, ORG_ID) {
+        CurveParameter.MONTH_ID = MONTH_ID;
+        CurveParameter.ORG_ID = ORG_ID;
+        LoadData();
+    }
+    //主动API----------------------------------------
+    //跳转到图表
+    function ToLinkTable() {
+        //将时间发送到app
+        var parameter = { "TimeValue": $("#time").text() };
+        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+            alert("正在调用ios函数");
+            aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+        } else if (/(Android)/i.test(navigator.userAgent)) {
+            alert("正在调用安卓函数");
+            aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+        } else {
+            alert("无法识别当前系统");
+        }
+    }
+    //选择日期
+    function ToAPPSponsorSelectTime(timeobj) {
+        var parameter = { "TimeValue": $(timeobj).text() };
+        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+            alert("正在调用ios函数");
+            aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+        } else if (/(Android)/i.test(navigator.userAgent)) {
+            alert("正在调用安卓函数");
+            aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+        } else {
+            alert("无法识别当前系统");
+        }
+    }
+    //选择日期之后的回掉
+    function APPOutSponsorSelectTime(jsonObj) {
+        var TimeValue = jsonObj.TimeValue;
+        alert("接收到返回值：" + JSON.stringify(jsonObj));
+        CurveParameter.MONTH_ID = TimeValue;
+        LoadData();
+    }
+    </script>
+
 </body>
 </html>

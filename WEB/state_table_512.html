@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>资产和负债占比情况(表格)</title>
+    <title>(经营状况)指标完成情况-表格</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -19,68 +19,97 @@
     <div class="mainbox">
         <div class="page-table">
             <div class="page-title">
-                <h3 class="font-xl" id="BTitle">某银行资产和负债占比情况图表</h3>
+                <h3 class="font-xl" id="BTitle">某银行指标完成情况图</h3>
                 <div class="page-title_note font-xs"><span id="time">2017年2月</span>单位/万元</div>
             </div>
             <div class="block">
-                <h3 class="state-title font-m">资产占比情况</h3>
+                <h3 class="state-title font-m">资产</h3>
                 <div class="table-wrap">
                     <table class="h-table font-xs">
                         <thead>
                             <tr>
                                 <th>产品名称</th>
-                                <th>余额</th>
-                                <th>百分比</th>
+                                <th>预算目标值</th>
+                                <th>本期值</th>
+                                <th>目标完成率</th>
                             </tr>
                         </thead>
-                        <tbody id="ASSETS_LIST"></tbody>
+                        <tbody id="property"></tbody>
                     </table>
                 </div>
             </div>
             <div class="block">
-                <h3 class="state-title font-m">负债占比情况</h3>
+                <h3 class="state-title font-m">负债</h3>
                 <div class="table-wrap">
                     <table class="h-table font-xs">
                         <thead>
                             <tr>
                                 <th>产品名称</th>
-                                <th>余额</th>
-                                <th>百分比</th>
+                                <th>预算目标值</th>
+                                <th>本期值</th>
+                                <th>目标完成率</th>
                             </tr>
                         </thead>
-                        <tbody id="DEBITS_LIST"></tbody>
+                        <tbody id="liabilities"></tbody>
                     </table>
                 </div>
             </div>
-            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
+            <div class="block">
+                <h3 class="state-title font-m">损益</h3>
+                <div class="table-wrap">
+                    <table class="h-table font-xs">
+                        <thead>
+                            <tr>
+                                <th>产品名称</th>
+                                <th>预算目标值</th>
+                                <th>本期值</th>
+                                <th>目标完成率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gains"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="btn-wrap"><button onclick="ToAPPDowload()" class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
         </div>
     </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="scripts/jquery.base64.js"></script>
     <script src="scripts/httptool.js"></script>
-    <script type="text/javascript"></script>
     <script type="text/javascript">
         var CurveParameter = { "BNAME": "某某银行", "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
         $(function () {
             LoadData();
-        })
+        });
+        //加载数据
         function LoadData() {
+            //处理显示的时间
             $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "年" + CurveParameter.MONTH_ID.substring(4) + "月");
-            $("#BTitle").text(CurveParameter.BNAME + "资产和负债占比情况图表");
-            $.HttpPost("mssia/other/queryZiChanFuZhaiZhanBi", CurveParameter, "post", function (ret) {
+            $("#BTitle").text(CurveParameter.BNAME + "指标完成情况图");
+            $.HttpPost("mssia/other/queryTarget", CurveParameter, "post", function (ret) {
                 console.log(ret);
                 if (ret.ec == 1) {
-                    var ASSETS_LIST = "";
-                    var DEBITS_LIST = "";
+                    //数据获取成功
+                    var property = "";
+                    var liabilities = "";
+                    var gains = "";
+                    //处理数据
                     for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
-                        ASSETS_LIST += "<tr><td>" + ret.ASSETS_LIST[i].PRD_CPMC + "</td><td>" + ret.ASSETS_LIST[i].CURR_BAL + "</td><td>" + ret.ASSETS_LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
+                        property += "<tr><td>" + ret.ASSETS_LIST[i].PRD_CPMC + "</td><td>" + ret.ASSETS_LIST[i].BUDGET_BAL + "</td><td>" + ret.ASSETS_LIST[i].CURR_BAL + "</td><td>" + ret.ASSETS_LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
                     }
                     for (var i = 0; i < ret.DEBITS_LIST.length; i++) {
-                        DEBITS_LIST += "<tr><td>" + ret.DEBITS_LIST[i].PRD_CPMC + "</td><td>" + ret.DEBITS_LIST[i].CURR_BAL + "</td><td>" + ret.DEBITS_LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
+                        liabilities += "<tr><td>" + ret.DEBITS_LIST[i].PRD_CPMC + "</td><td>" + ret.DEBITS_LIST[i].BUDGET_BAL + "</td><td>" + ret.DEBITS_LIST[i].CURR_BAL + "</td><td>" + ret.DEBITS_LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
                     }
-                    $("#ASSETS_LIST").html(ASSETS_LIST);
-                    $("#DEBITS_LIST").html(DEBITS_LIST);
+                    for (var i = 0; i < ret.PROFIT_LIST.length; i++) {
+                        gains += "<tr><td>" + ret.PROFIT_LIST[i].PRD_CPMC + "</td><td>" + ret.PROFIT_LIST[i].BUDGET_BAL + "</td><td>" + ret.PROFIT_LIST[i].CURR_BAL + "</td><td>" + ret.PROFIT_LIST[i].COM_RATE.toFixed(2) + "%</td></tr>";
+                    }
+                    //资产
+                    $("#property").html(property);
+                    //负债
+                    $("#liabilities").html(liabilities);
+                    //损益
+                    $("#gains").html(gains);
                 } else {
                     //数据获取失败
                     console.log("数据获取失败");
@@ -110,6 +139,5 @@
             }
         }
     </script>
-
 </body>
 </html>

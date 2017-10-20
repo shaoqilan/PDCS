@@ -1,25 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
-        <style>
-            html,body{
-                background-color: #fff!important;
-            }
-        </style>
+    <title>利润构成(表格)</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+    <style>
+        html, body {
+            background-color: #fff !important;
+        }
+    </style>
 </head>
 <body>
-	<div class="mainbox">
+    <div class="mainbox">
         <div class="page-table page-552">
             <div class="page-title">
-                <h3 class="font-xl">某银行利润构成情况图表</h3>
-                <div class="page-title_note font-xs"><span>2017年2月</span>单位/万元</div>
+                <h3 class="font-xl" id="BTitle">某银行利润构成情况图表</h3>
+                <div class="page-title_note font-xs"><span id="time">2017年2月</span>单位/<span id="dwname">万元</span></div>
             </div>
             <div class="block">
                 <h3 class="state-title font-m">资产构成情况</h3>
@@ -31,39 +32,8 @@
                                 <th>收入值</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>利息收入</td>
-                                <td>129,88,037</td>
-                            </tr>
-                            <tr>
-                                <td>FTP成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>增值税成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>直接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>间接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>预期风险减值损失</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>企业所得税</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>管快净利润</td>
-                                <td>10,800,988</td>
-                            </tr>
+                        <tbody id="zcgc">
+                            
                         </tbody>
                     </table>
                 </div>
@@ -78,35 +48,8 @@
                                 <th>收入值</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>FTP收入</td>
-                                <td>129,88,037</td>
-                            </tr>
-                            <tr>
-                                <td>利息支出</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>存款保险费用</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>直接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>间接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>企业所得税</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>管快净利润</td>
-                                <td>10,800,988</td>
-                            </tr>
+                        <tbody id="fzgc">
+                           
                         </tbody>
                     </table>
                 </div>
@@ -121,43 +64,75 @@
                                 <th>收入值</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>中间业务收入</td>
-                                <td>129,88,037</td>
-                            </tr>
-                            <tr>
-                                <td>中间业务支出</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>增值税成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>直接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>间接运营成本</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>企业所得税</td>
-                                <td>10,800,988</td>
-                            </tr>
-                            <tr>
-                                <td>管快净利润</td>
-                                <td>10,800,988</td>
-                            </tr>
+                        <tbody id="zjywgc">
+                            
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="btn-wrap"><button class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
+            <div class="btn-wrap"><button onclick="ToAPPDowload()" class="h-btn h-btn-normal font-m border-1" type="button">下载图表</button></div>
         </div>
-	</div>
+    </div>
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script type="text/javascript">
+    var CurveParameter = { "BNAME": "某某银行", "MONTH_ID": "201606", "ORG_ID": "10000" }
+    $(function () {
+        LoadData();
+    });
+    function LoadData() {
+        $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "年" + CurveParameter.MONTH_ID.substring(4) + "月");
+        $("#BTitle").text(CurveParameter.BNAME + "利润构成情况图表");
+        $.HttpPost("mssia/other/queryChengBenLiRunGouCheng", CurveParameter, "post", function (ret) {
+            console.log(ret);
+            if (ret.ec == 1) {
+                //单位
+                $("#dwname").text(ret.JE_DW_MC);
+                var zcgc = "<tr><td>利息收入</td><td>" + ret.ASSETS_INTEREST + "</td></tr>";//资产构成
+                var fzgc = "<tr><td>FTP收入</td><td>" + ret.DEBITS_INTEREST + "</td></tr>";//负债构成
+                var zjywgc = "<tr><td>中间业务收入</td><td>" + ret.IM_BUS_INTEREST + "</td></tr>";//中间业务
+                for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
+                    zcgc += "<tr><td>" + ret.ASSETS_LIST[i].PRD_CPMC + "</td><td>" + ret.ASSETS_LIST[i].BAL + "</td></tr>";
+                }
+                for (var i = 0; i < ret.DEBITS_LIST.length; i++) {
+                    fzgc += "<tr><td>" + ret.DEBITS_LIST[i].PRD_CPMC + "</td><td>" + ret.DEBITS_LIST[i].BAL + "</td></tr>";
+                }
+                for (var i = 0; i < ret.IM_BUS_LIST.length; i++) {
+                    zjywgc += "<tr><td>" + ret.IM_BUS_LIST[i].PRD_CPMC + "</td><td>" + ret.IM_BUS_LIST[i].BAL + "</td></tr>";
+                }
+                $("#zcgc").html(zcgc);
+                $("#fzgc").html(fzgc);
+                $("#zjywgc").html(zjywgc);
+            } else {
+                //数据获取失败
+                console.log("数据获取失败");
+            }
+        });
+    }
+    </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                   银行 查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
+            CurveParameter.BNAME = BNAME;
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            LoadData();
+        }
+        //主动发起下载表格
+        function ToAPPDowload() {
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                alert("正在调用ios函数");
+                aPPIOS.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                alert("正在调用安卓函数");
+                aPPAndroid.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+    </script>
 </body>
 </html>
