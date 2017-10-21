@@ -127,7 +127,7 @@
                                             }
                                         }
                                     }
-                                }, { value: ret.ASSETS_INTEREST }]
+                                }, { value: ret.ASSETS_INTEREST - ASSETS_INTEREST_GK }]
                             },
                             {
                                 name: '负债',
@@ -156,7 +156,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: ret.DEBITS_INTEREST }]
+                                }, { value: ret.DEBITS_INTEREST - DEBITS_INTEREST_GK}]
                             },
                             {
                                 name: '中间业务',
@@ -185,7 +185,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: ret.IM_BUS_INTEREST }]
+                                }, { value: ret.IM_BUS_INTEREST -IM_BUS_INTEREST_GK }]
                             },
                             {
                                 name: '总利润',
@@ -214,7 +214,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: HJ_GK }]
+                                }, { value: HJ_GK -  HJ_GK}]
                             }
                         ]
                     };
