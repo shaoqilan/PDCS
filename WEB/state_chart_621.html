@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>财务指标走势</title>
     <meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
 </head>
 <body>
     <div class="mainbox">
@@ -35,114 +36,174 @@
     <script src="./scripts/echarts.min.js"></script>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
     <script src="./scripts/main.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
     <script type="text/javascript">
-        $(function(){
+        var CurveParameter = { "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" };
+        $(function () {
+            LoadData();
+        });
+        //加载数据
+        function LoadData() {
+            //处理显示的时间
+            $.HttpPost("mssia/other/queryZiChanFuZhaiZouShi", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //数据获取成功
+                    //资产负债走势数据
+                    var zcdatas = [];
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        var name = ret.PAGE_LIST[i].SBJ_KMMC;
+                        var item = [];
+                        for (var j = 0; j < ret.PAGE_LIST[i].LIST.length; j++) {
+                            item.push({ name: ret.PAGE_LIST[i].LIST[j].MONTH_NAME, value: ret.PAGE_LIST[i].LIST[j].BAL });
+                        }
+                        zcdatas.push({name:name,data:item});
+                    }
+                    //画图
+                    CreationChart($(".canvas-wrap")[0], zcdatas);
+                    //获取利润走势
+                    LoadDataLR();
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+        //获取利润走势
+        function LoadDataLR() {
+            $.HttpPost("mssia/other/queryLiRuiZouShi", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //数据获取成功
+                    //利润走势数据
+                    var zcdatas = [];
+                    for (var i = 0; i < ret.PAGE_LIST.length; i++) {
+                        var name = ret.PAGE_LIST[i].SBJ_KMMC;
+                        var item = [];
+                        for (var j = 0; j < ret.PAGE_LIST[i].LIST.length; j++) {
+                            item.push({ name: ret.PAGE_LIST[i].LIST[j].MONTH_NAME, value: ret.PAGE_LIST[i].LIST[j].BAL });
+                        }
+                        zcdatas.push({ name: name, data: item });
+                    }
+                    //画图
+                    CreationChart($(".canvas-wrap")[1], zcdatas);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+        //画图
+        function CreationChart(dom,datas) {
             var colors = window.COLOR_LIST;
-            var datas = [{
-                            name:"最重要项",data:[{name:"一月",value:382.5},{name:"二月",value:199.5},{name:"三月",value:199.5},{name:"四月",value:199.5},{name:"五月",value:199.5},{name:"六月",value:199.5},{name:"七月",value:399.5}]
-                        },{
-                            name:"二重要项",data:[{name:"一月",value:166.5},{name:"二月",value:462.5},{name:"三月",value:199.5},{name:"四月",value:243.5},{name:"五月",value:653.5},{name:"六月",value:199.5}]
-                        },{
-                            name:"三重要项",data:[{name:"一月",value:343.5},{name:"二月",value:453.5},{name:"三月",value:199.5},{name:"四月",value:232.5},{name:"五月",value:98.5},{name:"六月",value:199.5}]
-                        }];
             var dpr = document.documentElement.getAttribute("data-dpr");
             var textSize = 10 * Number(dpr);
             var option = {
-                textStyle:{
-                    fontSize:textSize,
-                    color:"#666",
+                textStyle: {
+                    fontSize: textSize,
+                    color: "#666",
                 },
-                legend:{
-                    show:false,
-                    data:datas.map(function(item){ return item.name})
+                legend: {
+                    show: false,
+                    data: datas.map(function (item) { return item.name })
                 },
-                backgroundColor:'#fff',
-                color:colors, 
+                backgroundColor: '#fff',
+                color: colors,
                 grid: {
-                    show:false,
+                    show: false,
                     left: "5%",
                     right: "5%",
                     bottom: "20%",
-                    top:"5%",
+                    top: "5%",
                     containLabel: false
                 },
-                dataZoom:[
+                dataZoom: [
                     {
-                       type: 'inside',
-                       startValue: 0,
-                       endValue: 5
-                   }, {
-                       type: 'slider',
-                       show: false,
-                       backgroundColor: "red",
-                       startValue: 0,
-                       endValue: 5
-                   }
+                        type: 'inside',
+                        startValue: 0,
+                        endValue: 5
+                    }, {
+                        type: 'slider',
+                        show: false,
+                        backgroundColor: "red",
+                        startValue: 0,
+                        endValue: 5
+                    }
                 ],
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: datas[0].data.map(function(item){ return item.name}),
-                    axisLine:{
-                        show:true,
-                        lineStyle:{
-                            type:"dashed",
-                            color:"#A6C1CF"
+                    data: datas[0].data.map(function (item) { return item.name }),
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            type: "dashed",
+                            color: "#A6C1CF"
                         }
                     },
-                    axisTick:{
-                        show:false
+                    axisTick: {
+                        show: false
                     },
-                    splitLine:{
-                        show:false
+                    splitLine: {
+                        show: false
                     },
-                    axisLabel:{
-                        fontSize:textSize,
-                        color:"#4A4A4A",
-                        padding:[textSize/2,0,0,0],
+                    axisLabel: {
+                        fontSize: textSize,
+                        color: "#4A4A4A",
+                        padding: [textSize / 2, 0, 0, 0],
                     },
                 },
                 yAxis: {
-                    show:false
+                    show: false
                 },
-                series: datas.map(function(item,idx){
+                series: datas.map(function (item, idx) {
                     return {
-                        type:"line",
-                        label:{
-                            normal:{
-                                show:true,
-                                position:idx % 2 === 0 ? "top" :"bottom",
-                                color:colors[idx]
+                        type: "line",
+                        label: {
+                            normal: {
+                                show: true,
+                                position: idx % 2 === 0 ? "top" : "bottom",
+                                color: colors[idx]
                             }
                         },
-                        name:item.name,
-                        data:item.data.map(function(sub){ return sub.value})
+                        name: item.name,
+                        data: item.data.map(function (sub) { return sub.value })
                     }
                 })
             };
-            
-            var legendHtml = datas.map(function(item,index){
-                return  "<label class='h-checkbox'>" +
-                            "<input type='checkbox' hidden data-index="+ index +" name='checkbox" + index + "' checked>" +
-                            "<span class='checkbox-icon border-1'></span>" +
-                            "<span class='font-xs'>" +item.name+ "</span>" +
-                            "<span class='checkbox-flag' style='background-color:" +colors[index]+ "'></span>" +
-                        "</label>" 
-            }).join("");
-            $(".canvas-wrap").each(function(e,ele){
-                var mychart = echarts.init(ele);
-                var selectGroup = $(ele).prev().find(".select-group");
-                mychart.setOption(option);
-                selectGroup.html(legendHtml);
-                selectGroup.find("input[hidden]").on("click",function(e,ele){
-                    mychart.dispatchAction({
-                        type:"legendToggleSelect",
-                        name: datas[Number($(this).attr("data-index"))].name
-                    })
-                });
-            });
 
-        })
+            var legendHtml = datas.map(function (item, index) {
+                return "<label class='h-checkbox'>" +
+                            "<input type='checkbox' hidden data-index=" + index + " name='checkbox" + index + "' checked>" +
+                            "<span class='checkbox-icon border-1'></span>" +
+                            "<span class='font-xs'>" + item.name + "</span>" +
+                            "<span class='checkbox-flag' style='background-color:" + colors[index] + "'></span>" +
+                        "</label>"
+            }).join("");
+            $(".canvas-wrap").each(function (e, ele) {
+                
+            });
+            var mychart = echarts.init(dom);
+            var selectGroup = $(dom).prev().find(".select-group");
+            mychart.setOption(option);
+            selectGroup.html(legendHtml);
+            selectGroup.find("input[hidden]").on("click", function (e, ele) {
+                mychart.dispatchAction({
+                    type: "legendToggleSelect",
+                    name: datas[Number($(this).attr("data-index"))].name
+                })
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                  查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(MONTH_ID, ORG_ID) {
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            LoadData();
+        }
     </script>
 </body>
 </html>
