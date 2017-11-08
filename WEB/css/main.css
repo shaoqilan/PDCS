@@ -334,6 +334,12 @@ html,body{
 	text-align: left;
 	padding-left:0.266667rem;
 }
+.page-632 .h-table.h-table-business{
+	width: 29rem;
+}
+.h-table.h-table-business th{
+	width: 8.0rem;
+}
 .h-table.h-table-expand td:first-child{
 	color: #000;
 }

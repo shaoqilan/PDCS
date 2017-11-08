@@ -17,7 +17,7 @@
                 <h3 class="font-s box-title-left"><span id="dwname"></span></h3>
                 <div id="time" onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02/15</div>
             </div>
-            <div id="mainmodel" class="block-wrap">
+            <div id="mainmodel" style="overflow-x: auto" class="block-wrap">
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
                     var ListData = ret.LIST;
                     //解析数据
                     var html = "";
-                    html += "<table class=\"h-table font-13 h-table-expand\"><thead><tr><th>收费项目</th><th>收费标准</th><th>价格类型</th><th>收费依据</th><th>服务内容</th><th>适用对象</th><th>优惠措施</th><th>中间业务报价类型</th><th>报价日期</th></tr></thead><tbody>";
+                    html += "<table class=\"h-table font-13 h-table-expand h-table-business\"><thead><tr><th>收费项目</th><th>收费标准</th><th>价格类型</th><th>收费依据</th><th>服务内容</th><th>适用对象</th><th>优惠措施</th><th>中间业务报价类型</th><th>报价日期</th></tr></thead><tbody>";
                     for (var i = 0; i < ListData.length; i++) {
                         html += "<tr><td>" + ListData[i].PRD_PAY_SERVICE + "</td><td>" + ListData[i].PRD_PAY_CHARGE + "</td><td>" + ListData[i].PRD_PRICE_TYPE + "</td><td>" + ListData[i].PRD_PAY_BASIS + "</td><td>" + ListData[i].PRD_SERVICE_CONTENT + "</td> <td>" + ListData[i].PRD_USE_TYPE + "</td><td>" + ListData[i].PRD_FAV + "</td><td>" + ListData[i].PRD_TYPE + "</td><td>" + ListData[i].PRD_BJRQ + "</td></tr>";
                     }
