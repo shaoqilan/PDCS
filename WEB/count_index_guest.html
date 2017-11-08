@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户试算</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <form class="count_form count-guest_form">
+            <legend class="count_legend font-s">执行利率 <span id="zxli">0.000</span></legend>
+            <section id="controlMain" class="control-group">
+                <label class="control-label font-s control-label-noarrow ">
+                    <span>初始存入金额</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>月存入金额</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>支取频率</span>
+                    <input class="input font-s" readonly type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>提取日期</span>
+                    <input class="input font-s" readonly type="text" placeholder="请选择">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>转存期数</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>每次支取本金</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                    <div class="linear"></div>
+                </label>
+                <label class="control-label font-s control-label-noarrow">
+                    <span>每次支取利息</span>
+                    <input class="input font-s" type="number" placeholder="请输入">
+                </label>
+            </section>
+            <div class="btn-wrap btn-wrap__count"><button onclick="Calculate()" id="jisuanbtn" class="h-btn h-btn-empty h-btn-empty-disabled font-m" type="button">客户计算</button></div>
+            <div id="result">
+                <!--结果信息-->
+            </div>
+        </form>
+    </div>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script src="scripts/calculator.js"></script>
+    <script type="text/javascript">
+        var CurveParameter = {
+            "CUST_LVL": "010001",//客户类别代码
+            "ORG_FEH_ID": "",//所属分行
+            "ORG_ID": "0042",//用户所属机构
+            "ORG_WD_ID": "0042",//所属网点
+            "ORG_ZHH_ID": "",//所属支行
+            "PRD_BJRQ": "2017-07-24",//报价日期
+            "PRD_BZ": "CNY",//币种代码
+            "PRD_CAL_TYPE": "14",//类别代码
+            "PRD_CPDM": "30301040101",//产品代码
+            "TERM_TS": "279",//期限天数
+            "PRD_CAL_TYPE": 1,  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
+            "SJ_Rate": 0.01,//实际上浮点
+            "ZX_RATE": 4.88,//执行率利
+            "RAROC": 0,//RAROC
+            "EVA": 0//EVA
+        };
+        function LoadInit() {
+            $("#zxli").text(CurveParameter.ZX_RATE);
+            //判断类型
+            if (CurveParameter.PRD_CAL_TYPE == 1 || CurveParameter.PRD_CAL_TYPE == 2 || CurveParameter.PRD_CAL_TYPE == 3) {
+                //贷款1、垫款2、贴现3 CalculatorPdcs4calLoan
+                /*
+                期限天数
+                执行利率
+                实际优惠点差
+                交易金额
+                还款方式 1：等额本息；2：等额本金；3：一次还本付息；4：分期还息、一次还本
+                还款频率 1：按月；3：按季；6：按半年；12：按年
+                */
+                //初始化控件
+                var control = [
+                    { Title: "贷款金额", Event: "id='DAIKUANJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                    { Title: "还款方式", Event: "readonly id='HUANKUANFANGSHI' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"等额本息\",\"Value\":\"1\"},{\"Name\":\"等额本金\",\"Value\":\"2\"},{\"Name\":\"一次还本付息\",\"Value\":\"3\"},{\"Name\":\"分期还息、一次还本\",\"Value\":\"4\"}])'", Type: "text", Placeholder: "请选择" },
+                    { Title: "还款频率", Event: "readonly id='HUANKUANPINLV' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"按月\",\"Value\":\"1\"},{\"Name\":\"按季\",\"Value\":\"3\"},{\"Name\":\"按半年\",\"Value\":\"6\"},{\"Name\":\"按年\",\"Value\":\"12\"}])'", Type: "text", Placeholder: "请选择" }
+                ];
+                Creation(control);
+            } else if (CurveParameter.PRD_CAL_TYPE == 7 || CurveParameter.PRD_CAL_TYPE == 9 || CurveParameter.PRD_CAL_TYPE == 13) {
+                //活期类7、通知存款类9、理财类13  CalculatorPdcs4calDeposit1
+                //CalculatorPdcs4calDeposit1(10, CurveParameter.ZX_RATE, 1000, CurveParameter.PRD_CAL_TYPE, function (pro) {
+                //    console.log(pro);
+                //});
+            } else if (CurveParameter.PRD_CAL_TYPE == 8) {
+                //整存整取类8   CalculatorPdcs4calDeposit2
+
+            } else if (CurveParameter.PRD_CAL_TYPE == 10) {
+                //整存零取类10  CalculatorPdcs4calDeposit3
+            } else if (CurveParameter.PRD_CAL_TYPE == 11) {
+                //零存整取类11  CalculatorPdcs4calDeposit4
+            } else if (CurveParameter.PRD_CAL_TYPE == 12) {
+                //存本取息类12  CalculatorPdcs4calDeposit5
+            } else if (CurveParameter.PRD_CAL_TYPE == 6) {
+                //同业类6  CalculatorPdcs4calTy
+            } else if (CurveParameter.PRD_CAL_TYPE == 5) {
+                //票据类5  CalculatorPdcs4calPj
+            } else if (CurveParameter.PRD_CAL_TYPE == 14) {
+                //债券类14 CalculatorPdcs4calZq
+            }
+        }
+        //初始化控件
+        function Creation(control) {
+            $("#controlMain").html("");
+            var html = "";
+            for (var i = 0; i < control.length; i++) {
+                html += "<label class=\"control-label font-s control-label-noarrow \">";
+                html += "<span>" + control[i].Title + "</span>";
+                html += "<input class=\"input font-s\" " + control[i].Event + " type=\"" + control[i].Type + "\" placeholder=\"" + control[i].Placeholder + "\">";
+                html += "<div class=\"linear\"></div>";
+                html += "</label>";
+            }
+            $("#controlMain").html(html);
+        }
+        //显示结果
+        function ShowResult(html) {
+            var body = "<div class=\"table-bg\">";
+            body += "<table class=\"table-panel\"><tbody>";
+            body += html;
+            body += "</tbody></table>";
+            body += "</div>";
+            body += "<div class=\"btn-wrap btn-wrap__count\"><button class=\"h-btn h-btn-normal font-m\" type=\"button\">生成PDF</button></div>";
+            $("#result").html(body);
+        }
+        //计算
+        function Calculate() {
+            //严重数据
+            if (!CheckInput()) {
+                return;
+            }
+            //判断类型
+            if (CurveParameter.PRD_CAL_TYPE == 1 || CurveParameter.PRD_CAL_TYPE == 2 || CurveParameter.PRD_CAL_TYPE == 3) {
+                //贷款1、垫款2、贴现3 CalculatorPdcs4calLoan
+                var DAIKUANJINE = parseFloat($("#DAIKUANJINE").val());
+                var HUANKUANFANGSHI = parseInt($("#HUANKUANFANGSHI").attr("SelectValue"));
+                var HUANKUANPINLV = parseInt($("#HUANKUANPINLV").attr("SelectValue"));
+                var retObj= CalculatorPdcs4calLoan(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CurveParameter.SJ_Rate, DAIKUANJINE, HUANKUANFANGSHI, HUANKUANPINLV, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    var rethtml = " <tr><td>还款总额</td><td>" + info.HKZE + "</td></tr>";
+                    rethtml += " <tr><td>支付利息</td><td>" + info.ZFLX + "</td></tr>";
+                    rethtml += " <tr><td>优惠利息</td><td>" + info.YHLX + "</td></tr>";
+                    ShowResult(rethtml);
+                }, function () {
+                    alert("计算错误");
+                });
+                console.log(retObj);
+            } else if (CurveParameter.PRD_CAL_TYPE == 7 || CurveParameter.PRD_CAL_TYPE == 9 || CurveParameter.PRD_CAL_TYPE == 13) {
+                //活期类7、通知存款类9、理财类13  CalculatorPdcs4calDeposit1
+                //CalculatorPdcs4calDeposit1(10, CurveParameter.ZX_RATE, 1000, CurveParameter.PRD_CAL_TYPE, function (pro) {
+                //    console.log(pro);
+                //});
+            } else if (CurveParameter.PRD_CAL_TYPE == 8) {
+                //整存整取类8   CalculatorPdcs4calDeposit2
+
+            } else if (CurveParameter.PRD_CAL_TYPE == 10) {
+                //整存零取类10  CalculatorPdcs4calDeposit3
+            } else if (CurveParameter.PRD_CAL_TYPE == 11) {
+                //零存整取类11  CalculatorPdcs4calDeposit4
+            } else if (CurveParameter.PRD_CAL_TYPE == 12) {
+                //存本取息类12  CalculatorPdcs4calDeposit5
+            } else if (CurveParameter.PRD_CAL_TYPE == 6) {
+                //同业类6  CalculatorPdcs4calTy
+            } else if (CurveParameter.PRD_CAL_TYPE == 5) {
+                //票据类5  CalculatorPdcs4calPj
+            } else if (CurveParameter.PRD_CAL_TYPE == 14) {
+                //债券类14 CalculatorPdcs4calZq
+            }
+        }
+        $(function () {
+            LoadInit();
+        });
+        //验证数据是否都填写完毕
+        function CheckInput() {
+            for (var i = 0; i < $("#controlMain input").length; i++) {
+                if ($($("#controlMain input")[i]).val().length == 0) {
+                    $("#jisuanbtn").removeClass("h-btn-empty-disabled");
+                    $("#jisuanbtn").addClass("h-btn-empty-disabled");
+                    return false;
+                }
+            }
+            $("#jisuanbtn").removeClass("h-btn-empty-disabled");
+            return true;
+        }
+    </script>
+    <script type="text/javascript">
+        //发起select选择
+        function ToAPPSponsorSelect(obj, arry) {
+            var parameter = { "ControlID": $(obj).attr("id"), "SelectValue": $(obj).attr("SelectValue"), "SelectName": $(obj).val(), "Data": arry };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorSelect(JSON.stringify(parameter), "APPOutSponsorSelect");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorSelect(JSON.stringify(parameter), "APPOutSponsorSelect");
+            } else {
+                aPPAndroid.sponsorSelect(JSON.stringify(parameter), "APPOutSponsorSelect");
+            }
+        }
+        //select回掉
+        function APPOutSponsorSelect(jsonObj) {
+            var ControlID = jsonObj.ControlID;
+            var SelectValue = jsonObj.SelectValue;
+            var SelectName = jsonObj.SelectName;
+            $("#" + ControlID).val(SelectName);
+            $("#" + ControlID).attr("SelectValue", SelectValue);
+            CheckInput();
+        }
+
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = { "ControlID": $(obj).attr("id"), "TimeValue": $(obj).val() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            }
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var ControlID = jsonObj.ControlID;
+            var TimeValue = jsonObj.TimeValue;
+            $("#" + ControlID).val(TimeValue);
+            CheckInput();
+        }
+    </script>
+</body>
+</html>

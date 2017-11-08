@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>2-2-1价格试算 （贷款2）</title>
+    <title>客户试算首页</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -29,12 +29,12 @@
                             <td id="jzlifddc">0.000</td>
                         </tr>
                         <tr>
-                            <td>最高优惠点差</td>
-                            <td id="zgyhdc">0.000</td>
+                            <td id="show_title_max">最高优惠点差</td>
+                            <td id="show_title_max_val">0.000</td>
                         </tr>
                         <tr>
-                            <td>可优惠点差</td>
-                            <td id="kyhdc">0.000</td>
+                            <td id="show_title_val">可优惠点差</td>
+                            <td id="show_title_val_val">0.000</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,11 +52,11 @@
                     <label class="label font-s">执行利率</label>
                     <span id="zxli" class="font-s label-val">0.000</span>
                 </li>
-                <li class="dash-item">
+                <li tag="daikuan" class="dash-item">
                     <label class="label font-s">RAROC值</label>
                     <span id="RAROCZ" class="font-s label-val">0.000</span>
                 </li>
-                <li class="dash-item">
+                <li tag="daikuan" class="dash-item">
                     <label class="label font-s">RAROC限额值</label>
                     <span id="RAROCXE" class="font-s label-val">0.000</span>
                 </li>
@@ -112,7 +112,12 @@
         });
     </script>
     <script type="text/javascript">
-        var CurveParameter_ZXLI;
+        var ExpandParameter = {
+            "SJ_Rate": 0,//实际上浮点
+            "ZX_RATE": 0,
+            "RAROC": 0,
+            "EVA": 0
+        };
         var CurveParameter = {
             "CUST_LVL": "010001",//客户类别代码
             "ORG_FEH_ID": "",//所属分行
@@ -124,47 +129,89 @@
             "PRD_CAL_TYPE": "14",//类别代码
             "PRD_CPDM": "30301040101",//产品代码
             "TERM_TS": "279",//期限天数
-            "PRD_CAL_TYPE": "2"//计算类别: 存款类1，2，3，5，6，14
+            "PRD_CAL_TYPE": 2  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
         };
         function LoadConfiguration() {
+            var rate = parseFloat($("#rate").val());
+            if (!isNaN(rate)) {
+                rate = rate / 1000;
+            } else {
+                rate = 0.01;//默认
+            }
+            //读取配置信息
             $.HttpPost("mssia/other/queryChanPinLiLv", CurveParameter, "post", function (ret) {
                 if (ret.ec == 1) {
                     $("#scjzli").text(ret.BASE_RATE);
                     $("#whgpjzli").text(ret.NET_RATE);
                     $("#jzlifddc").text(ret.EXP_RATE);
-                    $("#zgyhdc").text(ret.FAV_MAX);
-                    $("#kyhdc").text(ret.FAV_VALID);
-                    //进行率利计算
-                    var rate = parseFloat($("#rate").val());
-                    if (!isNaN(rate)) {
-                        rate = rate / 1000;
-                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, 2, rate, ret, function () {
-                            console.log("初始化成功");
-                        }, function () {
-                            console.log("发生异常");
-                        });
-                        $("#zxli").text(retobj.ZX_RATE);
-                        $("#RAROCZ").text(retobj.RAROC);
-                        $("#RAROCXE").text(retobj.EVA);
-                        CurveParameter_ZXLI = retobj.ZX_RATE;
+                    if (parseInt(CurveParameter.PRD_CAL_TYPE) == 7
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 8
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 9
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 10
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 11
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 12
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 13
+                        ) {
+                        //存款类型7，8，9，10，11，12，13
+                        //最高上浮点
+                        $("#show_title_max").text("最高上浮点");
+                        $("#show_title_max_val").text(ret.FLOAT_MAX);
+                        //可上浮点差
+                        $("#show_title_val").text("可上浮点差");
+                        $("#show_title_val_val").text(ret.FLOAT_VALID);
+                        $("li[tag=\"daikuan\"]").hide();
+                        //率利计算
+                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, 1, rate, ret,null,null);
+                        if (retobj.STATUS == "1") {
+                            $("#zxli").text(retobj.ZX_RATE);
+                            $("#RAROCZ").text(retobj.RAROC);
+                            $("#RAROCXE").text(retobj.EVA);
+                            ExpandParameter.EVA = retobj.EVA;
+                            ExpandParameter.ZX_RATE = retobj.ZX_RATE;
+                            ExpandParameter.RAROC = retobj.RAROC;
+                            ExpandParameter.SJ_Rate = rate;
+                        }
+                    } else if (parseInt(CurveParameter.PRD_CAL_TYPE) == 1
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 2
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 3
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 5
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 6
+                        || parseInt(CurveParameter.PRD_CAL_TYPE) == 14) {
+                        //贷款类别1，2，3，5，6，14
+                        //最高优惠点差
+                        $("#show_title_max").text("最高优惠点差");
+                        $("#show_title_max_val").text(ret.FAV_MAX);
+                        //可优惠点差
+                        $("#show_title_val").text("可优惠点差");
+                        $("#show_title_val_val").text(ret.FAV_VALID);
+                        $("li[tag=\"daikuan\"]").show();
+                        //率利计算
+                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, 2, rate, ret, null, null);
+                        if (retobj.STATUS == "1") {
+                            $("#zxli").text(retobj.ZX_RATE);
+                            $("#RAROCZ").text(retobj.RAROC);
+                            $("#RAROCXE").text(retobj.EVA);
+                            ExpandParameter.EVA = retobj.EVA;
+                            ExpandParameter.ZX_RATE = retobj.ZX_RATE;
+                            ExpandParameter.RAROC = retobj.RAROC;
+                            ExpandParameter.SJ_Rate = rate;
+                        }
                     }
                 } else {
-                    console.log("数据获取失败");
+                    alert("数据读取失败");
                 }
             });
         }
     </script>
     <script type="text/javascript">
-        //APP交互
-        //贷款类别的计算
-        function APPLoansCategory(CalculatorJson) {
+        //页面初始化的时候调用
+        function APPCategory(CalculatorJson) {
             CurveParameter = CalculatorJson;
             LoadConfiguration();
         }
-        //将下一个页面（客户试算count_guest_loan.html）需要的参数发送到app
+        //跳转到客户试算页面
         function ToLinkPage() {
-            CurveParameter.ZX_RATE = CurveParameter_ZXLI;
-            var parameter = ZX_RATE;
+            var parameter = $.extend({}, CurveParameter, ExpandParameter);
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
             } else if (/(Android)/i.test(navigator.userAgent)) {

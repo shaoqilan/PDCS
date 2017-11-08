@@ -114,8 +114,7 @@
             "PRD_CAL_TYPE": "14",//类别代码
             "PRD_CPDM": "30301040101",//产品代码
             "TERM_TS": "279",//期限天数
-            "TYPE": "1",//计算类别1: 存款类 活期、整存整取、通知存款、整存零取、零存整取、存本取息、理财------------- -------------           2：贷款类 贷款、垫款、贴现、同业、票据、债券
-            "TYPECODE":"001"
+            "PRD_CAL_TYPE": "2"//计算类别: 存款类7，8，9，10，11，12，13
         };
         function LoadConfiguration() {
             $.HttpPost("mssia/other/queryChanPinLiLv", CurveParameter, "post", function (ret) {
@@ -129,7 +128,9 @@
                     var rate = parseFloat($("#rate").val());
                     if (!isNaN(rate)) {
                         rate = rate / 1000;
-                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, parseInt(CurveParameter.TYPE), rate, ret, function () {
+                        var TYPE = 1;
+                        //判断类别(存款类)
+                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, 1, rate, ret, function () {
                             console.log("初始化成功");
                         }, function () {
                             console.log("发生异常");

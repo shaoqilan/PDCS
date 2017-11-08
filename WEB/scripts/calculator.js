@@ -89,7 +89,7 @@ function CalculatorPdcs4calNetRate(baseRate, type, rate, info, initload,
 }
 
 /**
- * 贷款、垫款、贴现 计算规则
+ * 贷款1、垫款2、贴现3 计算规则
  * 
  * @param termTs
  *            期限天数
