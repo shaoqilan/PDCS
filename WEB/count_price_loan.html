@@ -112,6 +112,7 @@
         });
     </script>
     <script type="text/javascript">
+        var CurveParameter_ZXLI;
         var CurveParameter = {
             "CUST_LVL": "010001",//客户类别代码
             "ORG_FEH_ID": "",//所属分行
@@ -146,6 +147,7 @@
                         $("#zxli").text(retobj.ZX_RATE);
                         $("#RAROCZ").text(retobj.RAROC);
                         $("#RAROCXE").text(retobj.EVA);
+                        CurveParameter_ZXLI = retobj.ZX_RATE;
                     }
                 } else {
                     console.log("数据获取失败");
@@ -159,6 +161,18 @@
         function APPLoansCategory(CalculatorJson) {
             CurveParameter = CalculatorJson;
             LoadConfiguration();
+        }
+        //将下一个页面（客户试算count_guest_loan.html）需要的参数发送到app
+        function ToLinkPage() {
+            CurveParameter.ZX_RATE = CurveParameter_ZXLI;
+            var parameter = ZX_RATE;
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
         }
     </script>
 </body>

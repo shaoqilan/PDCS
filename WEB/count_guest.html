@@ -13,7 +13,7 @@
 <body>
     <div class="mainbox">
         <form class="count_form count-guest_form">
-            <legend class="count_legend font-s">执行利率 <span>0.000</span></legend>
+            <legend class="count_legend font-s">执行利率 <span id="zxli">0.000</span></legend>
             <section class="control-group">
                 <label class="control-label control-label-noarrow font-s">
                     <span>初始存入金额</span>
@@ -27,17 +27,12 @@
                 </label>
                 <label class="control-label font-s">
                     <span>支取频率</span>
-                    <select class="h-select" role="h-select">
-                        <option value="">请选择</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
+                    <input class="input font-s" readonly type="text" placeholder="请选择">
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s ">
                     <span>提取日期</span>
-                    <input class="input font-s" type="text" placeholder="请选择">
+                    <input class="input font-s" readonly type="text" placeholder="请选择">
                     <div class="linear"></div>
                 </label>
                 <label class="control-label font-s control-label-noarrow">
@@ -95,6 +90,45 @@
         }
         $(function(){
            initSelect();
+        });
+    </script>
+    <script type="text/javascript">
+        var CurveParameter = {
+            "CUST_LVL": "010001",//客户类别代码
+            "ORG_FEH_ID": "",//所属分行
+            "ORG_ID": "0042",//用户所属机构
+            "ORG_WD_ID": "0042",//所属网点
+            "ORG_ZHH_ID": "",//所属支行
+            "PRD_BJRQ": "2017-07-24",//报价日期
+            "PRD_BZ": "CNY",//币种代码
+            "PRD_CAL_TYPE": "14",//类别代码
+            "PRD_CPDM": "30301040101",//产品代码
+            "TERM_TS": "279",//期限天数
+            "TYPE": "1",//计算类别1: 存款类 活期、整存整取、通知存款、整存零取、零存整取、存本取息、理财------------- -------------           2：贷款类 贷款、垫款、贴现、同业、票据、债券
+            "TYPECODE": "001",
+            "ZX_RATE":"4.889"
+        };
+        //初始化
+        function APPClientCategory(CategoryJson) {
+            CurveParameter = CategoryJson;
+            $("#zxli").text(CurveParameter.ZX_RATE);
+        }
+        //支取频率选择
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = {"TimeValue": $(timeobj).val() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            }
+        }
+        //日期选择
+        
+        //测试
+        $(function () {
+            APPClientCategory(CurveParameter);
         });
     </script>
 </body>
