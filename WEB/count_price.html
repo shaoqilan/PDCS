@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
     <script src="./scripts/flexible.js"></script>
-
 </head>
 <body>
     <div class="mainbox">
@@ -19,23 +18,23 @@
                     <tbody>
                         <tr>
                             <td>市场基准利率</td>
-                            <td>5.345</td>
+                            <td id="scjzli">0.000</td>
                         </tr>
                         <tr>
                             <td>我行挂牌基准利率</td>
-                            <td>5.345</td>
+                            <td id="whgpjzli">0.000</td>
                         </tr>
                         <tr>
                             <td>基准利率浮动点差</td>
-                            <td>5.345</td>
+                            <td id="jzlifddc">0.000</td>
                         </tr>
                         <tr>
                             <td>最高上浮点</td>
-                            <td>5.345</td>
+                            <td id="zgsfd">0.000</td>
                         </tr>
                         <tr>
                             <td>可上浮点差</td>
-                            <td>5.345</td>
+                            <td id="ksfdc">0.000</td>
                         </tr>
                     </tbody>
                 </table>
@@ -44,18 +43,20 @@
                 <label class="label font-s">实际上浮点</label>
                 <span class="spider" role="spider">
                     <span class="sub-btn" role="sub"></span>
-                    <input type="text" class="font-m" value="10BP">
+                    <input type="text" id="rate" class="font-m" value="10BP">
                     <span class="add-btn" role="add"></span>
                 </span>
             </div>
             <div class="form-item">
                 <label class="label font-s">执行利率</label>
-                <input type="text" class="input-noborder font-s" value="5.234" disabled>
+                <input type="text" id="zxli" class="input-noborder font-s" value="0.000" disabled>
             </div>
             <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">客户试算</button></div>
         </form>
     </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
     <script src="scripts/calculator.js"></script>
     <script>
         function initSpider(){
@@ -69,6 +70,7 @@
                 $input.on("focus",function(){
                     var value = /^\d*/.exec($input.val());
                     $input.val(Number(value));
+                    LoadConfiguration();
                 });
                 $input.on("blur",function(){
                     var value = /^\d*/.exec($input.val());
@@ -76,10 +78,12 @@
                         value = MIN;
                     }
                     $input.val(Number(value) + UNIT);
+                    LoadConfiguration();
                 });
                 $spider.children("[role='add']").on("click",function(){
                     var value = /^\d*/.exec($input.val());
                     $input.val(Number(value) + PER + UNIT);
+                    LoadConfiguration();
                 });
                 $spider.children("[role='sub']").on("click",function(){
                     var value = /^\d*/.exec($input.val());
@@ -88,6 +92,7 @@
                         return;
                     }
                     $input.val(nextValue + UNIT);
+                    LoadConfiguration();
                 });
             });
             
@@ -97,13 +102,51 @@
         });
     </script>
     <script type="text/javascript">
-        $(function () {
-            console.log(CalculatorPdcs4calNetRate(5.345,2,0.01,{},function(){
-                console.log("初始化成功");
-            },function(){
-                console.log("发生异常");
-            }));
+    var CurveParameter = {
+        "CUST_LVL": "010001",//客户类别代码
+        "ORG_FEH_ID": "",//所属分行
+        "ORG_ID": "0042",//用户所属机构
+        "ORG_WD_ID": "0042",//所属网点
+        "ORG_ZHH_ID": "",//所属支行
+        "PRD_BJRQ": "2017-07-24",//报价日期
+        "PRD_BZ": "CNY",//币种代码
+        "PRD_CAL_TYPE": "14",//类别代码
+        "PRD_CPDM": "30301040101",//产品代码
+        "TERM_TS": "279",//期限天数
+        "TYPE": "1"//计算类别1: 存款类 活期、整存整取、通知存款、整存零取、零存整取、存本取息、理财------------- -------------           2：贷款类 贷款、垫款、贴现、同业、票据、债券
+    };
+    function LoadConfiguration() {
+        $.HttpPost("mssia/other/queryChanPinLiLv", CurveParameter, "post", function (ret) {
+            if (ret.ec == 1) {
+                $("#scjzli").text(ret.BASE_RATE);
+                $("#whgpjzli").text(ret.NET_RATE);
+                $("#jzlifddc").text(ret.EXP_RATE);
+                $("#zgsfd").text(ret.FLOAT_MAX);
+                $("#ksfdc").text(ret.FLOAT_VALID);
+                //进行率利计算
+                var rate = parseFloat($("#rate").val());
+                if (!isNaN(rate)) {
+                    rate = rate / 1000;
+                    var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, parseInt(CurveParameter.TYPE), rate, ret, function () {
+                        console.log("初始化成功");
+                    }, function () {
+                        console.log("发生异常");
+                    });
+                    $("#zxli").val(retobj.ZX_RATE);
+                }
+            } else {
+                console.log("数据获取失败");
+            }
         });
+    }
+    </script>
+    <script type="text/javascript">
+        //APP交互
+        //其他
+        function APPLoansCategory(CalculatorJson) {
+            CurveParameter = CalculatorJson;
+            LoadConfiguration();
+        }
     </script>
 </body>
 </html>
