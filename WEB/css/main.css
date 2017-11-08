@@ -106,6 +106,9 @@
 [data-dpr="3"] .border-bottom-1{
 	border-left-width: 3px;
 }
+.nowrap{
+	white-space: nowrap;
+}
 .h-btn{
 	display: block;
 	outline: none;
@@ -328,6 +331,8 @@ html,body{
 	border-right: 0px;
 	border-bottom: 1px solid #B5D6ED;
 	line-height: 1.013333rem;
+	text-align: left;
+	padding-left:0.266667rem;
 }
 .h-table.h-table-expand td:first-child{
 	color: #000;
@@ -335,6 +340,7 @@ html,body{
 .h-table.h-table-expand th{
 	color: #9c9c9c;
 	line-height: 1.066667rem;
+	white-space: nowrap;
 }
 .btn-wrap{
 	padding: 0.533333rem 0 1.493333rem 0;
@@ -799,7 +805,6 @@ table{
 	background-color: #F0F0F0 ;
 	border-radius: 0.533333rem;
 	overflow: hidden;
-	margin-right: 0.506667rem;
 }
 .progress .progress-track .progress-bar{
 	background-color: #4DB8FF;
@@ -858,6 +863,7 @@ table{
 .page-table .h-table tr>th{
 	padding: 0.106667rem;
 	color: #9C9C9C;
+	white-space: nowrap;
 }
 .page-table .h-table tr>td{
 	word-break:break-all;
@@ -892,15 +898,18 @@ table{
 .canvas-legend .legend-label{
 	width: 50%;
 	box-sizing: border-box;
-	padding-left: 0.533333rem;
-	line-height: 0.693333rem;
+	padding-left: 0.8rem;
+	line-height: 0.64rem;
+	position: relative;
 }
 .canvas-legend .legend-label>i{
 	display: inline-block;
 	height: 0.24rem;
 	width: 0.24rem;
 	border-radius: 50%;
-	margin-right: 0.213333rem;
+	position: absolute;
+	top: 0.19rem;
+	left: 0.4rem;
 }
 .canvas-top{
 	padding-left: 0.266667rem;
@@ -1014,12 +1023,14 @@ table{
 .page-632 .block{
 	margin-bottom: 0px;
 	padding-top: 0.533333rem;
+	min-height: auto;
 }
 .page-632 .block-wrap .block:first-child{
 	padding-top: 0px;
 }
 .page-632 .h-table-expand{
-	width: 17.066667rem;
+	// width: 17.066667rem;
+	width: 20rem;
 }
 .page-632 .table-wrap{
 	overflow-x: auto;

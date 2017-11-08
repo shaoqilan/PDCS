@@ -1,7 +1,12 @@
 //$(init);
 window.COLOR_LIST = ["#46DFF4","#FF6C6C","#F25959",
                 "#FFE466","#FFA147","#9B97F6","#FF7CB7","#26A9E7",
-                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484"];
+                "#A6DE61","#E96F5D","#EBB749","#F6C14F","#A478F3","#84F0AC","#CC8484",
+              	"#A8FF24","#F9F900","#FFD306","#FFA042","#FF8040",
+              	"#613030","#616130","#336666","#484891","#6C3365",
+              	"#8E8E8E","#EA0000","#FF359A","#FF00FF","#9F35FF",
+              	"#7D7DFF","#46A3FF","#4DFFFF","#4EFEB3","#53FF53",
+              	"#9AFF02","#E1E100","#EAC100","#FF9224","#FF5809"]
 function init(TabEvent) {
     initTab(TabEvent);
 	initMore();
