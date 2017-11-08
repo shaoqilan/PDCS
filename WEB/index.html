@@ -549,10 +549,8 @@
             console.log(PRD_CPDM);
             var parameter = { "PRD_CPDM": PRD_CPDM, "TimeValue": $(timeobj).text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                alert("正在调用ios函数");
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                alert("正在调用安卓函数");
                 aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else {
                 aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
@@ -562,7 +560,6 @@
         function APPOutSponsorSelectTime(jsonObj) {
             var PRD_CPDM = jsonObj.PRD_CPDM;
             var TimeValue = jsonObj.TimeValue;
-            alert("接收到返回值：" + JSON.stringify(jsonObj));
             if ($("div[PRD_CPDM=\"" + PRD_CPDM + "\"]").length > 0) {
                 var ContentObj = $($("div[PRD_CPDM=\"" + PRD_CPDM + "\"]")[0]);
                 var ElementCurve = ContentObj.find("div[utype=\"PriceCurve\"]")[0];

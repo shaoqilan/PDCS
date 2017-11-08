@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>中间业务</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
+</head>
+<body>
+    <div class="mainbox">
+        <div class="page-state page-632">
+            <div class="box-title">
+                <h3 class="font-s box-title-left"><span id="dwname"></span></h3>
+                <div id="time" onclick="ToAPPSponsorSelectTime(this)" class="font-s box-title-right">2017/02/15</div>
+            </div>
+            <div id="mainmodel" class="block-wrap">
+            </div>
+        </div>
+    </div>
+    <script src="./scripts/echarts.min.js"></script>
+    <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery.base64.js"></script>
+    <script src="scripts/httptool.js"></script>
+    <script type="text/javascript">
+        var CurveParameter = {
+            "PAGE_NO": "1",//类别代码
+            "PRD_BJRQ": "2017-06-29",//报价日期
+            "PRD_TYPE": "01"//当前页码
+        };
+        $(function () {
+            LoadData();
+        });
+        function LoadData() {
+            $("#time").text(CurveParameter.PRD_BJRQ.replace(/-/g, "/"));
+            $.HttpPost("/mssia/other/queryBusInfo", CurveParameter, "post", function (ret) {
+                console.log(ret);
+                if (ret.ec == 1) {
+                    //解析所有分类
+                    var ListData = ret.LIST;
+                    //解析数据
+                    var html = "";
+                    html += "<table class=\"h-table font-13 h-table-expand\"><thead><tr><th>收费项目</th><th>收费标准</th><th>价格类型</th><th>收费依据</th><th>服务内容</th><th>适用对象</th><th>优惠措施</th><th>中间业务报价类型</th><th>报价日期</th></tr></thead><tbody>";
+                    for (var i = 0; i < ListData.length; i++) {
+                        html += "<tr><td>" + ListData[i].PRD_PAY_SERVICE + "</td><td>" + ListData[i].PRD_PAY_CHARGE + "</td><td>" + ListData[i].PRD_PRICE_TYPE + "</td><td>" + ListData[i].PRD_PAY_BASIS + "</td><td>" + ListData[i].PRD_SERVICE_CONTENT + "</td> <td>" + ListData[i].PRD_USE_TYPE + "</td><td>" + ListData[i].PRD_FAV + "</td><td>" + ListData[i].PRD_TYPE + "</td><td>" + ListData[i].PRD_BJRQ + "</td></tr>";
+                    }
+                    html += "</tbody></table>";
+                    $("#mainmodel").html(html);
+                } else {
+                    //数据获取失败
+                    console.log("数据获取失败");
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //APP交互代码
+        //                  类别代码  报价日期(yyyy-MM-dd) 当前页码
+        function APPLoadData(PAGE_NO, PRD_BJRQ, PRD_TYPE) {
+            CurveParameter.PAGE_NO = PAGE_NO;
+            CurveParameter.PRD_BJRQ = PRD_BJRQ;
+            CurveParameter.PRD_TYPE = PRD_TYPE;
+            LoadData();
+        }
+        //主动API----------------------------------------
+        //主动发起下载表格
+        function ToAPPDowload() {
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = { "TimeValue": $(timeobj).text() };
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
+            }
+        }
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var TimeValue = jsonObj.TimeValue;
+            CurveParameter.PRD_BJRQ = TimeValue;
+            LoadData();
+        }
+    </script>
+</body>
+</html>

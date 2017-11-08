@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>价格试算（垫款/贴现/信用卡）</title>
+    <title>价格试算(类型1  2-1-1)</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -95,50 +95,53 @@
                     LoadConfiguration();
                 });
             });
-            
+
         }
         $(function(){
             initSpider();
         });
     </script>
     <script type="text/javascript">
-    var CurveParameter = {
-        "CUST_LVL": "010001",//客户类别代码
-        "ORG_FEH_ID": "",//所属分行
-        "ORG_ID": "0042",//用户所属机构
-        "ORG_WD_ID": "0042",//所属网点
-        "ORG_ZHH_ID": "",//所属支行
-        "PRD_BJRQ": "2017-07-24",//报价日期
-        "PRD_BZ": "CNY",//币种代码
-        "PRD_CAL_TYPE": "14",//类别代码
-        "PRD_CPDM": "30301040101",//产品代码
-        "TERM_TS": "279",//期限天数
-        "TYPE": "1"//计算类别1: 存款类 活期、整存整取、通知存款、整存零取、零存整取、存本取息、理财------------- -------------           2：贷款类 贷款、垫款、贴现、同业、票据、债券
-    };
-    function LoadConfiguration() {
-        $.HttpPost("mssia/other/queryChanPinLiLv", CurveParameter, "post", function (ret) {
-            if (ret.ec == 1) {
-                $("#scjzli").text(ret.BASE_RATE);
-                $("#whgpjzli").text(ret.NET_RATE);
-                $("#jzlifddc").text(ret.EXP_RATE);
-                $("#zgsfd").text(ret.FLOAT_MAX);
-                $("#ksfdc").text(ret.FLOAT_VALID);
-                //进行率利计算
-                var rate = parseFloat($("#rate").val());
-                if (!isNaN(rate)) {
-                    rate = rate / 1000;
-                    var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, parseInt(CurveParameter.TYPE), rate, ret, function () {
-                        console.log("初始化成功");
-                    }, function () {
-                        console.log("发生异常");
-                    });
-                    $("#zxli").val(retobj.ZX_RATE);
+        var CurveParameter_ZXLI;
+        var CurveParameter = {
+            "CUST_LVL": "010001",//客户类别代码
+            "ORG_FEH_ID": "",//所属分行
+            "ORG_ID": "0042",//用户所属机构
+            "ORG_WD_ID": "0042",//所属网点
+            "ORG_ZHH_ID": "",//所属支行
+            "PRD_BJRQ": "2017-07-24",//报价日期
+            "PRD_BZ": "CNY",//币种代码
+            "PRD_CAL_TYPE": "14",//类别代码
+            "PRD_CPDM": "30301040101",//产品代码
+            "TERM_TS": "279",//期限天数
+            "TYPE": "1",//计算类别1: 存款类 活期、整存整取、通知存款、整存零取、零存整取、存本取息、理财------------- -------------           2：贷款类 贷款、垫款、贴现、同业、票据、债券
+            "TYPECODE":"001"
+        };
+        function LoadConfiguration() {
+            $.HttpPost("mssia/other/queryChanPinLiLv", CurveParameter, "post", function (ret) {
+                if (ret.ec == 1) {
+                    $("#scjzli").text(ret.BASE_RATE);
+                    $("#whgpjzli").text(ret.NET_RATE);
+                    $("#jzlifddc").text(ret.EXP_RATE);
+                    $("#zgsfd").text(ret.FLOAT_MAX);
+                    $("#ksfdc").text(ret.FLOAT_VALID);
+                    //进行率利计算
+                    var rate = parseFloat($("#rate").val());
+                    if (!isNaN(rate)) {
+                        rate = rate / 1000;
+                        var retobj = CalculatorPdcs4calNetRate(ret.NET_RATE, parseInt(CurveParameter.TYPE), rate, ret, function () {
+                            console.log("初始化成功");
+                        }, function () {
+                            console.log("发生异常");
+                        });
+                        $("#zxli").val(retobj.ZX_RATE);
+                        CurveParameter_ZXLI = retobj.ZX_RATE;
+                    }
+                } else {
+                    console.log("数据获取失败");
                 }
-            } else {
-                console.log("数据获取失败");
-            }
-        });
-    }
+            });
+        }
     </script>
     <script type="text/javascript">
         //APP交互
@@ -146,6 +149,18 @@
         function APPLoansCategory(CalculatorJson) {
             CurveParameter = CalculatorJson;
             LoadConfiguration();
+        }
+        //将下一个页面（客户试算count_guest.html）需要的参数发送到app
+        function ToLinkPage() {
+            CurveParameter.ZX_RATE = CurveParameter_ZXLI;
+            var parameter = ZX_RATE;
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+            } else {
+                alert("无法识别当前系统");
+            }
         }
     </script>
 </body>

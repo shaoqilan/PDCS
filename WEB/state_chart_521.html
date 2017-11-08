@@ -110,10 +110,8 @@
             //将时间发送到app
             var parameter = { "TimeValue": $("#time").text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                alert("正在调用ios函数");
                 aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                alert("正在调用安卓函数");
                 aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
             } else {
                 alert("无法识别当前系统");
@@ -123,10 +121,8 @@
         function ToAPPSponsorSelectTime(timeobj) {
             var parameter = { "TimeValue": $(timeobj).text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                alert("正在调用ios函数");
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                alert("正在调用安卓函数");
                 aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else {
                 alert("无法识别当前系统");
@@ -135,7 +131,6 @@
         //选择日期之后的回掉
         function APPOutSponsorSelectTime(jsonObj) {
             var TimeValue = jsonObj.TimeValue;
-            alert("接收到返回值：" + JSON.stringify(jsonObj));
             CurveParameter.MONTH_ID = TimeValue;
             LoadData();
         }

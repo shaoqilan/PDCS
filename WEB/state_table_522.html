@@ -100,10 +100,8 @@
         //主动发起下载表格
         function ToAPPDowload() {
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                alert("正在调用ios函数");
                 aPPIOS.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                alert("正在调用安卓函数");
                 aPPAndroid.sponsorDowloadTable(JSON.stringify(CurveParameter), "");
             } else {
                 alert("无法识别当前系统");
