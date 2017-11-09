@@ -22,7 +22,7 @@
                 <div class="canvas-wrap"></div>
                 <ul class="canvas-legend"></ul>
             </div>
-            <div class="btn-wrap"><button onclick="ToLinkTable()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
+            <div class="btn-wrap"><button onclick="ToLinkPage()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
         </div>
     </div>
     <script src="./scripts/echarts.min.js"></script>
@@ -95,13 +95,13 @@
         }
         //主动API----------------------------------------
         //跳转到图表
-        function ToLinkTable() {
+        function ToLinkPage() {
             //将时间发送到app
             var parameter = { "TimeValue": $("#time").text() };
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "state_table_542.html","收入来源情况");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "state_table_542.html", "收入来源情况");
             } else {
                 alert("无法识别当前系统");
             }
@@ -109,6 +109,18 @@
         //选择日期
         function ToAPPSponsorSelectTime(timeobj) {
             var parameter = { "TimeValue": $(timeobj).text() };
+            //排除空值
+            if (parameter.TimeValue.length == 0) {
+                var Y = (new Date().getMonth() + 1).toString();
+                var D = (new Date().getDate()).toString();
+                if (Y.length < 2) {
+                    Y = "0" + Y;
+                }
+                if (D.length < 2) {
+                    D = "0" + D;
+                }
+                parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
+            }
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {

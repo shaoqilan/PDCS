@@ -614,7 +614,8 @@ function CalculatorPdcs4calDeposit4(termTs, netRate, amountMoney, drawMoney,
  *            异常校验函数
  * @return returnInfo 返回计算的相关信息参数
  *         -----------------------------------------------------------------------------------------------------
- *         STATUS ='1' 时正常，其他异常 ；MSG异常说明 ； SDLX:利息金额, LXSJE:利息税金额,
+ *         STATUS ='1' 时正常，其他异常 ；MSG异常说明 ； 
+            SDLX:利息金额, LXSJE:利息税金额,
  *         BXHJ:本息合计,ZQLX:每次支取利息
  */
 function CalculatorPdcs4calDeposit5(termTs, netRate, amountMoney, drawFreq,
@@ -693,7 +694,10 @@ function CalculatorPdcs4calDeposit5(termTs, netRate, amountMoney, drawFreq,
  *            异常校验函数
  * @return returnInfo 返回计算的相关信息参数
  *         -----------------------------------------------------------------------------------------------------
- *         STATUS ='1' 时正常，其他异常 ；MSG异常说明 ； ZQLX:每次支取利息 LXJE:利息金额 BXHJ:本息合计
+ *         STATUS ='1' 时正常，其他异常 ；MSG异常说明 ； 
+ ZQLX:每次支取利息 
+ LXJE:利息金额 
+ BXHJ:本息合计
  */
 function CalculatorPdcs4calTy(termTs, netRate, amountMoney, drawType, drawFreq,
 		initload, failFunc) {

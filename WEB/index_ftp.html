@@ -516,6 +516,18 @@
             FSI_QXDM = $($(timeobj).parents("section")[0]).find(".h-tab__panel").attr("FSI_QXDM");
             console.log(FSI_QXDM);
             var parameter = { "FSI_QXDM": FSI_QXDM, "TimeValue": $(timeobj).text() };
+            //排除空值
+            if (parameter.TimeValue.length == 0) {
+                var Y = (new Date().getMonth() + 1).toString();
+                var D = (new Date().getDate()).toString();
+                if (Y.length < 2) {
+                    Y = "0" + Y;
+                }
+                if (D.length < 2) {
+                    D = "0" + D;
+                }
+                parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
+            }
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {

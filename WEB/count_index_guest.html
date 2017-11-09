@@ -73,6 +73,7 @@
             "PRD_CPDM": "30301040101",//产品代码
             "TERM_TS": "279",//期限天数
             "PRD_CAL_TYPE": 1,  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
+            "FLAG":"",
             "SJ_Rate": 0.01,//实际上浮点
             "ZX_RATE": 4.88,//执行率利
             "RAROC": 0,//RAROC
@@ -103,21 +104,85 @@
                 //CalculatorPdcs4calDeposit1(10, CurveParameter.ZX_RATE, 1000, CurveParameter.PRD_CAL_TYPE, function (pro) {
                 //    console.log(pro);
                 //});
+                var control = [];
+                if (CurveParameter.PRD_CAL_TYPE == 7) {
+                    //活期类、
+                    control = [
+                     { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                     { Title: "存入日期", Event: "readonly id='CHUNRURIQI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" },
+                     { Title: "提取日期", Event: "readonly id='TIQURIQI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" }
+                    ];
+                } else if (CurveParameter.PRD_CAL_TYPE == 9) {
+                    //通知存款类
+                    control = [
+                     { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "5万起存" },
+                     { Title: "存入日期", Event: "readonly id='CHUNRURIQI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" },
+                     { Title: "提取日期", Event: "readonly id='TIQURIQI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" }
+                    ];
+                } else {
+                    //理财类
+                    control = [
+                   { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                    ];
+                }
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 8) {
                 //整存整取类8   CalculatorPdcs4calDeposit2
-
+                var control = [
+                    { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                    { Title: "转存期数", Event: "id='ZHUANCUNQISHU' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" }
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 10) {
                 //整存零取类10  CalculatorPdcs4calDeposit3
+                var control = [
+                   { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "1000元起存" },
+                   { Title: "支取频率", Event: "id='ZHIQUPINLV' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"一个月\",\"Value\":\"1\"},{\"Name\":\"三个月\",\"Value\":\"3\"},{\"Name\":\"六个月\",\"Value\":\"6\"})' ", Type: "text", Placeholder: "请选择" }
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 11) {
                 //零存整取类11  CalculatorPdcs4calDeposit4
+                var control = [
+                  { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                  { Title: "月存入金额", Event: "id='YUECUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 12) {
                 //存本取息类12  CalculatorPdcs4calDeposit5
+                var control = [
+                   { Title: "初始存入金额", Event: "id='CHUSHICUNRUJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "5000元起存" },
+                   { Title: "支取频率", Event: "id='ZHIQUPINLV' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"一个月\",\"Value\":\"1\"},{\"Name\":\"三个月\",\"Value\":\"3\"},{\"Name\":\"六个月\",\"Value\":\"6\"})' ", Type: "text", Placeholder: "请选择" }
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 6) {
                 //同业类6  CalculatorPdcs4calTy
+                var control = [
+                   { Title: "交易金额", Event: "id='JIAOYIJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "5000元起存" },
+                   { Title: "还息方式/付息方式", Event: "id='HUANXIFUXIFANGSHI' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"一次还本付息\",\"Value\":\"3\"},{\"Name\":\"分期还息、一次还本\",\"Value\":\"4\"})' ", Type: "text", Placeholder: "请选择" },
+                   { Title: "还息频率/付息频率", Event: "id='HUANXIFUXIPINLV' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"0个月\",\"Value\":\"1\"},{\"Name\":\"一个月\",\"Value\":\"1\"},{\"Name\":\"三个月\",\"Value\":\"3\"},{\"Name\":\"六个月\",\"Value\":\"6\"})' ", Type: "text", Placeholder: "请选择" }
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 5) {
                 //票据类5  CalculatorPdcs4calPj
+                var control = [
+                   { Title: "交易金额", Event: "id='JIAOYIJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "票面金额", Event: "id='PIAOMIANJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "票面利率", Event: "id='PIAOMIANLILV' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" }
+                ];
+                Creation(control);
             } else if (CurveParameter.PRD_CAL_TYPE == 14) {
                 //债券类14 CalculatorPdcs4calZq
+                var control = [
+                   { Title: "债券面值<span style='font-size: 12pt; color: #1493e7; padding-left: 5px;'>单张</span>", Event: "id='ZHAIQUANMIANZHI' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "发行价格<span style='font-size: 12pt; color: #1493e7; padding-left: 5px;'>单张</span>", Event: "id='FAXINJIAGE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "票面利率", Event: "id='PIAOMIANLILV' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "债券起息日", Event: "readonly id='ZHAIQUANQIXIRI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" },
+                   { Title: "债券到期日", Event: "readonly id='ZHAIQUANDAOQIRI' onclick='ToAPPSponsorSelectTime(this)'", Type: "text", Placeholder: "请选择" },
+                   { Title: "买入价格<span style='font-size: 12pt; color: #1493e7; padding-left: 5px;'>单张</span>", Event: "id='MAIRUJIAGE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "卖出价格<span style='font-size: 12pt; color: #1493e7; padding-left: 5px;'>单张</span>", Event: "id='MAICHUJIAGE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                   { Title: "购买数量", Event: "id='GOUMAISHULIANG' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" }
+                ];
+                Creation(control);
             }
         }
         //初始化控件
@@ -140,7 +205,7 @@
             body += html;
             body += "</tbody></table>";
             body += "</div>";
-            body += "<div class=\"btn-wrap btn-wrap__count\"><button class=\"h-btn h-btn-normal font-m\" type=\"button\">生成PDF</button></div>";
+            body += "<div class=\"btn-wrap btn-wrap__count\"><button class=\"h-btn h-btn-normal font-m\" onclick=\"CreationPDF()\" type=\"button\">生成PDF</button></div>";
             $("#result").html(body);
         }
         //计算
@@ -155,37 +220,231 @@
                 var DAIKUANJINE = parseFloat($("#DAIKUANJINE").val());
                 var HUANKUANFANGSHI = parseInt($("#HUANKUANFANGSHI").attr("SelectValue"));
                 var HUANKUANPINLV = parseInt($("#HUANKUANPINLV").attr("SelectValue"));
-                var retObj= CalculatorPdcs4calLoan(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CurveParameter.SJ_Rate, DAIKUANJINE, HUANKUANFANGSHI, HUANKUANPINLV, function (info) {
+                var retObj = CalculatorPdcs4calLoan(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CurveParameter.SJ_Rate, DAIKUANJINE, HUANKUANFANGSHI, HUANKUANPINLV, function (info) {
                     //页面赋值
                     console.log(info);
-                    var rethtml = " <tr><td>还款总额</td><td>" + info.HKZE + "</td></tr>";
-                    rethtml += " <tr><td>支付利息</td><td>" + info.ZFLX + "</td></tr>";
-                    rethtml += " <tr><td>优惠利息</td><td>" + info.YHLX + "</td></tr>";
-                    ShowResult(rethtml);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>还款总额</td><td>" + info.HKZE + "</td></tr>";
+                        rethtml += " <tr><td>支付利息</td><td>" + info.ZFLX + "</td></tr>";
+                        rethtml += " <tr><td>优惠利息</td><td>" + info.YHLX + "</td></tr>";
+                        rethtml += " <tr><td>还款计划明细表</td><td><a href=\"javascript:ToLinkPage('" +encodeURI(JSON.stringify(info.LIST)) + "')\" style='color: #fff; text-decoration: underline; '>查看详情</a></td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
                 }, function () {
                     alert("计算错误");
                 });
                 console.log(retObj);
             } else if (CurveParameter.PRD_CAL_TYPE == 7 || CurveParameter.PRD_CAL_TYPE == 9 || CurveParameter.PRD_CAL_TYPE == 13) {
                 //活期类7、通知存款类9、理财类13  CalculatorPdcs4calDeposit1
-                //CalculatorPdcs4calDeposit1(10, CurveParameter.ZX_RATE, 1000, CurveParameter.PRD_CAL_TYPE, function (pro) {
-                //    console.log(pro);
-                //});
+                var retObj = {};
+                if (CurveParameter.PRD_CAL_TYPE == 7) {
+                    //活期类、
+                    var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                    var CHUNRURIQI = $("#CHUNRURIQI").val();
+                    var TIQURIQI = $("#TIQURIQI").val();
+                    var TERM_TS = DateDifference(TIQURIQI, CHUNRURIQI);
+                    retObj = CalculatorPdcs4calDeposit1(TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, 13, function (info) {
+                        //页面赋值
+                        console.log(info);
+                        if (info.STATUS == '1') {
+                            var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                            rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                            rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                            ShowResult(rethtml);
+                        } else {
+                            alert(info.MSG);
+                        }
+                    }, function () {
+                        alert("计算错误");
+                    });
+                } else if (CurveParameter.PRD_CAL_TYPE == 9) {
+                    //通知存款类
+                    var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                    var CHUNRURIQI = $("#CHUNRURIQI").val();
+                    var TIQURIQI = $("#TIQURIQI").val();
+                    var TERM_TS = DateDifference(TIQURIQI, CHUNRURIQI);
+                    retObj = CalculatorPdcs4calDeposit1(TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, 13, function (info) {
+                        //页面赋值
+                        console.log(info);
+                        if (info.STATUS == '1') {
+                            var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                            rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                            rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                            ShowResult(rethtml);
+                        } else {
+                            alert(info.MSG);
+                        }
+                    }, function () {
+                        alert("计算错误");
+                    });
+                } else {
+                    //理财类13
+                    var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                    retObj = CalculatorPdcs4calDeposit1(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, 13, function (info) {
+                        //页面赋值
+                        console.log(info);
+                        if (info.STATUS == '1') {
+                            var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                            rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                            rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                            ShowResult(rethtml);
+                        } else {
+                            alert(info.MSG);
+                        }
+                    }, function () {
+                        alert("计算错误");
+                    });
+                }
             } else if (CurveParameter.PRD_CAL_TYPE == 8) {
                 //整存整取类8   CalculatorPdcs4calDeposit2
-
+                var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                var ZHUANCUNQISHU = parseInt($("#ZHUANCUNQISHU").val());
+                var retObj = CalculatorPdcs4calDeposit2(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, ZHUANCUNQISHU, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>一期利息金额</td><td>" + info.YQLXJE + "</td></tr>";
+                        rethtml += " <tr><td>一期利息税金额</td><td>" + info.YQLXSJ + "</td></tr>";
+                        rethtml += " <tr><td>一期本息合计</td><td>" + info.YQBXHJ + "</td></tr>";
+                        rethtml += " <tr><td>转存多期利息金额</td><td>" + info.DQLXJE + "</td></tr>";
+                        rethtml += " <tr><td>转存多期利息税金额</td><td>" + info.DQLXSJ + "</td></tr>";
+                        rethtml += " <tr><td>转存多期本息合计</td><td>" + info.DQBXHJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 10) {
                 //整存零取类10  CalculatorPdcs4calDeposit3
+                var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                var ZHIQUPINLV = parseInt($("#ZHIQUPINLV").attr("SelectValue"));
+                var retObj = CalculatorPdcs4calDeposit3(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, ZHIQUPINLV, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                        rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        rethtml += " <tr><td>每次支取本金</td><td>" + info.ZQBJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 11) {
                 //零存整取类11  CalculatorPdcs4calDeposit4
+                var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                var YUECUNRUJINE = parseFloat($("#YUECUNRUJINE").val());
+                var retObj = CalculatorPdcs4calDeposit4(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, YUECUNRUJINE, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                        rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 12) {
                 //存本取息类12  CalculatorPdcs4calDeposit5
+                var CHUSHICUNRUJINE = parseFloat($("#CHUSHICUNRUJINE").val());
+                var ZHIQUPINLV = parseInt($("#ZHIQUPINLV").attr("SelectValue"));
+                var retObj = CalculatorPdcs4calDeposit5(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, CHUSHICUNRUJINE, ZHIQUPINLV, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>利息金额</td><td>" + info.SDLX + "</td></tr>";
+                        rethtml += " <tr><td>利息税金额</td><td>" + info.LXSJE + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        rethtml += " <tr><td>每次支取利息</td><td>" + info.ZQLX + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 6) {
                 //同业类6  CalculatorPdcs4calTy
+                var JIAOYIJINE = parseFloat($("#JIAOYIJINE").val());
+                var HUANXIFUXIFANGSHI = parseInt($("#HUANXIFUXIFANGSHI").attr("SelectValue"));
+                var HUANXIFUXIPINLV = parseInt($("#HUANXIFUXIPINLV").attr("SelectValue"));
+                var retObj = CalculatorPdcs4calTy(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, JIAOYIJINE, HUANXIFUXIFANGSHI, HUANXIFUXIPINLV, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>每次支取利息</td><td>" + info.ZQLX + "</td></tr>";
+                        rethtml += " <tr><td>利息金额</td><td>" + info.LXJE + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 5) {
                 //票据类5  CalculatorPdcs4calPj
+                var JIAOYIJINE = parseFloat($("#JIAOYIJINE").val());
+                var PIAOMIANJINE = parseFloat($("#PIAOMIANJINE").val());
+                var PIAOMIANLILV = parseFloat($("#PIAOMIANLILV").val());
+                var retObj = CalculatorPdcs4calPj(CurveParameter.TERM_TS, CurveParameter.ZX_RATE, JIAOYIJINE, PIAOMIANJINE, PIAOMIANLILV, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>每次支取利息</td><td>" + info.ZQLX + "</td></tr>";
+                        rethtml += " <tr><td>利息金额</td><td>" + info.LXJE + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             } else if (CurveParameter.PRD_CAL_TYPE == 14) {
                 //债券类14 CalculatorPdcs4calZq
+                var ZHAIQUANQIXIRI = $("#ZHAIQUANQIXIRI").val();
+                var ZHAIQUANDAOQIRI = $("#ZHAIQUANDAOQIRI").val();
+                var remainderTermTs = DateDifference(ZHAIQUANDAOQIRI, ZHAIQUANQIXIRI);
+                var ZHAIQUANMIANZHI = parseFloat($("#ZHAIQUANMIANZHI").val());
+                var MAICHUJIAGE = parseFloat($("#MAICHUJIAGE").val());
+                var FAXINJIAGE = parseFloat($("#FAXINJIAGE").val());
+                var GOUMAISHULIANG = parseInt($("#GOUMAISHULIANG").val());
+                var PIAOMIANLILV = parseFloat($("#PIAOMIANLILV").val());
+                var MAIRUJIAGE = parseFloat($("#MAIRUJIAGE").val());
+                var flag = CurveParameter.FLAG;//标志 1显示买入返售债券持有期间收益;2显示卖出回购债券持有期间支付利息
+                var retObj = CalculatorPdcs4calZq(CurveParameter.TERM_TS, remainderTermTs,
+                    CurveParameter.ZX_RATE, ZHAIQUANMIANZHI, MAICHUJIAGE,
+                    FAXINJIAGE, GOUMAISHULIANG, PIAOMIANLILV, MAIRUJIAGE, flag, function (info) {
+                    //页面赋值
+                    console.log(info);
+                    if (info.STATUS == '1') {
+                        var rethtml = " <tr><td>债券购买收益率</td><td>" + info.ZQGMSYL + "</td></tr>";
+                        rethtml += " <tr><td>债券出售收益率</td><td>" + info.ZQCSSYL + "</td></tr>";
+                        rethtml += " <tr><td>持有期间收益率</td><td>" + info.CYQJSYL + "</td></tr>";
+                        rethtml += " <tr><td>持有期间收益</td><td>" + info.CYQJSY + "</td></tr>";
+                        rethtml += " <tr><td>持有期间票面利息</td><td>" + info.CYQJPMLX + "</td></tr>";
+                        rethtml += " <tr><td>买入返售债券持有期间收益</td><td>" + info.MRFGZQCYQJSY + "</td></tr>";
+                        rethtml += " <tr><td>卖出回购债券持有期间支付利息</td><td>" + info.MCHGZQCYQJZFLX + "</td></tr>";
+                        rethtml += " <tr><td>本息合计</td><td>" + info.BXHJ + "</td></tr>";
+                        ShowResult(rethtml);
+                    } else {
+                        alert(info.MSG);
+                    }
+                }, function () {
+                    alert("计算错误");
+                });
             }
         }
         $(function () {
@@ -203,8 +462,22 @@
             $("#jisuanbtn").removeClass("h-btn-empty-disabled");
             return true;
         }
+        function DateDifference(Date1, Date2) { //Date1和Date2是2017-07-10格式
+            var sDate, newDate1, newDate2, Days
+            aDate = Date1.split("-");
+            newDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]); //转换为07-10-2017格式
+            aDate = Date2.split("-");
+            newDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);
+            Days = parseInt(Math.abs(newDate1 - newDate2) / 1000 / 60 / 60 / 24); //把差的毫秒数转换为天数
+            return Days;
+        }
     </script>
     <script type="text/javascript">
+        //初始化
+        function APPCategory(JsonModel) {
+            CurveParameter = JsonModel;
+            LoadInit();
+        }
         //发起select选择
         function ToAPPSponsorSelect(obj, arry) {
             var parameter = { "ControlID": $(obj).attr("id"), "SelectValue": $(obj).attr("SelectValue"), "SelectName": $(obj).val(), "Data": arry };
@@ -228,7 +501,19 @@
 
         //选择日期
         function ToAPPSponsorSelectTime(timeobj) {
-            var parameter = { "ControlID": $(obj).attr("id"), "TimeValue": $(obj).val() };
+            var parameter = { "ControlID": $(timeobj).attr("id"), "TimeValue": $(timeobj).val() };
+            //排除空值
+            if (parameter.TimeValue.length == 0) {
+                var Y = (new Date().getMonth() + 1).toString();
+                var D = (new Date().getDate()).toString();
+                if (Y.length < 2) {
+                    Y = "0" + Y;
+                }
+                if (D.length < 2) {
+                    D = "0" + D;
+                }
+                parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
+            }
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
@@ -243,6 +528,40 @@
             var TimeValue = jsonObj.TimeValue;
             $("#" + ControlID).val(TimeValue);
             CheckInput();
+        }
+        //跳转到还款计划表
+        //跳转到客户试算页面
+        function ToLinkPage(parameter) {
+            parameter = decodeURI(parameter);
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "repay_plan.html","还款计划表");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "repay_plan.html", "还款计划表");
+            } else {
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "repay_plan.html", "还款计划表");
+            }
+        }
+        //内部使用
+        function CreationPDF() {
+            $($($("#result table").find("a")[0]).parents("tr")[0]).remove();
+            var html = "<table>" + $("#result table").html() + "</table>";
+            html = encodeURI(html);
+            var postparameter = {};
+            $.HttpPost("mssia/lilv/queryGuaPaiLilvPrice", postparameter, "post", function (ret) {
+                if (ret.ec == 1) {
+                    //成功
+                    var imageUrl = "";
+                    var parameter = { ImageUrl: imageUrl };
+                    //调用APP方法
+                    if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                        aPPIOS.sponsorCreationPDF(JSON.stringify(parameter), "");
+                    } else if (/(Android)/i.test(navigator.userAgent)) {
+                        aPPAndroid.sponsorCreationPDF(JSON.stringify(parameter), "");
+                    } else {
+                        aPPAndroid.sponsorCreationPDF(JSON.stringify(parameter), "");
+                    }
+                }
+            });
         }
     </script>
 </body>

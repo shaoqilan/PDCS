@@ -1,17 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-        <meta content="yes" name="apple-mobile-web-app-capable">
-        <meta content="yes" name="apple-touch-fullscreen">
-        <meta content="telephone=no,email=no" name="format-detection">
-        <link rel="stylesheet" href="./css/reset.css">
-        <link rel="stylesheet" href="./css/main.css">
-        <script src="./scripts/flexible.js"></script>
+    <title>还款计划表</title>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./scripts/flexible.js"></script>
 </head>
 <body>
-	<div class="mainbox">
-		<table class="table table-normal">
+    <div class="mainbox">
+        <table id="tabmain" class="table table-normal">
             <thead>
                 <tr>
                     <th>期数</th>
@@ -21,47 +22,30 @@
                     <th>本月余额</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>1739.17</td>
-                    <td>1666.67</td>
-                    <td>72.5</td>
-                    <td>18333.33</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>1739.17</td>
-                    <td>1666.67</td>
-                    <td>72.5</td>
-                    <td>18333.33</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>1739.17</td>
-                    <td>1666.67</td>
-                    <td>72.5</td>
-                    <td>18333.33</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>1739.17</td>
-                    <td>1666.67</td>
-                    <td>72.5</td>
-                    <td>18333.33</td>
-                </tr>
-            </tbody> 
-            <tfoot>
-                <tr>
-                    <td>总计</td>
-                    <td>20471.25</td>
-                    <td>20000</td>
-                    <td>471.25</td>
-                    <td>0.00</td>
-                </tr>
-            </tfoot>    
         </table>
-	</div>
+    </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        //APP初始化
+        function APPLoad(json) {
+            var html = "<tbody>";
+            var YG = 0;
+            var YGBJ = 0;
+            var YGLX = 0;
+            var YE = 0;
+            for (var i = 0; i < json.length; i++) {
+                html += "<tr><td>" + json[i].RN + "</td><td>" + json[i].DYYG + "</td><td>" + json[i].CHBJ + "</td><td>" + json[i].CHLX + "</td><td>" + json[i].SYBJ + "</td></tr>";
+                YG +=parseFloat(json[i].DYYG);
+                YGBJ += parseFloat(json[i].CHBJ);
+                YGLX += parseFloat(json[i].CHLX);
+                YE += parseFloat(json[i].SYBJ);
+            }
+            html += "</tbody>";
+            html += "<tfoot>";
+            html += "<tr><td>总计</td><td>" + YG.toFixed(2) + "</td><td>" + YGBJ.toFixed(2) + "</td><td>" + YGLX.toFixed(2) + "</td><td>" + YE.toFixed(2) + "</td></tr>";
+            html += "</tfoot>";
+            $("#tabmain").append(html);
+        }
+    </script>
 </body>
 </html>

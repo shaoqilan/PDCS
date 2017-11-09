@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>客户试算首页</title>
+    <title>产品试算</title>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
@@ -61,7 +61,7 @@
                     <span id="RAROCXE" class="font-s label-val">0.000</span>
                 </li>
             </ul>
-            <div class="btn-wrap btn-wrap__count"><button class="h-btn h-btn-normal font-m" type="button">客户试算</button></div>
+            <div class="btn-wrap btn-wrap__count"><button onclick="ToLinkPage()" class="h-btn h-btn-normal font-m" type="button">客户试算</button></div>
         </form>
     </div>
     <script src="./scripts/jquery-3.2.1.min.js"></script>
@@ -113,6 +113,7 @@
     </script>
     <script type="text/javascript">
         var ExpandParameter = {
+            "FLAG":"1",//下个页面要用
             "SJ_Rate": 0,//实际上浮点
             "ZX_RATE": 0,
             "RAROC": 0,
@@ -144,6 +145,7 @@
                     $("#scjzli").text(ret.BASE_RATE);
                     $("#whgpjzli").text(ret.NET_RATE);
                     $("#jzlifddc").text(ret.EXP_RATE);
+                    ExpandParameter.FLAG = ret.FLAG;
                     if (parseInt(CurveParameter.PRD_CAL_TYPE) == 7
                         || parseInt(CurveParameter.PRD_CAL_TYPE) == 8
                         || parseInt(CurveParameter.PRD_CAL_TYPE) == 9
@@ -213,11 +215,11 @@
         function ToLinkPage() {
             var parameter = $.extend({}, CurveParameter, ExpandParameter);
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "");
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "count_index_guest.html","客户试算");
             } else if (/(Android)/i.test(navigator.userAgent)) {
-                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "");
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "count_index_guest.html", "客户试算");
             } else {
-                alert("无法识别当前系统");
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "count_index_guest.html", "客户试算");
             }
         }
     </script>
