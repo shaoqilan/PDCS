@@ -543,14 +543,16 @@
         }
         //内部使用
         function CreationPDF() {
-            $($($("#result table").find("a")[0]).parents("tr")[0]).remove();
-            var html = "<table>" + $("#result table").html() + "</table>";
-            html = encodeURI(html);
-            var postparameter = {};
-            $.HttpPost("mssia/lilv/queryGuaPaiLilvPrice", postparameter, "post", function (ret) {
+            var cobj = $("#result table").clone();
+            $($(cobj.find("a")[0]).parents("tr")[0]).remove();
+            var html = "<table>" + cobj.html() + "</table>";
+            //html = encodeURI(html);
+            var postparameter = { "html": html };
+            $.HttpPost("mssia/other/html2Image", postparameter, "post", function (ret) {
+                console.log(ret);
                 if (ret.ec == 1) {
                     //成功
-                    var imageUrl = "";
+                    var imageUrl = ret.url;
                     var parameter = { ImageUrl: imageUrl };
                     //调用APP方法
                     if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
