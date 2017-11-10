@@ -199,9 +199,10 @@
     <script type="text/javascript">
         //APP交互代码
         //                  查询月份(yyyyMM)   用户所属机构代码
-        function APPLoadData(MONTH_ID, ORG_ID) {
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
             CurveParameter.MONTH_ID = MONTH_ID;
             CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.BNAME = BNAME;
             LoadData();
         }
     </script>

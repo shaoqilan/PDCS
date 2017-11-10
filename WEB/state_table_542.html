@@ -73,10 +73,8 @@
     <script type="text/javascript">
         //APP交互代码
         //                   银行 查询月份(yyyyMM)   用户所属机构代码
-        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
-            CurveParameter.BNAME = BNAME;
-            CurveParameter.MONTH_ID = MONTH_ID;
-            CurveParameter.ORG_ID = ORG_ID;
+        function APPCategory(JsonModel) {
+            CurveParameter = JsonModel;
             LoadData();
         }
         //主动发起下载表格

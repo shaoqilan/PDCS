@@ -88,9 +88,10 @@
     <script type="text/javascript">
         //APP交互代码
         //                  查询月份(yyyyMM)   用户所属机构代码
-        function APPLoadData(MONTH_ID, ORG_ID) {
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
             CurveParameter.MONTH_ID = MONTH_ID;
             CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.BNAME = BNAME;
             LoadData();
         }
         //主动API----------------------------------------
@@ -107,18 +108,7 @@
         //选择日期
         function ToAPPSponsorSelectTime(timeobj) {
             var parameter = { "TimeValue": $(timeobj).text() };
-            //排除空值
-            if (parameter.TimeValue.length == 0) {
-                var Y = (new Date().getMonth() + 1).toString();
-                var D = (new Date().getDate()).toString();
-                if (Y.length < 2) {
-                    Y = "0" + Y;
-                }
-                if (D.length < 2) {
-                    D = "0" + D;
-                }
-                parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
-            }
+            
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
@@ -130,6 +120,7 @@
         //选择日期之后的回掉
         function APPOutSponsorSelectTime(jsonObj) {
             var TimeValue = jsonObj.TimeValue;
+            TimeValue = TimeValue.replace(/\//g, "");
             CurveParameter.MONTH_ID = TimeValue;
             LoadData();
         }

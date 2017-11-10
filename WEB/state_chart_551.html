@@ -20,21 +20,15 @@
             <div class="canvas-wrap"></div>
             <div class="state-block">
                 <h3 class="state-title font-m">资产</h3>
-                <ul id="ZCHTML" class="list-551 font-13">
-                   
-                </ul>
+                <ul id="ZCHTML" class="list-551 font-13"></ul>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">负债</h3>
-                <ul id="FZHTML" class="list-551 font-13">
-                    
-                </ul>
+                <ul id="FZHTML" class="list-551 font-13"></ul>
             </div>
             <div class="state-block">
                 <h3 class="state-title font-m">中间业务</h3>
-                <ul id="ZJYWHTML" class="list-551 font-13">
-                    
-                </ul>
+                <ul id="ZJYWHTML" class="list-551 font-13"></ul>
             </div>
             <div class="btn-wrap"><button onclick="ToLinkPage()" class="h-btn h-btn-normal font-m border-1" type="button">生成图表</button></div>
         </div>
@@ -45,7 +39,7 @@
     <script src="scripts/jquery.base64.js"></script>
     <script src="scripts/httptool.js"></script>
     <script type="text/javascript">
-        var CurveParameter = {"MONTH_ID": "201606", "ORG_ID": "10000" }
+        var CurveParameter = { "BNAME": "某某银行", "MONTH_ID": "201606", "ORG_ID": "10000" }
         function LoadData() {
             $("#time").text(CurveParameter.MONTH_ID.substring(0, 4) + "/" + CurveParameter.MONTH_ID.substring(4));
             $.HttpPost("mssia/other/queryChengBenLiRunGouCheng", CurveParameter, "post", function (ret) {
@@ -156,7 +150,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: ret.DEBITS_INTEREST - DEBITS_INTEREST_GK}]
+                                }, { value: ret.DEBITS_INTEREST - DEBITS_INTEREST_GK }]
                             },
                             {
                                 name: '中间业务',
@@ -185,7 +179,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: ret.IM_BUS_INTEREST -IM_BUS_INTEREST_GK }]
+                                }, { value: ret.IM_BUS_INTEREST - IM_BUS_INTEREST_GK }]
                             },
                             {
                                 name: '总利润',
@@ -214,7 +208,7 @@
                                             formatter: "{a}\n{c}\n{d}%"
                                         }
                                     }
-                                }, { value: HJ_GK -  HJ_GK}]
+                                }, { value: HJ_GK - HJ_GK }]
                             }
                         ]
                     };
@@ -226,14 +220,14 @@
                     //资产
                     var ZCHTML = "";
                     ZCHTML += "<li class=\"list-item\">";
-                    ZCHTML+="<span>利息收入</span>";
-                    ZCHTML+="<span>"+ret.ASSETS_INTEREST+"</span>";
-                    ZCHTML+="<span>100.00%</span>";
-                    ZCHTML+="</li>";
-                    ZCHTML+="<li class=\"list-item\">";
-                    ZCHTML+="<span>成本</span>";
-                    ZCHTML+="<span>"+ASSETS_INTEREST_CB+"</span>";
-                    ZCHTML+="<span></span>";
+                    ZCHTML += "<span>利息收入</span>";
+                    ZCHTML += "<span>" + ret.ASSETS_INTEREST + "</span>";
+                    ZCHTML += "<span>100.00%</span>";
+                    ZCHTML += "</li>";
+                    ZCHTML += "<li class=\"list-item\">";
+                    ZCHTML += "<span>成本</span>";
+                    ZCHTML += "<span>" + ASSETS_INTEREST_CB + "</span>";
+                    ZCHTML += "<span></span>";
                     ZCHTML += "</li>";
                     for (var i = 0; i < ret.ASSETS_LIST.length; i++) {
                         if (ret.ASSETS_LIST[i].PRD_CPDM == "BUS_INCOME") {
@@ -309,55 +303,46 @@
         })
     </script>
     <script type="text/javascript">
-    //APP交互代码
-    //                  查询月份(yyyyMM)   用户所属机构代码
-    function APPLoadData(MONTH_ID, ORG_ID) {
-        CurveParameter.MONTH_ID = MONTH_ID;
-        CurveParameter.ORG_ID = ORG_ID;
-        LoadData();
-    }
-    //主动API----------------------------------------
-    //跳转到图表
-    function ToLinkPage() {
-        //将时间发送到app
-        var parameter = { "TimeValue": $("#time").text() };
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-            aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "state_table_552.html","利润构成图表");
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-            aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "state_table_552.html", "利润构成图表");
-        } else {
-            alert("无法识别当前系统");
+        //APP交互代码
+        //                  查询月份(yyyyMM)   用户所属机构代码
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
+            CurveParameter.MONTH_ID = MONTH_ID;
+            CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.BNAME = BNAME;
+            LoadData();
         }
-    }
-    //选择日期
-    function ToAPPSponsorSelectTime(timeobj) {
-        var parameter = { "TimeValue": $(timeobj).text() };
-        //排除空值
-        if (parameter.TimeValue.length == 0) {
-            var Y = (new Date().getMonth() + 1).toString();
-            var D = (new Date().getDate()).toString();
-            if (Y.length < 2) {
-                Y = "0" + Y;
+        //主动API----------------------------------------
+        //跳转到图表
+        function ToLinkPage() {
+            //将时间发送到app
+            var parameter = CurveParameter;
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "state_table_552.html", "利润构成图表");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorLinkPage(JSON.stringify(parameter), "state_table_552.html", "利润构成图表");
+            } else {
+                alert("无法识别当前系统");
             }
-            if (D.length < 2) {
-                D = "0" + D;
+        }
+        //选择日期
+        function ToAPPSponsorSelectTime(timeobj) {
+            var parameter = { "TimeValue": $(timeobj).text() };
+
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
+            } else {
+                alert("无法识别当前系统");
             }
-            parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
         }
-        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-            aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
-        } else if (/(Android)/i.test(navigator.userAgent)) {
-            aPPAndroid.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
-        } else {
-            alert("无法识别当前系统");
+        //选择日期之后的回掉
+        function APPOutSponsorSelectTime(jsonObj) {
+            var TimeValue = jsonObj.TimeValue;
+            TimeValue = TimeValue.replace(/\//g, "");
+            CurveParameter.MONTH_ID = TimeValue;
+            LoadData();
         }
-    }
-    //选择日期之后的回掉
-    function APPOutSponsorSelectTime(jsonObj) {
-        var TimeValue = jsonObj.TimeValue;
-        CurveParameter.MONTH_ID = TimeValue;
-        LoadData();
-    }
     </script>
 
 </body>

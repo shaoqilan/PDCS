@@ -55,7 +55,7 @@
     <script src="scripts/jquery.base64.js"></script>
     <script src="scripts/httptool.js"></script>
     <script type="text/javascript">
-        var CurveParameter = { "MONTH_ID": "201606", "ORG_ID": "10002"}
+        var CurveParameter = { "BNAME": "某某银行", "MONTH_ID": "201606", "ORG_ID": "10002" }
         $(function () {
             LoadData();
         });
@@ -207,9 +207,10 @@
     <script type="text/javascript">
         //APP交互代码
         //                  查询月份(yyyyMM)   用户所属机构代码
-        function APPLoadData(MONTH_ID, ORG_ID) {
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
             CurveParameter.MONTH_ID = MONTH_ID;
             CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.BNAME = BNAME;
             LoadData();
         }
     </script>

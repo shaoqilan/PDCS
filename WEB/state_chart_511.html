@@ -37,7 +37,7 @@
     <script src="scripts/jquery.base64.js"></script>
     <script src="scripts/httptool.js"></script>
     <script type="text/javascript">
-        var CurveParameter = { "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
+        var CurveParameter = { "BNAME": "某某银行", "JE_DW": "1", "MONTH_ID": "201606", "ORG_ID": "10000" }
         $(function () {
             LoadData();
         });
@@ -120,16 +120,17 @@
     <script type="text/javascript">
         //APP交互代码
         //                  查询月份(yyyyMM)   用户所属机构代码
-        function APPLoadData(MONTH_ID, ORG_ID) {
+        function APPLoadData(BNAME, MONTH_ID, ORG_ID) {
             CurveParameter.MONTH_ID = MONTH_ID;
             CurveParameter.ORG_ID = ORG_ID;
+            CurveParameter.BNAME = BNAME;
             LoadData();
         }
         //主动API----------------------------------------
         //跳转到图表
         function ToLinkPage() {
             //将时间发送到app
-            var parameter = { "TimeValue": $("#time").text() };
+            var parameter = CurveParameter;
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "state_table_512.html","指标完成情况图表");
             } else if (/(Android)/i.test(navigator.userAgent)) {
@@ -141,18 +142,6 @@
         //选择日期
         function ToAPPSponsorSelectTime(timeobj) {
             var parameter = { "TimeValue": $(timeobj).text() };
-            //排除空值
-            if (parameter.TimeValue.length == 0) {
-                var Y = (new Date().getMonth() + 1).toString();
-                var D = (new Date().getDate()).toString();
-                if (Y.length < 2) {
-                    Y = "0" + Y;
-                }
-                if (D.length < 2) {
-                    D = "0" + D;
-                }
-                parameter.TimeValue = new Date().getFullYear() + "-" + Y + "-" + D;
-            }
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorSelectTime(JSON.stringify(parameter), "APPOutSponsorSelectTime");
             } else if (/(Android)/i.test(navigator.userAgent)) {
@@ -164,6 +153,8 @@
         //选择日期之后的回掉
         function APPOutSponsorSelectTime(jsonObj) {
             var TimeValue = jsonObj.TimeValue;
+            //处理事件格式
+            TimeValue=TimeValue.replace(/\//g, "");
             CurveParameter.MONTH_ID = TimeValue;
             LoadData();
         }
