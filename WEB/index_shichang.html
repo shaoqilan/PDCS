@@ -242,11 +242,11 @@
                         var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
                         $(Element).find(".select-group").append(itemhtml);
                     }
-                    if(ret.PAGE_LIST.length > 6){
+                    if (ret.PAGE_LIST.length > 6) {
                         var moreHtml = $("<div class='checkbox_more'></div>");
                         var $wrap = $(Element).find(".select-group_wrap");
                         $wrap.append(moreHtml);
-                        moreHtml.on("click",function(){
+                        moreHtml.on("click", function () {
                             $wrap.toggleClass("open");
                         });
                     }
@@ -498,7 +498,7 @@
     <script type="text/javascript">
         //和app交互
         //被动API----------------------------------------
-        //获取首页列表数据   利率大类代码  币种代码  利率种类  报价日期  
+        //获取首页列表数据   利率大类代码  币种代码  利率种类  报价日期
         function APPPriceCurveList(RATE_LLLX, RATE_BZ, RATE_LLZL, RATE_BJRQ) {
             //判断必须存在登录信息
             if (LOGINUSERSESSION.ROLE_ID && LOGINUSERSESSION.USER_ID) {
