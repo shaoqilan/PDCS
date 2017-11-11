@@ -109,6 +109,7 @@
         }
         $(function () {
             initSpider();
+            LoadConfiguration();
         });
     </script>
     <script type="text/javascript">
@@ -127,10 +128,9 @@
             "ORG_ZHH_ID": "",//所属支行
             "PRD_BJRQ": "2017-07-24",//报价日期
             "PRD_BZ": "CNY",//币种代码
-            "PRD_CAL_TYPE": "14",//类别代码
             "PRD_CPDM": "30301040101",//产品代码
             "TERM_TS": "279",//期限天数
-            "PRD_CAL_TYPE": 2  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
+            "PRD_CAL_TYPE": "2"  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
         };
         function LoadConfiguration() {
             var rate = parseFloat($("#rate").val());

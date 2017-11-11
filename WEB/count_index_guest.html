@@ -72,7 +72,7 @@
             "PRD_CAL_TYPE": "14",//类别代码
             "PRD_CPDM": "30301040101",//产品代码
             "TERM_TS": "279",//期限天数
-            "PRD_CAL_TYPE": 1,  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
+            "PRD_CAL_TYPE": "1",  //计算类别: 贷款类(2)1，2，3，5，6，14  存款类型(1) 7，8，9，10，11，12，13
             "FLAG":"",
             "SJ_Rate": 0.01,//实际上浮点
             "ZX_RATE": 4.88,//执行率利
@@ -532,7 +532,7 @@
         //跳转到还款计划表
         //跳转到客户试算页面
         function ToLinkPage(parameter) {
-            parameter = decodeURI(parameter);
+            parameter =eval("("+decodeURI(parameter)+")");
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
                 aPPIOS.sponsorLinkPage(JSON.stringify(parameter), "repay_plan.html","还款计划表");
             } else if (/(Android)/i.test(navigator.userAgent)) {
