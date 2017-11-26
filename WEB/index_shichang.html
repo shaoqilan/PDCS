@@ -108,11 +108,9 @@
         //获取价格曲线(列表)
         function GetAllCurve(reset) {
             //显示动画
-            $.ShowLoad("正在加载");
             var parameter = CurveParameter;
             console.log("价格曲线列表：" + JSON.stringify(parameter));
             $.HttpPost("mssia/lilv/queryMarketLilvPrice", parameter, "post", function (ret) {
-                $.HideLoad();
                 if (ret.ec == 1) {
                     //如果没有数据
                     if (ret.PAGE_LIST.length == 0) {
@@ -240,6 +238,9 @@
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
                         var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        if (i != 0) {
+                            itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" ><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        }
                         $(Element).find(".select-group").append(itemhtml);
                     }
                     if (ret.PAGE_LIST.length > 6) {
@@ -492,7 +493,15 @@
                 var PRD_BJLB = $(this).val();//时间类型
                 var RATE_BJRQ = $($($(this).parents("section")[0]).find(".box-title div")[0]).text();//时间
                 GetTendency(PriceTrendObj, RATE_LLLX, RATE_BZ, RATE_BJRQ, PRD_BJLB);
-            })
+            });
+            //默认只选中第一个
+            for (var i = 1; i < $selectGroup.find("input[type=checkbox]").length; i++) {
+                var val = $($selectGroup.find("input[type=checkbox]")[i]).val();
+                instance.dispatchAction({
+                    type: "legendToggleSelect",
+                    name: val
+                })
+            }
         }
     </script>
     <script type="text/javascript">

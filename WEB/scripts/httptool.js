@@ -10,6 +10,8 @@ function APPSetLoginUser(ROLE_ID, USER_ID) {
     $.extend({
         HttpPost: function (url, reqJson, type, success) {
             //默认用户
+            //开始请求
+            $.ShowLoad("正在加载");
             var userSession = LOGINUSERSESSION;
             var HttpObject = $.extend({}, reqJson, userSession);
             $.ajax({
@@ -17,6 +19,7 @@ function APPSetLoginUser(ROLE_ID, USER_ID) {
                 data: { "reqJson": $.base64.encode(JSON.stringify(HttpObject), true) },
                 type: type,
                 success: function (ret) {
+                    $.HideLoad();
                     if (success) {
                         success(eval("(" + $.base64.decode(ret, true) + ")"));
                     }

@@ -104,10 +104,10 @@
             "PRD_CPLB": "2",//产品类别
             "PRD_CPLB_2": "01001"//产品小类2产品代码
         };
-        //$(function () {
-        //    //开始请求
-        //    GetAllCurve();
-        //});
+        $(function () {
+            //开始请求
+            GetAllCurve();
+        });
         //下一页
         function NextPage() {
             PageIndex = PageIndex + 1;
@@ -116,11 +116,9 @@
         //获取价格曲线(列表)
         function GetAllCurve(reset) {
             //显示动画
-            $.ShowLoad("正在加载");
             var parameter = CurveParameter;
             console.log("价格曲线列表：" + JSON.stringify(parameter));
             $.HttpPost("mssia/lilv/queryGuaPaiLilvPrice", parameter, "post", function (ret) {
-                $.HideLoad();
                 if (ret.ec == 1) {
                     //如果没有数据
                     if (ret.PAGE_LIST.length == 0) {
@@ -256,6 +254,9 @@
                         var TERM_QXMC = ret.PAGE_LIST[i].TERM_QXMC;//期限名称
                         var TERM_QXBM = ret.PAGE_LIST[i].TERM_QXBM;//期限编码
                         var itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" checked=\"\"><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        if (i != 0) {
+                            itemhtml = "<label class=\"h-checkbox\"><input type=\"checkbox\" value=" + TERM_QXMC + " hidden=\"\" name=\"checkbox" + i + "\" ><span class=\"checkbox-icon border-1\"></span><span>" + TERM_QXMC + "</span><span class=\"checkbox-flag\" style=\"background-color:" + COLOR_LIST[i] + "\"></span></label>";
+                        }
                         $(Element).find(".select-group").append(itemhtml);
                     }
                     if(ret.PAGE_LIST.length > 6){
@@ -519,7 +520,15 @@
                 var PRD_BJRQ = $($($(this).parents("section")[0]).find(".box-title div")[0]).text();//时间
                 var PRD_CPBZ = CurveParameter.PRD_CPBZ;//币种代码
                 GetTendency(PriceTrendObj, ORG_ID, PRD_BJLB, PRD_BJRQ, PRD_CPBZ);
-            })
+            });
+            //默认只选中第一个
+            for (var i = 1; i < $selectGroup.find("input[type=checkbox]").length; i++) {
+                var val = $($selectGroup.find("input[type=checkbox]")[i]).val();
+                instance.dispatchAction({
+                    type: "legendToggleSelect",
+                    name: val
+                })
+            }
         }
     </script>
     <script type="text/javascript">
@@ -534,6 +543,8 @@
                 CurveParameter.PRD_CPBZ = PRD_CPBZ;
                 CurveParameter.PRD_CPLB = PRD_CPLB;
                 CurveParameter.PRD_CPLB_2 = PRD_CPLB_2;
+                //重置参数
+                CurveParameter.PRD_CPDM = "";
                 PageIndex = 1;//重置分页
                 //获取数据
                 GetAllCurve(true);
