@@ -1,5 +1,6 @@
 ﻿var LOGINUSERSESSION = { "ROLE_ID": "123123", "USER_ID": "heyi001" };//测试用
-var HTTPBASEURL = "http://118.190.85.152:8080/";
+var HTTPBASEURL = "http://60.205.113.66:8080/";
+
 //设置登录的用户信息
 function APPSetLoginUser(ROLE_ID, USER_ID) {
     LOGINUSERSESSION.ROLE_ID = ROLE_ID;
