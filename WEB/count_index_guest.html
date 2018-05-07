@@ -89,13 +89,13 @@
                 执行利率
                 实际优惠点差
                 交易金额
-                还款方式 1：等额本息；2：等额本金；3：一次还本付息；4：分期还息、一次还本
+                收/付息方式 1：等额本息；2：等额本金；3：一次还本付息；4：分期还息、一次还本
                 还款频率 1：按月；3：按季；6：按半年；12：按年
                 */
                 //初始化控件
                 var control = [
-                    { Title: "贷款金额", Event: "id='DAIKUANJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
-                    { Title: "还款方式", Event: "readonly id='HUANKUANFANGSHI' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"等额本息\",\"Value\":\"1\"},{\"Name\":\"等额本金\",\"Value\":\"2\"},{\"Name\":\"一次还本付息\",\"Value\":\"3\"},{\"Name\":\"分期还息、一次还本\",\"Value\":\"4\"}])'", Type: "text", Placeholder: "请选择" },
+                    { Title: "交易金额", Event: "id='DAIKUANJINE' onblur='CheckInput()' ", Type: "number", Placeholder: "请输入" },
+                    { Title: "收/付息方式", Event: "readonly id='HUANKUANFANGSHI' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"等额本息\",\"Value\":\"1\"},{\"Name\":\"等额本金\",\"Value\":\"2\"},{\"Name\":\"一次还本付息\",\"Value\":\"3\"},{\"Name\":\"分期还息、一次还本\",\"Value\":\"4\"}])'", Type: "text", Placeholder: "请选择" },
                     { Title: "还款频率", Event: "readonly id='HUANKUANPINLV' onclick='ToAPPSponsorSelect(this,[{\"Name\":\"按月\",\"Value\":\"1\"},{\"Name\":\"按季\",\"Value\":\"3\"},{\"Name\":\"按半年\",\"Value\":\"6\"},{\"Name\":\"按年\",\"Value\":\"12\"}])'", Type: "text", Placeholder: "请选择" }
                 ];
                 Creation(control);

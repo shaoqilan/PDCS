@@ -40,7 +40,7 @@
                 </table>
             </div>
             <div class="form-item form-item-white">
-                <label class="label font-s">实际上浮点</label>
+                <label class="label font-s">实际优惠点差</label>
                 <span class="spider" role="spider">
                     <span class="sub-btn" role="sub"></span>
                     <input id="rate" type="text" class="font-m" value="10BP">
@@ -83,12 +83,14 @@
                     LoadConfiguration();
                 });
                 $input.on("blur", function () {
-                    var value = /^\d*/.exec($input.val());
-                    if (value < MIN) {
-                        value = MIN;
+                    var value = parseInt($input.val());
+                    if (!isNaN(value)) {
+                        $input.val(value + UNIT);
+                        LoadConfiguration();
+                    } else {
+                        $input.val(0 + UNIT);
+                        LoadConfiguration();
                     }
-                    $input.val(Number(value) + UNIT);
-                    LoadConfiguration();
                 });
                 $spider.children("[role='add']").on("click", function () {
                     var value = /^\d*/.exec($input.val());
@@ -96,16 +98,17 @@
                     LoadConfiguration();
                 });
                 $spider.children("[role='sub']").on("click", function () {
-                    var value = /^\d*/.exec($input.val());
-                    var nextValue = Number(value) - PER;
-                    if (nextValue < MIN) {
-                        return;
+                    var value = parseInt($input.val());
+                    if (!isNaN(value)) {
+                        var nextValue = value - PER;
+                        $input.val(nextValue + UNIT);
+                        LoadConfiguration();
+                    } else {
+                        $input.val(0 + UNIT);
+                        LoadConfiguration();
                     }
-                    $input.val(nextValue + UNIT);
-                    LoadConfiguration();
                 });
             });
-
         }
         $(function () {
             initSpider();

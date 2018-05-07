@@ -39,7 +39,7 @@
                                     <thead>
                                         <tr>
                                             <th>期限</th>
-                                            <th>市场利率</th>
+                                            <th>市场利率%</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -95,10 +95,10 @@
             "PAGE_NO": PageIndex + "",//当前页面
             "PAGE_SIZE": PageSize + ""//页面条数
         };
-        //$(function () {
-        //    //开始请求
-        //    GetAllCurve();
-        //});
+        $(function () {
+            //开始请求
+            GetAllCurve();
+        });
         //下一页
         function NextPage() {
             PageIndex = PageIndex + 1;
@@ -512,7 +512,7 @@
                 CurveParameter.FSI_QXDM = FSI_QXDM;
                 CurveParameter.FSI_BJRQ = FSI_BJRQ;
                 //重置参数
-                CurveParameter.FSI_QXDM = ""
+                //CurveParameter.FSI_QXDM = ""
                 PageIndex = 1;//重置分页
                 //获取数据
                 GetAllCurve(true);
