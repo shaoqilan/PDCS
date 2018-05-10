@@ -5,7 +5,6 @@ var HTTPBASEURL = "http://60.205.113.66:8080/";
 function APPSetLoginUser(ROLE_ID, USER_ID) {
     LOGINUSERSESSION.ROLE_ID = ROLE_ID;
     LOGINUSERSESSION.USER_ID = USER_ID;
-    alert("用户登录信息设置成功" + USER_ID);
 }
 (function ($) {
     $.extend({
